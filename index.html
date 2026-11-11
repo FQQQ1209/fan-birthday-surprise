@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7eee4">
+<title>1994.12.09 · A Story of You & Me</title>
+<style>
+:root{
+  --cream:#fff4e8;--paper:#fffdf8;--paper2:#ffeadc;--ink:#765b52;
+  --muted:#b09286;--rose:#e6a6a0;--rose2:#f4c8bc;--gold:#e8c78e;
+  --line:#f0d9ca;--shadow:0 18px 55px rgba(190,139,119,.13);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:"PingFang SC","Microsoft YaHei",sans-serif;overflow-x:hidden}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+a{color:inherit}
+::selection{background:#e9c9bc;color:#563e32}
+.grain:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:40;opacity:.10;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E")}
+.cover{min-height:100svh;display:grid;place-items:center;text-align:center;padding:38px 22px;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 36%,#fffaf4 0,#f7eee4 58%,#eddfd1 100%)}
+.cover:before,.cover:after{content:"✦";position:absolute;color:#c7a77f;opacity:.65;font-size:25px;animation:twinkle 3s infinite alternate}
+.cover:before{top:15%;left:14%}.cover:after{right:13%;bottom:17%;animation-delay:1s}
+.cover-inner{max-width:720px;position:relative;z-index:1;animation:rise 1.2s both}
+.eyebrow{font-size:10px;letter-spacing:.28em;color:var(--muted);text-transform:uppercase}
+.cover .heart{font-size:38px;color:var(--rose);margin:24px 0 8px;animation:heartbeat 2.2s infinite}
+/* 首页信封贺卡 */
+.cover-envelope{appearance:none;-webkit-appearance:none;display:block;position:relative;width:min(470px,88vw);height:285px;margin:24px auto 0;padding:0;border:0;background:transparent;cursor:pointer;perspective:1000px;filter:drop-shadow(0 20px 24px rgba(105,75,55,.14));animation:envelopeFloat 5s ease-in-out infinite}
+.cover-envelope:focus-visible{outline:2px solid var(--rose);outline-offset:9px;border-radius:18px}
+.envelope-back{position:absolute;inset:20px 8px 10px;border-radius:12px;background:#e8d4c2}
+.envelope-paper{position:absolute;left:9%;right:9%;top:5%;height:76%;display:grid;place-items:center;padding:24px 14px 42px;background:linear-gradient(145deg,#fffdf8,#fff7ed);border:1px solid #ead9c7;border-radius:7px 7px 3px 3px;box-shadow:0 4px 18px #7c5e4512;transition:transform .8s cubic-bezier(.2,.75,.2,1),top .8s;z-index:1}
+.envelope-paper:before{content:"";position:absolute;inset:10px;border:1px solid #eadccf;pointer-events:none}
+.envelope-paper span{position:relative;color:#876957;font-family:Georgia,"Times New Roman",serif;font-size:clamp(23px,5vw,34px);letter-spacing:.015em;white-space:nowrap}
+.envelope-front{position:absolute;inset:20px 8px 10px;border-radius:12px;background:linear-gradient(145deg,#f0dfd0,#e8d2c0);clip-path:polygon(0 0,50% 57%,100% 0,100% 100%,0 100%);z-index:3}
+.envelope-flap{position:absolute;left:8px;right:8px;top:20px;height:62%;background:linear-gradient(155deg,#f7e9dc,#e6cfbd);clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top center;transition:transform .75s ease;z-index:4;filter:drop-shadow(0 3px 3px #8b6b5015)}
+.envelope-seal{position:absolute;z-index:5;left:50%;top:58%;transform:translate(-50%,-50%);width:43px;height:43px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#d7a49a,#bd8178);color:#fff8ef;font-size:21px;box-shadow:0 4px 12px #80584c35;transition:opacity .3s,transform .5s}
+.cover-envelope:hover .envelope-paper{transform:translateY(-8px)}
+.cover-envelope:hover .envelope-seal{transform:translate(-50%,-50%) scale(1.08)}
+.cover-envelope.opened .envelope-flap{transform:rotateX(180deg);z-index:0}
+.cover-envelope.opened .envelope-paper{top:-8%;transform:translateY(-20px);z-index:2}
+.cover-envelope.opened .envelope-seal{opacity:0;transform:translate(-50%,-50%) scale(.5)}
+@keyframes envelopeFloat{0%,100%{translate:0 0}50%{translate:0 -7px}}
+@media(max-width:480px){.cover-envelope{height:245px;width:min(390px,90vw)}.envelope-paper span{font-size:clamp(20px,5.2vw,27px)}}
+.primary,.soft-btn{border:0;border-radius:99px;padding:14px 28px;background:var(--rose);color:white;box-shadow:0 8px 22px #bd8c7d38;transition:.25s}
+.primary:hover,.soft-btn:hover{transform:translateY(-3px);box-shadow:0 12px 28px #bd8c7d50}
+.soft-btn{background:#ead8c9;color:#765c4d;box-shadow:none}
+main{display:none}
+.music{position:fixed;right:17px;top:17px;z-index:50;border:1px solid #e8d7c7;background:#fffaf0e8;color:#987765;border-radius:50%;width:44px;height:44px;font-size:18px;box-shadow:0 4px 16px #80654c12}
+.music.playing{animation:spin 5s linear infinite}
+.section-head{text-align:center;padding:82px 20px 35px}
+.section-head h2{font-family:"Songti SC",serif;font-weight:400;font-size:clamp(29px,5vw,43px);margin:12px 0}
+.section-head p{color:var(--muted);line-height:2;font-size:14px;margin:0}
+.chapter-tag{display:inline-flex;align-items:center;gap:9px;color:var(--rose);font-size:10px;letter-spacing:.24em}
+.chapter-tag:before,.chapter-tag:after{content:"";height:1px;width:26px;background:#d8b8a7}
+.wrap{width:min(1080px,100%);margin:auto;padding:0 22px}
+.life-intro{max-width:740px;margin:0 auto 40px;text-align:center;color:var(--muted);font-size:14px;line-height:2}
+.life-track{position:relative;max-width:980px;margin:0 auto;padding:5px 22px 90px}
+.life-track:before{content:"";position:absolute;left:50%;top:20px;bottom:80px;width:1px;background:linear-gradient(transparent,var(--gold),var(--line),transparent)}
+.life-scene{min-height:450px;width:50%;padding:20px 52px 45px 0;position:relative;opacity:0;transform:translateY(50px);transition:opacity .9s,transform .9s}
+.life-scene:nth-child(even){margin-left:50%;padding:20px 0 45px 52px}
+.life-scene.visible{opacity:1;transform:none}
+.life-scene:after{content:"";position:absolute;right:-6px;top:39px;width:11px;height:11px;border-radius:50%;background:var(--rose);box-shadow:0 0 0 7px #f7eee4,0 0 22px #d9a59a}
+.life-scene:nth-child(even):after{left:-5px;right:auto}
+.scene-card{border:1px solid #eadbca;background:var(--paper);border-radius:22px;overflow:hidden;box-shadow:var(--shadow)}
+.scene-visual{height:245px;position:relative;overflow:hidden;background:linear-gradient(145deg,#ead9c8,#f8eee3)}
+.scene-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(64,45,34,.16));pointer-events:none}
+.scene-caption{padding:22px 23px 25px}
+.scene-caption .date{font-size:10px;letter-spacing:.2em;color:var(--rose);margin-bottom:9px}
+.scene-caption h3{font-family:"Songti SC",serif;font-weight:400;font-size:24px;margin:0 0 12px}
+.scene-caption p{font-size:14px;color:#8c7463;line-height:2;margin:0}
+.scene-caption .small-note{margin-top:13px;font-size:11px;color:#b49a87;letter-spacing:.05em}
+.scene-number{position:absolute;top:15px;left:17px;z-index:2;color:#fff9ef;font-size:11px;letter-spacing:.2em;text-shadow:0 2px 10px #49372b}
+.scene-visual .sun{position:absolute;width:100px;height:100px;border-radius:50%;background:#fff1c9;right:15%;top:18%;box-shadow:0 0 50px 18px #fff0c2aa;animation:sunPulse 5s ease-in-out infinite alternate}
+.scene-visual .window{position:absolute;left:12%;top:13%;width:35%;height:66%;border:8px solid #b99d83;background:linear-gradient(90deg,#fff6d4aa 48%,transparent 49%),linear-gradient(#f6e7d0,#d9c0a5);box-shadow:12px 14px 24px #72533a20}
+.scene-visual .desk{position:absolute;left:5%;right:5%;bottom:15%;height:17%;background:#a47c5e;border-radius:8px 8px 2px 2px;box-shadow:0 12px 0 #805e48}
+.scene-visual .book{position:absolute;bottom:30%;left:25%;width:30%;height:10%;background:#f7e7d2;border:2px solid #c3a98c;transform:rotate(-7deg);box-shadow:0 8px 12px #634a3320}
+.scene-visual .book:after{content:"";position:absolute;inset:3px 50% 3px auto;width:1px;background:#c7ad92}
+.scene-visual .dust{position:absolute;width:4px;height:4px;border-radius:50%;background:#fff8d8;box-shadow:0 0 10px #fff;animation:dustFloat 6s infinite ease-in-out}
+.scene-visual.childhood{background:linear-gradient(#e8d7c5,#c7ad94)}
+.scene-visual.school{background:linear-gradient(140deg,#d9c5ae,#f2e5d7 55%,#b89b7e)}
+.scene-visual.school .shelf{position:absolute;left:8%;right:8%;top:18%;height:58%;border:9px solid #98765d;border-top-width:6px;border-bottom-width:7px;background:repeating-linear-gradient(90deg,transparent 0 24%,#a47c5e 24% 26%),repeating-linear-gradient(0deg,#d8b99a 0 17%,#f2e5d7 17% 19%);box-shadow:0 12px 20px #634a3320}
+.scene-visual.school .paper{position:absolute;right:18%;bottom:13%;width:30%;height:28%;background:#fff9ec;transform:rotate(8deg);box-shadow:0 8px 20px #634a3330}
+.scene-visual.school .paper:after{content:"✦  ✦  ✦";display:block;text-align:center;padding-top:18px;color:#c99a79;font-size:12px}
+.scene-visual.offer{background:linear-gradient(130deg,#cbb49c,#f2e4d5 55%,#b59b81)}
+.path{position:absolute;left:-10%;right:-10%;top:55%;height:3px;background:linear-gradient(90deg,transparent,#fff2cf,#c18f79,#fff2cf,transparent);transform:rotate(-12deg);box-shadow:0 0 16px #fff5d5}
+.path:before,.path:after{content:"";position:absolute;top:-38px;width:74px;height:100px;border:1px solid #fff1d0;border-radius:50%;opacity:.75}
+.path:before{left:23%;transform:rotate(35deg)}.path:after{right:23%;transform:rotate(-35deg)}
+.offer-card{position:absolute;top:19%;width:35%;height:42%;background:#fffaf0e8;border:1px solid #d8c2a9;border-radius:4px;box-shadow:0 12px 28px #60452c30;display:grid;place-items:center;color:#9a7861;font-family:Georgia,serif;font-size:12px;letter-spacing:.14em}
+.offer-card.one{left:9%;transform:rotate(-8deg);animation:floatLeft 5s ease-in-out infinite}
+.offer-card.two{right:9%;transform:rotate(8deg);animation:floatRight 5s ease-in-out infinite}
+.offer-heart{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);font-size:30px;color:#c98f83;text-shadow:0 0 22px #fff}
+.scene-visual.today{background:linear-gradient(160deg,#f0d8bf,#c7a28b 58%,#856b5a)}
+.today .sun{width:145px;height:145px;right:35%;top:10%;background:#ffedc9;box-shadow:0 0 65px 28px #ffdfa7aa}
+.today .horizon{position:absolute;left:-5%;right:-5%;bottom:-25%;height:65%;background:#7f6a5a;border-radius:50% 50% 0 0}
+.today .silhouette{position:absolute;z-index:2;bottom:10%;left:50%;width:72px;height:140px;transform:translateX(-50%);background:#55483f;border-radius:45% 45% 10% 10%;clip-path:polygon(25% 0,75% 0,92% 23%,100% 100%,0 100%,8% 23%)}
+.today .silhouette:before{content:"";position:absolute;left:19px;top:-38px;width:36px;height:42px;border-radius:50%;background:#55483f}
+.scene-visual .film-date{position:absolute;z-index:3;right:16px;bottom:13px;color:#fff5e7;font:11px Georgia;letter-spacing:.12em}
+.reveal-line{height:1px;width:0;background:var(--gold);margin:0 auto 15px;transition:width 1.4s}
+.life-scene.visible .reveal-line{width:65%}
+.story-bridge{max-width:850px;margin:0 auto 90px;padding:35px 25px;text-align:center;border:1px solid #e5d2bf;border-radius:24px;background:linear-gradient(135deg,#fff9f1,#f1e2d5);box-shadow:var(--shadow)}
+.story-bridge .bridge-heart{font-size:34px;color:var(--rose);animation:heartbeat 2s infinite}
+.story-bridge h3{font-family:"Songti SC",serif;font-weight:400;font-size:clamp(24px,4vw,34px);margin:13px 0}
+.story-bridge p{color:#8d7564;line-height:2;font-size:14px;max-width:620px;margin:0 auto}
+.story-bridge .bridge-date{font-size:10px;letter-spacing:.22em;color:var(--rose);margin-top:20px}
+.love-timeline{max-width:900px;margin:0 auto;padding:10px 22px 85px;position:relative}
+.love-timeline:before{content:"";position:absolute;left:50%;top:0;bottom:45px;width:1px;background:var(--line)}
+.love-event{width:50%;padding:20px 48px 36px 0;position:relative;opacity:0;transform:translateY(35px);transition:.8s}
+.love-event:nth-child(even){margin-left:50%;padding:20px 0 36px 48px}
+.love-event.visible{opacity:1;transform:none}
+.love-event:after{content:"♡";position:absolute;right:-12px;top:29px;width:24px;height:24px;border-radius:50%;background:var(--cream);color:var(--rose);text-align:center;line-height:24px;font-size:17px}
+.love-event:nth-child(even):after{left:-12px;right:auto}
+.memory-card{width:100%;text-align:left;border:1px solid #eee0d2;background:var(--paper);border-radius:19px;padding:13px;box-shadow:0 10px 28px #80654c0d;transition:.25s;color:inherit}
+.memory-card:hover,.memory-card[aria-expanded="true"]{transform:translateY(-4px);box-shadow:var(--shadow);border-color:#dfc5ae}
+.memory-photo{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;background:linear-gradient(135deg,#eadbca,#f8efe5);display:block}
+.photo-fallback{height:auto;aspect-ratio:4/3;display:grid;place-items:center;text-align:center;border-radius:12px;background:radial-gradient(circle at 70% 25%,#fff5d8,#e8d5c2 58%,#c9aa91);color:#fffaf2;font-family:"Songti SC",serif;font-size:18px;letter-spacing:.12em;text-shadow:0 2px 10px #72513d55}
+.memory-date{display:block;color:#b38a73;font-size:11px;letter-spacing:.13em;margin:14px 0 7px}
+.memory-card h3{font-family:"Songti SC",serif;font-size:21px;font-weight:400;margin:0 0 8px}
+.hint{font-size:11px;color:#b49e8d}
+.detail{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s}
+.detail>div{overflow:hidden}
+.detail.open{grid-template-rows:1fr}
+.detail p{background:#fff8f0;border-radius:0 0 14px 14px;margin:0;padding:0 15px;color:#8b7463;line-height:1.9;font-size:13px}
+.detail.open p{padding:14px 15px 17px}
+.letter{max-width:760px;margin:0 auto 85px;padding:0 20px;text-align:center}
+.envelope{margin:25px auto 0;max-width:560px;background:#f1dfd0;border-radius:20px;padding:32px 24px;position:relative;box-shadow:var(--shadow)}
+.envelope-icon{font-size:44px;animation:float 4s ease-in-out infinite}
+.letter-content{display:none;text-align:left;background:#fffaf4;border-radius:14px;padding:24px;margin-top:20px;line-height:2;color:#806b5b;animation:rise .6s}
+.letter-content.open{display:block}.letter-content p{margin:0 0 14px}
+.flip-wrap{width:min(330px,86vw);height:220px;margin:26px auto 0;perspective:1200px}
+.flip-card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 1s cubic-bezier(.2,.7,.2,1);cursor:pointer}
+.flip-card.flipped{transform:rotateY(180deg)}
+.flip-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;display:grid;place-items:center;padding:25px;box-shadow:var(--shadow);border:1px solid #e6d2c0}
+.flip-front{background:linear-gradient(145deg,#ead4c5,#fff5e9);color:#896b58}
+.flip-front .big-heart{font-size:43px;color:var(--rose)}
+.flip-front span{font-family:"Songti SC",serif;font-size:21px}
+.flip-back{transform:rotateY(180deg);background:#fffaf4;color:#806b5b;text-align:center;line-height:1.9}
+.gifts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:780px;margin:30px auto 0}
+.gift{border:1px solid #ead8c7;background:#fffaf4;border-radius:18px;padding:22px 12px;min-height:170px;color:var(--ink);box-shadow:var(--shadow);transition:.25s}
+.gift:hover{transform:translateY(-7px) rotate(-1deg)}
+.gift .box-icon{display:block;font-size:43px;margin-bottom:12px;transition:.5s}
+.gift.opened .box-icon{transform:rotate(12deg) scale(1.15)}
+.gift strong{font-family:"Songti SC",serif;font-weight:400;font-size:17px}
+.gift small{display:block;color:var(--muted);margin-top:7px;font-size:11px}
+.gift-message{min-height:52px;text-align:center;color:#987c68;line-height:1.8;font-size:14px;margin:18px auto 0;max-width:600px}
+.cake-area{text-align:center;padding:45px 20px 80px}
+.cake-stage{max-width:620px;margin:25px auto 0;padding:34px 20px 30px;border-radius:24px;background:linear-gradient(145deg,#fffaf4,#f0dfd1);box-shadow:var(--shadow);border:1px solid #ead8c7}
+.candles{display:flex;justify-content:center;gap:20px;align-items:end;height:85px;margin-bottom:-2px}
+.candle{width:12px;height:57px;border-radius:5px 5px 2px 2px;background:repeating-linear-gradient(135deg,#fff1df 0 7px,#d99d91 7px 11px);position:relative;box-shadow:inset -3px 0 #bb8177}
+.flame{position:absolute;left:50%;top:-24px;width:14px;height:23px;transform:translateX(-50%);background:radial-gradient(ellipse at 50% 70%,#fff7be 0 20%,#ffc45e 45%,#f28b48 75%,transparent 77%);border-radius:50% 50% 45% 45%;filter:drop-shadow(0 0 9px #ffbe64);animation:flicker .18s infinite alternate}
+.cake-body{position:relative;width:min(270px,75vw);height:105px;margin:0 auto;background:linear-gradient(#fff5e8 0 25%,#e8b9a7 25% 37%,#fff8ed 37% 72%,#d7a18e 72%);border-radius:50%/18%;box-shadow:0 14px 0 #c88f7c,0 20px 28px #80604c25}
+.cake-body:before{content:"";position:absolute;left:0;right:0;top:15px;height:18px;border-radius:50%;background:#fffaf1}
+.cake-body:after{content:"♡";position:absolute;left:50%;top:39px;transform:translateX(-50%);font-size:27px;color:#bd8078}
+.cake-plate{width:min(330px,85vw);height:14px;border-radius:50%;background:#d9c3af;margin:22px auto 0;box-shadow:0 7px 12px #8c6a5120}
+.cake-stage.blown .flame{opacity:0;transform:translate(-50%,-18px) scale(.2);transition:.45s}
+.cake-stage.blown .candles:after{content:"♡";position:absolute;font-size:24px;color:var(--rose);animation:floatUp 2s forwards}
+.cake-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:25px}
+.wish-area{max-width:680px;margin:0 auto 95px;padding:0 20px;text-align:center}
+.wish-form{background:#fffaf4;border:1px solid #ead8c7;border-radius:22px;padding:24px;box-shadow:var(--shadow);text-align:left;margin-top:25px}
+.wish-form label{display:block;font-size:12px;color:var(--muted);margin:0 0 8px}
+.wish-form textarea{width:100%;min-height:95px;resize:vertical;border:1px solid #e8d8c9;background:#fffdf9;border-radius:12px;padding:13px;color:var(--ink);outline:none}
+.wish-form textarea:focus{border-color:var(--rose)}
+.wish-form .primary{margin-top:13px}
+.wish-list{display:grid;gap:10px;margin-top:20px}
+.wish-item{background:#fff5eb;border:1px dashed #d9bba5;border-radius:13px;padding:13px 15px;text-align:left;color:#8b7160;font-family:"Songti SC",serif;line-height:1.7;animation:rise .5s}
+.footer{text-align:center;padding:25px 20px 55px;color:#b19a88;font-size:10px;letter-spacing:.17em}
+.toast{position:fixed;left:50%;bottom:25px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#6e5145;color:#fff8ef;padding:13px 20px;border-radius:99px;z-index:80;transition:.4s;max-width:calc(100vw - 30px);text-align:center;font-size:13px}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.confetti{position:fixed;top:-20px;z-index:70;pointer-events:none;animation:fall linear forwards}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes twinkle{to{opacity:1;transform:scale(1.35) rotate(20deg)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes heartbeat{50%{transform:scale(1.14)}}
+@keyframes flicker{to{transform:translateX(-50%) rotate(5deg) scale(.9)}}
+@keyframes dustFloat{0%,100%{transform:translate(0,0);opacity:.2}50%{transform:translate(18px,-25px);opacity:.9}}
+@keyframes sunPulse{to{transform:scale(1.08);box-shadow:0 0 65px 28px #fff0c2cc}}
+@keyframes floatLeft{50%{transform:translate(-5px,-10px) rotate(-5deg)}}
+@keyframes floatRight{50%{transform:translate(5px,-10px) rotate(5deg)}}
+@keyframes float{50%{transform:translateY(-8px)}}
+@keyframes floatUp{to{opacity:0;transform:translateY(-70px) scale(1.5)}}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+@media(max-width:680px){
+ .life-track,.love-timeline{padding-left:26px;padding-right:14px}
+ .life-track:before,.love-timeline:before{left:10px}
+ .life-scene,.life-scene:nth-child(even){width:100%;margin-left:0;padding:12px 0 30px 24px;min-height:0}
+ .life-scene:after,.life-scene:nth-child(even):after{left:-21px;right:auto;top:30px}
+ .scene-visual{height:205px}
+ .love-event,.love-event:nth-child(even){width:100%;margin-left:0;padding:12px 0 25px 24px}
+ .love-event:after,.love-event:nth-child(even):after{left:-26px;right:auto;top:22px}
+ .section-head{padding-top:65px}
+ .scene-caption h3{font-size:22px}
+ .gifts{grid-template-columns:1fr;max-width:340px}
+ .gift{min-height:130px}
+ .story-bridge{margin-left:20px;margin-right:20px}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* ===== SWEET CREAM + CUTE STICKERS THEME ===== */
+body{background:#fff4e8;color:#765b52}
+.cover{background:radial-gradient(ellipse at 50% 34%,#fffdf8 0,#fff2e5 58%,#f9dfd4 100%)}
+.cover:before,.cover:after{content:"✿";color:#e6a6a0;font-size:30px}
+.envelope-back{background:#f6d9cc}
+.envelope-paper{background:linear-gradient(145deg,#fffefa,#fff3e9);border-color:#f2d9cc}
+.envelope-paper:before{border-color:#f1d7cb}
+.envelope-paper span{color:#9a7168}
+.envelope-front{background:linear-gradient(145deg,#f9e5d9,#f2cfc4)}
+.envelope-flap{background:linear-gradient(155deg,#ffede3,#f1cfc3)}
+.envelope-seal{background:linear-gradient(145deg,#f2b9b0,#df918d)}
+.primary,.soft-btn{background:#e9a7a1;color:#fffdf9;box-shadow:0 8px 22px #e9a7a138}
+.soft-btn{background:#f8e2d5;color:#9a756a}
+.music{border-color:#f2dcd0;background:#fffdf5ed;color:#d28e8b;box-shadow:0 4px 16px #c9947c18}
+.section-head h2,.scene-caption h3,.memory-card h3,.gift strong{color:#795c53}
+.chapter-tag{color:#d99191}
+.chapter-tag:before,.chapter-tag:after{background:#edc9bd}
+.life-track:before,.love-timeline:before{background:linear-gradient(transparent,#efc8b9,#f3dfd2,transparent)}
+.life-scene:after{background:#efa9a1;box-shadow:0 0 0 7px #fff4e8,0 0 22px #efb9ad}
+.scene-card,.memory-card,.gift,.wish-form,.wish-form textarea{border-color:#f1ded2}
+.scene-card{background:#fffdf8;box-shadow:0 15px 42px #c28e7618}
+.scene-visual{background:linear-gradient(145deg,#f8dfd1,#fff3e8)}
+.scene-visual.childhood{background:linear-gradient(#f7e4cf,#edcbb8)}
+.scene-visual.school{background:linear-gradient(140deg,#ead8c8,#fff0e5 55%,#e6c7b4)}
+.scene-visual.offer{background:linear-gradient(130deg,#e9cfc0,#fff0e5 55%,#e7c7b4)}
+.scene-visual.today{background:linear-gradient(160deg,#f8dfc7,#e8bca8 58%,#bd9487)}
+.scene-visual .window{border-color:#d6b29d;background:linear-gradient(90deg,#fff8e8aa 48%,transparent 49%),linear-gradient(#fff0d9,#e9cdb8)}
+.scene-visual .desk{background:#c99e83;box-shadow:0 12px 0 #b18470}
+.scene-visual .book{background:#fff2e4;border-color:#dfbda5}
+.scene-visual.school .shelf{border-color:#c49b83;background:repeating-linear-gradient(90deg,transparent 0 24%,#d6b39b 24% 26%),repeating-linear-gradient(0deg,#ead0bc 0 17%,#fff0e5 17% 19%)}
+.scene-visual.school .paper{background:#fffaf1}
+.story-bridge{border-color:#f1d8cb;background:linear-gradient(135deg,#fffdf7,#ffeadf);box-shadow:0 15px 42px #c28e7618}
+.story-bridge p,.scene-caption p{color:#9a7b70}
+.story-bridge .bridge-date,.scene-caption .date,.memory-date{color:#d99191}
+.love-event:after{background:#fff4e8;color:#e29a98}
+.memory-card{background:#fffdf8;box-shadow:0 10px 28px #c28e7612}
+.memory-card:hover,.memory-card[aria-expanded="true"]{border-color:#e9bcb0;box-shadow:0 15px 38px #c28e7620}
+.detail p{background:#fff2e8;color:#96776b}
+.flip-front{background:linear-gradient(145deg,#f7dcd2,#fff5e9);color:#9a756a}
+.flip-face{border-color:#f0d7c9}
+.flip-back{background:#fffdf7;color:#96776b}
+.gift{background:linear-gradient(150deg,#fffdf8,#fff0e6);box-shadow:0 12px 30px #c28e7615}
+.gift-message{color:#a17e72}
+.cake-stage{background:linear-gradient(145deg,#fffdf8,#ffeadf);border-color:#f1d8ca}
+.cake-body{background:linear-gradient(#fff8ed 0 25%,#f3c5bb 25% 37%,#fffaf1 37% 72%,#e8aaa0 72%);box-shadow:0 14px 0 #dc9d94,0 20px 28px #c28e7620}
+.cake-plate{background:#ead5c6}
+.wish-form{background:#fffdf8;border-color:#f1d8ca}
+.wish-form textarea{background:#fffaf5;color:#765b52}
+.wish-item{background:#fff1e8;border-color:#edc7b8;color:#98766b}
+.footer{color:#c5a398}
+.toast{background:#98746d;color:#fffaf4}
+/* sticker-like details: soft paper badges, tiny sparkles and doodles */
+.section-head,.story-bridge,.letter,.cake-area,.wish-area{position:relative}
+.section-head:after{content:"✦";position:absolute;right:clamp(22px,12vw,170px);top:62px;color:#efb8a8;font-size:23px;transform:rotate(14deg);opacity:.9;pointer-events:none}
+.story-bridge:before{content:"🌷";position:absolute;left:18px;top:-23px;font-size:30px;transform:rotate(-12deg);filter:drop-shadow(0 4px 3px #d5aa9a35)}
+.story-bridge:after{content:"♡";position:absolute;right:22px;bottom:14px;color:#e9a7a1;font-size:27px;transform:rotate(12deg)}
+.scene-card,.memory-card,.gift,.flip-card,.cake-stage,.wish-form{position:relative}
+.scene-card:before{content:"✿";position:absolute;z-index:5;right:13px;top:10px;color:#fff5ed;background:#e9aaa0;border:2px solid #fff7ef;border-radius:50%;width:27px;height:27px;display:grid;place-items:center;font-size:15px;box-shadow:0 3px 8px #9c716022;pointer-events:none}
+.memory-card:after{content:"♡";position:absolute;right:22px;top:18px;color:#e49b9a;background:#fff8f0;border-radius:20px;padding:2px 8px;font-size:17px;transform:rotate(10deg);pointer-events:none}
+.gift:nth-child(1):after{content:"✦";position:absolute;right:14px;top:9px;color:#e9b98d;font-size:20px;transform:rotate(15deg)}
+.gift:nth-child(2):after{content:"♡";position:absolute;right:14px;top:9px;color:#e9a7a1;font-size:20px;transform:rotate(12deg)}
+.gift:nth-child(3):after{content:"✿";position:absolute;right:14px;top:9px;color:#d9a9b8;font-size:20px;transform:rotate(-12deg)}
+.flip-front:after{content:"🎀";position:absolute;right:15px;top:12px;font-size:25px;transform:rotate(12deg)}
+.cake-stage:after{content:"🍓  ✧  🍓";display:block;margin-top:18px;color:#e5a3a0;font-size:18px;letter-spacing:10px}
+@media(max-width:680px){.section-head:after{right:18px;top:42px;font-size:18px}.story-bridge:before{left:9px;font-size:25px}}
+
+
+/* ===== HAND-DRAWN BIRTHDAY DOODLES + PHOTO SLOT ===== */
+.birthday-intro{position:relative;isolation:isolate;max-width:980px;margin:0 auto;}
+.doodle-sticker{position:absolute;z-index:-1;display:grid;place-items:center;filter:drop-shadow(2px 4px 0 #e9c7b855);user-select:none;pointer-events:none;}
+.doodle-balloon{left:7%;top:34px;font-size:43px;transform:rotate(-13deg);animation:floatLeft 4s ease-in-out infinite;}
+.doodle-cake{right:8%;top:22px;font-size:42px;transform:rotate(9deg);animation:floatRight 4.5s ease-in-out infinite;}
+.doodle-star{right:22%;bottom:3px;color:#e5b85e;font-size:30px;text-shadow:2px 2px 0 #fff8e9,-1px -1px 0 #d99d8e;animation:twinkle 2.2s infinite alternate;}
+.life-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;border-radius:0;filter:saturate(.9) sepia(.08);}
+.scene-visual.childhood .scene-number,.scene-visual.childhood .film-date{z-index:3;}
+.scene-visual.childhood:after{z-index:2;background:linear-gradient(180deg,rgba(80,54,42,.04) 45%,rgba(64,45,34,.34));}
+/* hand-sketched birthday accents on the cover and story cards */
+.cover-inner:after{content:"✎  ♡  ✧  happy day!";display:block;margin-top:15px;color:#c99488;font-family:"Comic Sans MS",cursive;font-size:13px;letter-spacing:.12em;transform:rotate(-3deg);opacity:.82;}
+.scene-card{position:relative;}
+.scene-card:before{content:"✧";position:absolute;right:13px;top:10px;z-index:4;color:#e5b85e;font-size:21px;text-shadow:1px 1px #fff;}
+.memory-card:after{content:"♡";position:absolute;right:12px;top:8px;color:#e7aaa2;font-size:17px;transform:rotate(12deg);pointer-events:none;}
+@media(max-width:680px){.doodle-balloon{left:2%;top:12px;font-size:30px}.doodle-cake{right:2%;top:10px;font-size:31px}.doodle-star{right:18%;bottom:0;font-size:23px}.birthday-intro{padding-left:24px;padding-right:24px}.cover-inner:after{font-size:11px}}
+
+</style>
+</head>
+<body class="grain">
+<section class="cover" id="cover">
+  <div class="cover-inner">
+    <div class="eyebrow">A LITTLE WORLD MADE JUST FOR YOU</div>
+    <div class="heart">♡</div>
+    <button class="cover-envelope" id="start" type="button" aria-label="打开生日贺卡">
+      <span class="envelope-back"></span>
+      <span class="envelope-paper"><span>Happy Birthday to Fan~</span></span>
+      <span class="envelope-front"></span>
+      <span class="envelope-flap"></span>
+      <span class="envelope-seal">♡</span>
+    </button>
+  </div>
+</section>
+
+<button class="music" id="musicBtn" aria-label="播放或暂停背景音乐" title="背景音乐">♫</button>
+<main id="main">
+  <section class="section-head birthday-intro">
+    <span class="doodle-sticker doodle-balloon" aria-hidden="true">🎈</span>
+    <span class="doodle-sticker doodle-cake" aria-hidden="true">🎂</span>
+    <span class="doodle-sticker doodle-star" aria-hidden="true">✦</span>
+    <div class="chapter-tag">CHAPTER 01 · HIS LIFE</div>
+    <h2>在遇见我之前，你也有很好的人生</h2>
+    <p>我没有参与过去的你，<br>但我很想认识，那个一路长大、成为现在的你的男孩。</p>
+  </section>
+  <p class="life-intro">把时间交给光影。向下滑动，慢慢播放属于你的成长电影。</p>
+
+  <section class="life-track" id="lifeTrack">
+    <article class="life-scene">
+      <div class="scene-card">
+        <div class="scene-visual childhood">
+          <img class="life-photo" src="photos/his-life.jpg" alt="Fan 成长时的照片" onerror="this.style.display='none'">
+          <span class="scene-number">SCENE 01</span><div class="sun"></div><div class="window"></div><div class="desk"></div><div class="book"></div>
+          <i class="dust" style="left:65%;top:20%"></i><i class="dust" style="left:75%;top:38%;animation-delay:1s"></i><i class="dust" style="left:55%;top:48%;animation-delay:2s"></i>
+          <span class="film-date">THE BEGINNING</span>
+        </div>
+        <div class="scene-caption">
+          <div class="date">CHILDHOOD · 小小的你</div>
+          <h3>懵懂地坐在课堂上</h3>
+          <div class="reveal-line"></div>
+          <p>那时候的你，懵懵懂懂地坐在课堂上，还不能很好地了解周围的同学都在做什么。</p>
+          <div class="small-note">那是你的故事，第一页。</div>
+        </div>
+      </div>
+    </article>
+
+    <article class="life-scene">
+      <div class="scene-card">
+        <div class="scene-visual school">
+          <span class="scene-number">SCENE 02</span><div class="shelf"></div><div class="paper"></div><div class="sun"></div>
+          <span class="film-date">GROWING UP</span>
+        </div>
+        <div class="scene-caption">
+          <div class="date">STUDENT YEARS · 一步一步长大</div>
+          <h3>你认真完成了自己的学业</h3>
+          <div class="reveal-line"></div>
+          <p>后来，你很厉害地完成了所有的学业。虽然我没有陪你走过那段路，但我想，你一定也有过努力、坚持和属于自己的小小骄傲。</p>
+          <div class="small-note">每一步，都让你成为现在的你。</div>
+        </div>
+      </div>
+    </article>
+
+    <article class="life-scene">
+      <div class="scene-card">
+        <div class="scene-visual offer">
+          <span class="scene-number">SCENE 03</span><div class="path"></div>
+          <div class="offer-card one">YOUR OFFER<br><small>NINGBO</small></div>
+          <div class="offer-card two">MY OFFER<br><small>NINGBO</small></div>
+          <div class="offer-heart">♡</div><span class="film-date">A LITTLE COINCIDENCE</span>
+        </div>
+        <div class="scene-caption">
+          <div class="date">ADULTHOOD · 命运的小巧合</div>
+          <h3>原来我们曾经那么近</h3>
+          <div class="reveal-line"></div>
+          <p>原来我们收到过同一所学校的 Offer。说不定，在我去宁大考试的时候，也曾经和你擦肩而过。</p>
+          <div class="small-note">那时还不认识的两个人，后来竟然有了故事。</div>
+        </div>
+      </div>
+    </article>
+
+    <article class="life-scene">
+      <div class="scene-card">
+        <div class="scene-visual today">
+          <span class="scene-number">SCENE 04</span><div class="sun"></div><div class="horizon"></div><div class="silhouette"></div>
+          <span class="film-date">THE PERSON YOU ARE TODAY</span>
+        </div>
+        <div class="scene-caption">
+          <div class="date">TODAY · 我最喜欢的你</div>
+          <h3>你平安长大，就是最好的事</h3>
+          <div class="reveal-line"></div>
+          <p>你能健康、顺利地长大，就是最好的事情了！不需要多么了不起，你好好生活、开心快乐，就已经值得我为你感到骄傲。</p>
+          <div class="small-note">生日快乐，愿你一直被温柔以待。</div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section class="story-bridge" id="crossing">
+    <div class="chapter-tag">THE CROSSING</div>
+    <div class="bridge-heart">♡</div>
+    <h3>在遇见我之前，我们都在认真生活</h3>
+    <p>你的时间线，有你的成长、努力和一路走来的风景。<br>我的时间线，也有我自己的故事。<br>直到某一天，两条原本平行的路，开始有了交集。</p>
+    <div class="bridge-date">2026.01.01 · OUR STORY BEGINS</div>
+  </section>
+
+  <section class="section-head">
+    <div class="chapter-tag">CHAPTER 02 · OUR STORY</div>
+    <h2>从一句新年快乐开始</h2>
+    <p>这些是我们一起经历过的真实瞬间。<br>谢谢你，让它们成为了「我们」。</p>
+  </section>
+  <section class="love-timeline" id="loveTimeline">
+    <article class="love-event">
+      <button class="memory-card" aria-expanded="false">
+        <img class="memory-photo" src="photos/time1.jpg" alt="2026年1月1日的回忆" data-full="photos/time1.jpg">
+        <span class="memory-date">2026.01.01</span><h3>谢谢你跟我说新年快乐</h3><span class="hint">点击，打开这一页回忆　＋</span>
+      </button>
+      <div class="detail"><div><p>我想，如果你没有勇气来跟我说“新年快乐”，我们也没有后面的故事了。谢谢你在那一天主动开口，让我们的故事有了开始。</p></div></div>
+    </article>
+    <article class="love-event">
+      <button class="memory-card" aria-expanded="false">
+        <img class="memory-photo" src="photos/time2.jpg" alt="Alibi的回忆" data-full="photos/time2.jpg">
+        <span class="memory-date">2026.01.06</span><h3>原来是你啊 · Alibi</h3><span class="hint">点击，打开这一页回忆　＋</span>
+      </button>
+      <div class="detail"><div><p>Alibi，见证了我们的初识、拉扯，还有那些小小的争吵。原来一段关系的开始，不一定每一步都顺顺利利，但我们还是慢慢走到了彼此身边。</p></div></div>
+    </article>
+    <article class="love-event">
+      <button class="memory-card" aria-expanded="false">
+        <img class="memory-photo" src="photos/time3.jpg" alt="第一次牵手的回忆" data-full="photos/time3.jpg">
+        <span class="memory-date">2026.01.15</span><h3>第一次牵手</h3><span class="hint">点击，打开这一页回忆　＋</span>
+      </button>
+      <div class="detail"><div><p>宝宝，原来你也会出手汗啊。第一次牵手的感觉，我想我会记得很久。原来心动不只是心里的感觉，也是掌心里真实的温度。</p></div></div>
+    </article>
+    <article class="love-event">
+      <button class="memory-card" aria-expanded="false">
+        <img class="memory-photo" src="photos/time4.jpg" alt="一起过生日的回忆" data-full="photos/time4.jpg">
+        <span class="memory-date">2026.02.05</span><h3>一个月，就一起过生日啦</h3><span class="hint">点击，打开这一页回忆　＋</span>
+      </button>
+      <div class="detail"><div><p>好神奇，一个月的时间，我们就一起过生日嘞诶。时间好像不算长，却已经有了这么多值得收藏的小瞬间。</p></div></div>
+    </article>
+    <article class="love-event">
+      <button class="memory-card" aria-expanded="false">
+        <img class="memory-photo" src="photos/time5.jpg" alt="冬天的生日回忆" data-full="photos/time5.jpg">
+        <span class="memory-date">2026 · WINTER</span><h3>又是一年冬天，我们还在一起</h3><span class="hint">点击，打开这一页回忆　＋</span>
+      </button>
+      <div class="detail"><div><p>又是一年冬天，我们还在一起。谢谢你来到我的生活里。希望往后的冬天、春天、夏天和秋天，我们都能继续一起度过。</p></div></div>
+    </article>
+  </section>
+
+  <section class="section-head">
+    <div class="chapter-tag">CHAPTER 03 · A LITTLE SURPRISE</div>
+    <h2>还有一些心意，想亲手交给你</h2>
+    <p>生日不只有回忆，也要有拆礼物的快乐。</p>
+  </section>
+
+  <section class="letter">
+    <div class="eyebrow">A LETTER FOR YOU</div>
+    <h2>一张可以翻开的生日贺卡</h2>
+    <p style="color:var(--muted);line-height:1.9;font-size:13px">点一下卡片，看看里面藏着的话。</p>
+    <div class="flip-wrap">
+      <div class="flip-card" id="flipCard" role="button" tabindex="0" aria-label="翻开生日贺卡">
+        <div class="flip-face flip-front"><div class="big-heart">♡</div><span>To my favorite boy</span><small>轻轻点开这张卡片</small></div>
+        <div class="flip-face flip-back"><div><div style="font-size:25px;color:var(--rose)">Happy Birthday</div><p>愿你新的一岁，平安、健康、自由、快乐。<br>也愿我能继续陪你，收藏更多普通又珍贵的日子。</p><small>Always with you ♡</small></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="letter">
+    <div class="eyebrow">OPEN YOUR PRESENT</div>
+    <h2>拆开三个小小的惊喜</h2>
+    <p style="color:var(--muted);font-size:13px">每个盒子里，都藏着一句只想送给你的话。</p>
+    <div class="gifts">
+      <button class="gift" data-gift="希望你新的一岁，想做的事都有勇气开始，想去的地方都能慢慢抵达。"><span class="box-icon">🎁</span><strong>第一份礼物</strong><small>给未来的你</small></button>
+      <button class="gift" data-gift="这一份是抱抱券。无论开心还是不开心，都可以来找我兑换一个抱抱。"><span class="box-icon">🎀</span><strong>第二份礼物</strong><small>给现在的你</small></button>
+      <button class="gift" data-gift="第三份礼物没有期限：以后还有很多很多个生日，我都想陪你一起过。"><span class="box-icon">💝</span><strong>第三份礼物</strong><small>给未来的我们</small></button>
+    </div>
+    <div class="gift-message" id="giftMessage">选一个礼物盒，看看里面有什么 ♡</div>
+  </section>
+
+  <section class="cake-area">
+    <div class="eyebrow">MAKE A WISH</div>
+    <h2 style="font-family:'Songti SC',serif;font-weight:400;font-size:32px">现在，轮到你许愿啦</h2>
+    <p style="color:var(--muted);font-size:13px">点一下按钮，吹灭蜡烛。愿望要悄悄留在心里哦。</p>
+    <div class="cake-stage" id="cakeStage">
+      <div class="candles"><div class="candle"><i class="flame"></i></div><div class="candle"><i class="flame"></i></div><div class="candle"><i class="flame"></i></div></div>
+      <div class="cake-body"></div><div class="cake-plate"></div>
+      <div class="cake-actions">
+        <button class="primary" id="blowBtn">我许好愿望啦，吹蜡烛</button>
+        <button class="soft-btn" id="relightBtn" hidden>再点亮一次</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="wish-area">
+    <div class="eyebrow">YOUR LITTLE WISH</div>
+    <h2 style="font-family:'Songti SC',serif;font-weight:400;font-size:30px">把愿望写下来吧</h2>
+    <p style="color:var(--muted);font-size:13px;line-height:1.9">可以写给自己，也可以写给未来。<br>这张许愿条会留在这个页面里。</p>
+    <form class="wish-form" id="wishForm">
+      <label for="wishInput">今天的愿望</label>
+      <textarea id="wishInput" maxlength="180" placeholder="写下一件你希望实现的事……" required></textarea>
+      <button class="primary" type="submit">收藏这条愿望 ♡</button>
+      <div class="wish-list" id="wishList"></div>
+    </form>
+  </section>
+
+  <section class="letter">
+    <div class="eyebrow">ONE LAST THING</div>
+    <h2>还有一封信，想留给你</h2>
+    <p style="color:var(--muted);line-height:1.9;font-size:13px">如果今天只能带走一句话，希望你记得这句。</p>
+    <div class="envelope">
+      <div class="envelope-icon">💌</div>
+      <button class="primary" id="openLetter">拆开这封信</button>
+      <div class="letter-content" id="letterContent">
+        <p>宝宝：</p>
+        <p>生日快乐。</p>
+        <p>在遇见我之前，你已经认真地走过了自己的人生。谢谢你一路平安长大，成为现在这个我很喜欢的人。</p>
+        <p>很幸运，我能在某一天走进你的故事。从一句新年快乐，到第一次牵手，再到一起庆祝生日，这些回忆我都会好好珍藏。</p>
+        <p>希望新的一岁，你健康、自在、开心。也希望未来还有很多个生日，我们都能在彼此身边。</p>
+        <p style="text-align:right">永远站在你这边的人 ♡</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">MADE WITH LOVE · YOUR STORY IS STILL BEING WRITTEN ♡</div>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="照片大图" hidden><button class="close" id="closeModal" aria-label="关闭">×</button><img id="modalImg" alt="回忆照片"></div>
+<audio id="bgm" src="music.mp3" loop preload="none"></audio>
+
+<script>
+const $ = s => document.querySelector(s);
+const toast = $('#toast');
+let toastTimer;
+function showToast(message){
+  toast.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>toast.classList.remove('show'),3200);
+}
+$('#start').addEventListener('click',()=>{
+  const envelope=$('#start');
+  if(envelope.dataset.opened==='true')return;
+  envelope.dataset.opened='true';
+  envelope.classList.add('opened');
+  setTimeout(()=>{
+    $('#cover').style.display='none';
+    $('#main').style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+    observeScenes();
+  },850);
+});
+function observeScenes(){
+  const targets=[...document.querySelectorAll('.life-scene,.love-event')];
+  if(!('IntersectionObserver' in window)){targets.forEach(el=>el.classList.add('visible'));return;}
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);}
+    });
+  },{threshold:.14});
+  targets.forEach(el=>observer.observe(el));
+}
+document.querySelectorAll('.memory-card').forEach(button=>{
+  button.addEventListener('click',()=>{
+    const detail=button.parentElement.querySelector('.detail');
+    const open=detail.classList.toggle('open');
+    button.setAttribute('aria-expanded',String(open));
+    button.querySelector('.hint').textContent=open?'点击，收起这一页回忆　−':'点击，打开这一页回忆　＋';
+  });
+});
+document.querySelectorAll('.memory-photo').forEach(img=>{
+  img.addEventListener('error',()=>{
+    const fallback=document.createElement('div');
+    fallback.className='photo-fallback';
+    fallback.textContent=img.alt.replace('的回忆','');
+    img.replaceWith(fallback);
+  },{once:true});
+  img.addEventListener('click',event=>{
+    event.stopPropagation();
+    const modal=$('#modal');
+    $('#modalImg').src=img.dataset.full;
+    modal.hidden=false;
+    modal.classList.add('open');
+  });
+});
+function closeModal(){
+  $('#modal').classList.remove('open');
+  $('#modal').hidden=true;
+  $('#modalImg').src='';
+}
+$('#closeModal').addEventListener('click',closeModal);
+$('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal();});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape')closeModal();
+  if((e.key==='Enter'||e.key===' ')&&document.activeElement.id==='flipCard')flipCard();
+});
+function flipCard(){$('#flipCard').classList.toggle('flipped');}
+$('#flipCard').addEventListener('click',flipCard);
+$('#flipCard').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();flipCard();}});
+$('#openLetter').addEventListener('click',()=>{
+  const letter=$('#letterContent');
+  letter.classList.toggle('open');
+  $('#openLetter').textContent=letter.classList.contains('open')?'把信轻轻收好':'拆开这封信';
+});
+document.querySelectorAll('.gift').forEach(button=>{
+  button.addEventListener('click',()=>{
+    button.classList.toggle('opened');
+    $('#giftMessage').textContent=button.dataset.gift;
+    button.querySelector('.box-icon').textContent=button.classList.contains('opened')?'💖':'🎁';
+  });
+});
+function celebrate(){
+  const symbols=['♡','✦','🌸','✨','🎉'];
+  for(let i=0;i<46;i++){
+    const el=document.createElement('span');
+    el.className='confetti';
+    el.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+    el.style.left=Math.random()*100+'vw';
+    el.style.animationDuration=(2.8+Math.random()*2.8)+'s';
+    el.style.fontSize=(13+Math.random()*18)+'px';
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),5800);
+  }
+}
+$('#blowBtn').addEventListener('click',()=>{
+  const stage=$('#cakeStage');
+  if(stage.classList.contains('blown'))return;
+  stage.classList.add('blown');
+  $('#blowBtn').hidden=true;
+  $('#relightBtn').hidden=false;
+  showToast('愿你的愿望都能慢慢实现。生日快乐，宝宝 ♡');
+  celebrate();
+});
+$('#relightBtn').addEventListener('click',()=>{
+  $('#cakeStage').classList.remove('blown');
+  $('#blowBtn').hidden=false;
+  $('#relightBtn').hidden=true;
+});
+const wishKey='birthday-wishes-19941209';
+function loadWishes(){
+  let wishes=[];
+  try{wishes=JSON.parse(localStorage.getItem(wishKey)||'[]');}catch(e){}
+  $('#wishList').innerHTML='';
+  wishes.forEach(wish=>{
+    const item=document.createElement('div');
+    item.className='wish-item';
+    item.textContent='♡  '+wish;
+    $('#wishList').appendChild(item);
+  });
+}
+$('#wishForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const input=$('#wishInput');
+  const value=input.value.trim();
+  if(!value)return;
+  let wishes=[];
+  try{wishes=JSON.parse(localStorage.getItem(wishKey)||'[]');}catch(e){}
+  wishes.unshift(value);
+  try{localStorage.setItem(wishKey,JSON.stringify(wishes.slice(0,12)));}catch(e){}
+  input.value='';
+  loadWishes();
+  showToast('这条愿望已经被好好收藏啦 ♡');
+});
+loadWishes();
+const audio=$('#bgm'),musicBtn=$('#musicBtn');
+musicBtn.addEventListener('click',async()=>{
+  try{
+    if(audio.paused){await audio.play();musicBtn.classList.add('playing');musicBtn.textContent='♫';}
+    else{audio.pause();musicBtn.classList.remove('playing');musicBtn.textContent='♪';}
+  }catch(e){showToast('把 music.mp3 放到网页同一文件夹，就可以播放专属音乐啦。');}
+});
+</script>
+</body>
+</html>
