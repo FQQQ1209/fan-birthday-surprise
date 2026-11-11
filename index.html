@@ -534,14 +534,14 @@ $('#start').addEventListener('click',()=>{
   envelope.classList.add('opened');
   launchFireworks();
   const greeting=$('#introGreeting');
-  setTimeout(()=>greeting.classList.add('show'),1450);
-  setTimeout(()=>greeting.classList.remove('show'),5200);
+  setTimeout(()=>greeting.classList.add('show'),1800);
+  setTimeout(()=>greeting.classList.remove('show'),6500);
   setTimeout(()=>{
     $('#cover').style.display='none';
     $('#main').style.display='block';
     window.scrollTo({top:0,behavior:'smooth'});
     observeScenes();
-  },850);
+  },7600);
 });
 function observeScenes(){
   const targets=[...document.querySelectorAll('.life-scene,.love-event')];
