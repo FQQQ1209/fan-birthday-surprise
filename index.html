@@ -284,6 +284,14 @@ body{background:#fff4e8;color:#765b52}
 .memory-card:after{content:"♡";position:absolute;right:12px;top:8px;color:#e7aaa2;font-size:17px;transform:rotate(12deg);pointer-events:none;}
 @media(max-width:680px){.doodle-balloon{left:2%;top:12px;font-size:30px}.doodle-cake{right:2%;top:10px;font-size:31px}.doodle-star{right:18%;bottom:0;font-size:23px}.birthday-intro{padding-left:24px;padding-right:24px}.cover-inner:after{font-size:11px}}
 
+
+/* Gift-specific ribbon confetti */
+.gift-ribbon{position:fixed;top:-24px;z-index:78;pointer-events:none;width:9px;height:25px;border-radius:3px;opacity:.95;animation:giftRibbonFall 2.8s cubic-bezier(.2,.65,.35,1) forwards}
+@keyframes giftRibbonFall{0%{transform:translate3d(0,-5vh,0) rotate(0deg);opacity:0}10%{opacity:1}100%{transform:translate3d(var(--drift),110vh,0) rotate(var(--spin));opacity:.15}}
+/* Mobile-safe system font stack: no remote font download required */
+body,button,input,textarea{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif}
+h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gift strong,.flip-front span,.wish-item{font-family:Georgia,"Noto Serif SC","Songti SC","STSong","SimSun",serif}
+
 </style>
 </head>
 <body class="grain">
@@ -595,11 +603,34 @@ $('#openLetter').addEventListener('click',()=>{
   letter.classList.toggle('open');
   $('#openLetter').textContent=letter.classList.contains('open')?'把信轻轻收好':'拆开这封信';
 });
-document.querySelectorAll('.gift').forEach(button=>{
+function releaseGiftRibbons(giftIndex){
+  const palettes=[
+    ['#e8b86f','#f6d99a','#fff0c9'],  // 第一份：香槟金
+    ['#ee9eaa','#f6c4ce','#fff0f2'],  // 第二份：樱花粉
+    ['#b9a5d8','#d7c9ee','#e8dff8']   // 第三份：梦幻紫
+  ];
+  const palette=palettes[giftIndex]||palettes[0];
+  for(let i=0;i<34;i++){
+    const ribbon=document.createElement('span');
+    ribbon.className='gift-ribbon';
+    ribbon.style.left=(Math.random()*100)+'vw';
+    ribbon.style.background=palette[Math.floor(Math.random()*palette.length)];
+    ribbon.style.height=(18+Math.random()*24)+'px';
+    ribbon.style.width=(5+Math.random()*5)+'px';
+    ribbon.style.setProperty('--drift',((Math.random()-.5)*180)+'px');
+    ribbon.style.setProperty('--spin',(360+Math.random()*900)+'deg');
+    ribbon.style.animationDuration=(2.3+Math.random()*1.6)+'s';
+    document.body.appendChild(ribbon);
+    setTimeout(()=>ribbon.remove(),4200);
+  }
+}
+document.querySelectorAll('.gift').forEach((button,index)=>{
   button.addEventListener('click',()=>{
+    const opening=!button.classList.contains('opened');
     button.classList.toggle('opened');
     $('#giftMessage').textContent=button.dataset.gift;
-    button.querySelector('.box-icon').textContent=button.classList.contains('opened')?'💖':'🎁';
+    button.querySelector('.box-icon').textContent=opening?'💖':'🎁';
+    if(opening)releaseGiftRibbons(index);
   });
 });
 function launchFireworks(){
