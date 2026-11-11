@@ -619,9 +619,9 @@ function releaseGiftRibbons(giftIndex){
     ribbon.style.width=(5+Math.random()*5)+'px';
     ribbon.style.setProperty('--drift',((Math.random()-.5)*180)+'px');
     ribbon.style.setProperty('--spin',(360+Math.random()*900)+'deg');
-    ribbon.style.animationDuration=(2.3+Math.random()*1.6)+'s';
+    ribbon.style.animationDuration=(5.2+Math.random()*2.2)+'s';
     document.body.appendChild(ribbon);
-    setTimeout(()=>ribbon.remove(),4200);
+    setTimeout(()=>ribbon.remove(),7800);
   }
 }
 document.querySelectorAll('.gift').forEach((button,index)=>{
