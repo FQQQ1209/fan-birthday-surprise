@@ -6,14 +6,6 @@
 <meta name="theme-color" content="#f7eee4">
 <title> A Story of You & Me</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap');
-@font-face{
-  font-family:'Brightwall';
-  src:url('fonts/Brightwall.woff2') format('woff2');
-  font-weight:400;
-  font-style:normal;
-  font-display:swap;
-}
 :root{
   --cream:#fff4e8;--paper:#fffdf8;--paper2:#ffeadc;--ink:#765b52;
   --muted:#b09286;--rose:#e6a6a0;--rose2:#f4c8bc;--gold:#e8c78e;
@@ -21,7 +13,7 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--cream);color:var(--ink);font-family:"Brightwall","Ma Shan Zheng",cursive;overflow-x:hidden}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:"Georgia","Kaiti SC","STKaiti","KaiTi",serif;overflow-x:hidden}
 button,input,textarea{font:inherit}
 button{cursor:pointer}
 a{color:inherit}
@@ -57,7 +49,7 @@ main{display:none}
 .music{position:fixed;right:17px;top:17px;z-index:50;border:1px solid #e8d7c7;background:#fffaf0e8;color:#987765;border-radius:50%;width:44px;height:44px;font-size:18px;box-shadow:0 4px 16px #80654c12}
 .music.playing{animation:spin 5s linear infinite}
 .section-head{text-align:center;padding:82px 20px 35px}
-.section-head h2{font-family:"Songti SC",serif;font-weight:400;font-size:clamp(29px,5vw,43px);margin:12px 0}
+.section-head h2{font-family:"Kaiti SC","STKaiti","KaiTi",serif;font-weight:400;font-size:clamp(29px,5vw,43px);margin:12px 0}
 .section-head p{color:var(--muted);line-height:2;font-size:14px;margin:0}
 .chapter-tag{display:inline-flex;align-items:center;gap:9px;color:var(--rose);font-size:10px;letter-spacing:.24em}
 .chapter-tag:before,.chapter-tag:after{content:"";height:1px;width:26px;background:#d8b8a7}
@@ -75,7 +67,7 @@ main{display:none}
 .scene-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(64,45,34,.16));pointer-events:none}
 .scene-caption{padding:22px 23px 25px}
 .scene-caption .date{font-size:10px;letter-spacing:.2em;color:var(--rose);margin-bottom:9px}
-.scene-caption h3{font-family:"Songti SC",serif;font-weight:400;font-size:24px;margin:0 0 12px}
+.scene-caption h3{font-family:"Kaiti SC","STKaiti","KaiTi",serif;font-weight:400;font-size:24px;margin:0 0 12px}
 .scene-caption p{font-size:14px;color:#8c7463;line-height:2;margin:0}
 .scene-caption .small-note{margin-top:13px;font-size:11px;color:#b49a87;letter-spacing:.05em}
 .scene-number{position:absolute;top:15px;left:17px;z-index:2;color:#fff9ef;font-size:11px;letter-spacing:.2em;text-shadow:0 2px 10px #49372b}
@@ -108,7 +100,7 @@ main{display:none}
 .life-scene.visible .reveal-line{width:65%}
 .story-bridge{max-width:850px;margin:0 auto 90px;padding:35px 25px;text-align:center;border:1px solid #e5d2bf;border-radius:24px;background:linear-gradient(135deg,#fff9f1,#f1e2d5);box-shadow:var(--shadow)}
 .story-bridge .bridge-heart{font-size:34px;color:var(--rose);animation:heartbeat 2s infinite}
-.story-bridge h3{font-family:"Songti SC",serif;font-weight:400;font-size:clamp(24px,4vw,34px);margin:13px 0}
+.story-bridge h3{font-family:"Kaiti SC","STKaiti","KaiTi",serif;font-weight:400;font-size:clamp(24px,4vw,34px);margin:13px 0}
 .story-bridge p{color:#8d7564;line-height:2;font-size:14px;max-width:620px;margin:0 auto}
 .story-bridge .bridge-date{font-size:10px;letter-spacing:.22em;color:var(--rose);margin-top:20px}
 .love-timeline{max-width:900px;margin:0 auto;padding:10px 22px 85px;position:relative}
@@ -121,9 +113,9 @@ main{display:none}
 .memory-card{width:100%;text-align:left;border:1px solid #eee0d2;background:var(--paper);border-radius:19px;padding:13px;box-shadow:0 10px 28px #80654c0d;transition:.25s;color:inherit}
 .memory-card:hover,.memory-card[aria-expanded="true"]{transform:translateY(-4px);box-shadow:var(--shadow);border-color:#dfc5ae}
 .memory-photo{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;background:linear-gradient(135deg,#eadbca,#f8efe5);display:block}
-.photo-fallback{height:auto;aspect-ratio:4/3;display:grid;place-items:center;text-align:center;border-radius:12px;background:radial-gradient(circle at 70% 25%,#fff5d8,#e8d5c2 58%,#c9aa91);color:#fffaf2;font-family:"Songti SC",serif;font-size:18px;letter-spacing:.12em;text-shadow:0 2px 10px #72513d55}
+.photo-fallback{height:auto;aspect-ratio:4/3;display:grid;place-items:center;text-align:center;border-radius:12px;background:radial-gradient(circle at 70% 25%,#fff5d8,#e8d5c2 58%,#c9aa91);color:#fffaf2;font-family:"Kaiti SC","STKaiti","KaiTi",serif;font-size:18px;letter-spacing:.12em;text-shadow:0 2px 10px #72513d55}
 .memory-date{display:block;color:#b38a73;font-size:11px;letter-spacing:.13em;margin:14px 0 7px}
-.memory-card h3{font-family:"Songti SC",serif;font-size:21px;font-weight:400;margin:0 0 8px}
+.memory-card h3{font-family:"Kaiti SC","STKaiti","KaiTi",serif;font-size:21px;font-weight:400;margin:0 0 8px}
 .hint{font-size:11px;color:#b49e8d}
 .detail{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s}
 .detail>div{overflow:hidden}
@@ -141,14 +133,14 @@ main{display:none}
 .flip-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;display:grid;place-items:center;padding:25px;box-shadow:var(--shadow);border:1px solid #e6d2c0}
 .flip-front{background:linear-gradient(145deg,#ead4c5,#fff5e9);color:#896b58}
 .flip-front .big-heart{font-size:43px;color:var(--rose)}
-.flip-front span{font-family:"Songti SC",serif;font-size:21px}
+.flip-front span{font-family:"Kaiti SC","STKaiti","KaiTi",serif;font-size:21px}
 .flip-back{transform:rotateY(180deg);background:#fffaf4;color:#806b5b;text-align:center;line-height:1.9}
 .gifts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:780px;margin:30px auto 0}
 .gift{border:1px solid #ead8c7;background:#fffaf4;border-radius:18px;padding:22px 12px;min-height:170px;color:var(--ink);box-shadow:var(--shadow);transition:.25s}
 .gift:hover{transform:translateY(-7px) rotate(-1deg)}
 .gift .box-icon{display:block;font-size:43px;margin-bottom:12px;transition:.5s}
 .gift.opened .box-icon{transform:rotate(12deg) scale(1.15)}
-.gift strong{font-family:"Songti SC",serif;font-weight:400;font-size:17px}
+.gift strong{font-family:"Kaiti SC","STKaiti","KaiTi",serif;font-weight:400;font-size:17px}
 .gift small{display:block;color:var(--muted);margin-top:7px;font-size:11px}
 .gift-message{min-height:52px;text-align:center;color:#987c68;line-height:1.8;font-size:14px;margin:18px auto 0;max-width:600px}
 .cake-area{text-align:center;padding:45px 20px 80px}
@@ -170,7 +162,7 @@ main{display:none}
 .wish-form textarea:focus{border-color:var(--rose)}
 .wish-form .primary{margin-top:13px}
 .wish-list{display:grid;gap:10px;margin-top:20px}
-.wish-item{background:#fff5eb;border:1px dashed #d9bba5;border-radius:13px;padding:13px 15px;text-align:left;color:#8b7160;font-family:"Songti SC",serif;line-height:1.7;animation:rise .5s}
+.wish-item{background:#fff5eb;border:1px dashed #d9bba5;border-radius:13px;padding:13px 15px;text-align:left;color:#8b7160;font-family:"Kaiti SC","STKaiti","KaiTi",serif;line-height:1.7;animation:rise .5s}
 .footer{text-align:center;padding:25px 20px 55px;color:#b19a88;font-size:10px;letter-spacing:.17em}
 .toast{position:fixed;left:50%;bottom:25px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#6e5145;color:#fff8ef;padding:13px 20px;border-radius:99px;z-index:80;transition:.4s;max-width:calc(100vw - 30px);text-align:center;font-size:13px}
 .toast.show{opacity:1;transform:translate(-50%,0)}
@@ -468,7 +460,7 @@ body{background:#fff4e8;color:#765b52}
 
   <section class="cake-area">
     <div class="eyebrow">MAKE A WISH</div>
-    <h2 style="font-family:'Songti SC',serif;font-weight:400;font-size:32px">现在，轮到你许愿啦</h2>
+    <h2 style="font-family:"Kaiti SC","STKaiti","KaiTi",serif;font-weight:400;font-size:32px">现在，轮到你许愿啦</h2>
     <p style="color:var(--muted);font-size:13px">点一下按钮，吹灭蜡烛。愿望要悄悄留在心里哦。</p>
     <div class="cake-stage" id="cakeStage">
       <div class="candles"><div class="candle"><i class="flame"></i></div><div class="candle"><i class="flame"></i></div><div class="candle"><i class="flame"></i></div></div>
@@ -482,7 +474,7 @@ body{background:#fff4e8;color:#765b52}
 
   <section class="wish-area">
     <div class="eyebrow">YOUR LITTLE WISH</div>
-    <h2 style="font-family:'Songti SC',serif;font-weight:400;font-size:30px">把愿望写下来吧</h2>
+    <h2 style="font-family:"Kaiti SC","STKaiti","KaiTi",serif;font-weight:400;font-size:30px">把愿望写下来吧</h2>
     <p style="color:var(--muted);font-size:13px;line-height:1.9">可以写给自己，也可以写给未来。<br>这张许愿条会留在这个页面里。</p>
     <form class="wish-form" id="wishForm">
       <label for="wishInput">今天的愿望</label>
