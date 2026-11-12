@@ -322,6 +322,25 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
 @media(max-width:680px){.recognition-quote{margin:27px 5px 22px;padding:23px 17px 21px}.recognition-quote blockquote{font-size:17px;line-height:1.8}.quote-break{display:none}.quote-translation{font-size:13px;letter-spacing:.06em}}
 @media(prefers-reduced-motion:reduce){.recognition-quote{animation:none}}
 
+
+/* Open birthday card: warm paper and hand-drawn gift illustration */
+.flip-wrap{width:min(500px,90vw);height:350px;margin:30px auto 0;perspective:1400px}
+.flip-card{border-radius:0}
+.flip-face{border-radius:0;padding:0}
+.flip-front{background:linear-gradient(145deg,#fffaf0,#f4e8d7);color:#8b6f5c;border:1px solid #d9c8b3}
+.flip-front .card-front-mark{font:48px Georgia,serif;color:#bd8b80;margin-bottom:12px}
+.flip-front span{font:italic 25px Georgia,serif;letter-spacing:.02em}
+.flip-front small{font-size:11px;color:#ad9582;margin-top:12px}
+.flip-front:after{content:none}
+.flip-back{background:#a88767;color:#4f3d32;border:0;box-shadow:0 12px 30px #49352350;display:grid;place-items:center;transform:rotateY(180deg);padding:22px}
+.open-card-art{width:100%;height:100%;background:linear-gradient(145deg,#fffaf0,#f8f0e1);box-shadow:0 3px 12px #39271955;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.open-card-art:before{content:"";position:absolute;inset:12px;border:1px solid #e9ddca;pointer-events:none}
+.birthday-gift-drawing{width:150px;height:132px;color:#4f4038;margin-top:8px}
+.birthday-script{font-family:"Segoe Script","Brush Script MT","URW Chancery L",cursive;font-size:clamp(28px,5vw,39px);font-style:italic;color:#4d3b32;line-height:1.25;margin-top:0;white-space:nowrap;position:relative}
+.birthday-script:before,.birthday-script:after{content:"";display:inline-block;width:36px;height:12px;border-bottom:1px solid #665247;border-radius:50%;vertical-align:middle;margin:0 10px 8px}
+.birthday-wish{font-family:Georgia,"Noto Serif SC","Songti SC",serif;font-size:10px;letter-spacing:.18em;color:#b49a80;margin-top:20px}
+@media(max-width:480px){.flip-wrap{height:275px}.birthday-gift-drawing{width:125px;height:112px}.birthday-script:before,.birthday-script:after{width:18px;margin-left:5px;margin-right:5px}.birthday-wish{font-size:9px;letter-spacing:.08em}}
+
 </style>
 </head>
 <body class="grain">
@@ -496,8 +515,27 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
     <p style="color:var(--muted);line-height:1.9;font-size:13px">点一下卡片，看看里面藏着的话。</p>
     <div class="flip-wrap">
       <div class="flip-card" id="flipCard" role="button" tabindex="0" aria-label="翻开生日贺卡">
-        <div class="flip-face flip-front"><div class="big-heart">♡</div><span>To my favorite boy</span><small>轻轻点开这张卡片</small></div>
-        <div class="flip-face flip-back"><div><div style="font-size:25px;color:var(--rose)">Happy Birthday💝</div><p>愿你新的一岁，平安、健康、自由、快乐。<br>也愿我们有更好的未来。</p><small>Always with you ♡</small></div></div>
+        <div class="flip-face flip-front">
+          <div class="card-front-mark">♡</div>
+          <span>To my favorite boy</span>
+          <small>轻轻点开这张卡片</small>
+        </div>
+        <div class="flip-face flip-back">
+          <div class="open-card-art" aria-label="礼物盒与 Happy Birthday 手写字样">
+            <svg class="birthday-gift-drawing" viewBox="0 0 180 150" role="img" aria-hidden="true">
+              <g fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M48 54 Q90 51 132 54 L129 112 Q90 119 51 112 Z"/>
+                <path d="M44 49 Q90 45 136 49 L135 66 Q90 71 45 66 Z"/>
+                <path d="M88 50 L88 115 M99 50 L99 115"/>
+                <path d="M91 49 C65 42 58 23 70 22 C82 20 91 38 93 49 C96 35 111 18 119 25 C128 33 108 46 96 50"/>
+                <path d="M90 47 Q93 40 98 34"/>
+                <path d="M132 111 L151 111"/>
+              </g>
+            </svg>
+            <div class="birthday-script">Happy Birthday</div>
+            <div class="birthday-wish">愿你永远拥有奔向快乐的勇气</div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
