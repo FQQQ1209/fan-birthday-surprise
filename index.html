@@ -441,7 +441,7 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
       <div class="countdown-unit"><strong class="countdown-number" id="cdMinutes">--</strong><span class="countdown-label">MINUTES</span></div>
       <div class="countdown-unit"><strong class="countdown-number" id="cdSeconds">--</strong><span class="countdown-label">SECONDS</span></div>
     </div>
-    <p class="countdown-note" id="countdownNote">2026 · 12 · 09　00:00　♡　按设备当地时间计算</p>
+    <p class="countdown-note" id="countdownNote">2026 · 12 · 09　19:00　♡　按设备当地时间计算</p>
     <button class="primary" id="enterGames">开始答题，收集金币</button>
   </div>
 </section>
@@ -785,7 +785,8 @@ function showToast(message){
   toastTimer = setTimeout(()=>toast.classList.remove('show'),3200);
 }
 
-const birthdayTarget=new Date(2026,11,9,0,0,0,0);
+const birthdayTarget=new Date(2026,11,9,19,0,0,0);
+let birthdayPasswordVerified=false;
 function updateCountdown(){
   const remaining=Math.max(0,birthdayTarget.getTime()-Date.now());
   const days=Math.floor(remaining/86400000);
@@ -796,9 +797,20 @@ function updateCountdown(){
   $('#cdHours').textContent=String(hours).padStart(2,'0');
   $('#cdMinutes').textContent=String(minutes).padStart(2,'0');
   $('#cdSeconds').textContent=String(seconds).padStart(2,'0');
-  if(remaining===0){$('#countdownNote').textContent='今天是 Fan 的生日。愿所有美好如约而至 ♡';}
+  const enterButton=$('#enterGames');
+  if(birthdayPasswordVerified){
+    if(remaining>0){
+      $('#countdownNote').textContent='你已经完成所有挑战啦 ♡\n生日信将在 2026 · 12 · 09　19:00 为你开启。';
+      if(enterButton){enterButton.hidden=true;}
+    }else{
+      $('#countdownNote').textContent='时间到啦。你准备好打开那封生日信了吗？♡';
+      if(enterButton){enterButton.hidden=false;enterButton.textContent='打开生日信 ♡';}
+    }
+  }else{
+    if(enterButton){enterButton.hidden=false;enterButton.textContent='开始答题，收集金币';}
+    if(remaining===0){$('#countdownNote').textContent='今天是 Fan 的生日。愿所有美好如约而至 ♡';}
+  }
 }
-updateCountdown();
 setInterval(updateCountdown,1000);
 
 
@@ -807,11 +819,13 @@ const quizData=[
   {q:'2. 我们第一次见面，是在哪个地方？',hint:'输入那个地方的名字',accept:['Alibi'],wrong:'后面会有答案'},
   {q:'3. 我们第一次牵手，是哪一天？',hint:'不能忘了吧',accept:['2026.1.14','2026.01.14'],wrong:'后面会有答案'},
   {q:'4. 你送我的第一束花是什么？',hint:'输入花的名字',accept:['芍药'],wrong:'后面会有答案'},
-  {q:'5. 你觉得什么时候我彻底爱上了你？',hint:'输入那个特别的日子',accept:['清明节带阿肥回宁波','清明节'‘清明’],wrong:'生日那天，我会告诉你的'}
+  {q:'5. 你觉得什么时候我彻底爱上了你？',hint:'输入那个特别的日子',accept:['清明节带阿肥回宁波','清明节'],wrong:'生日那天，我会告诉你的'}
 ];
 const gameStoreKey='fan-birthday-quest-v3';
 let gameState={coins:0,answered:[],prizes:[]};
 try{const saved=JSON.parse(localStorage.getItem(gameStoreKey)||'null');if(saved&&typeof saved==='object')gameState={...gameState,...saved};}catch(e){}
+birthdayPasswordVerified=!!gameState.passwordVerified;
+updateCountdown();
 let questionIndex=0;
 function saveGame(){try{localStorage.setItem(gameStoreKey,JSON.stringify(gameState));}catch(e){}}
 function renderWallet(){$('#coinBalance').textContent=gameState.coins;}
@@ -876,7 +890,19 @@ function renderInventory(){
     const tag=document.createElement('span');tag.className='gacha-ticket';tag.textContent='扭蛋 '+(i+1)+' · '+prize.title;$('#gachaInventory').appendChild(tag);
   });
 }
+function showBirthdayEnvelope(){
+  $('#countdownScreen').style.display='none';
+  $('#gameScreen').style.display='none';
+  $('#cover').style.display='grid';
+  $('#musicBtn').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
 $('#enterGames').addEventListener('click',()=>{
+  if(birthdayPasswordVerified){
+    if(Date.now()>=birthdayTarget.getTime())showBirthdayEnvelope();
+    else updateCountdown();
+    return;
+  }
   $('#countdownScreen').style.display='none';$('#gameScreen').style.display='grid';
   renderWallet();renderQuiz();renderInventory();
 });
@@ -916,11 +942,18 @@ $('#unlockEnvelope').addEventListener('click',()=>{
   }
   const pass=normalizeAnswer($('#finalPassword').value);
   if(pass==='bumble'){
-    $('#passwordFeedback').textContent='密码正确。生日信，终于为你打开了 ♡';
-    $('#gameScreen').style.display='none';
-    $('#cover').style.display='grid';
-    $('#musicBtn').style.display='block';
-    window.scrollTo({top:0,behavior:'smooth'});
+    gameState.passwordVerified=true;
+    saveGame();
+    birthdayPasswordVerified=true;
+    $('#passwordFeedback').textContent='密码正确。你已经完成所有挑战啦 ♡';
+    if(Date.now()<birthdayTarget.getTime()){
+      $('#gameScreen').style.display='none';
+      $('#countdownScreen').style.display='grid';
+      updateCountdown();
+      window.scrollTo({top:0,behavior:'smooth'});
+    }else{
+      showBirthdayEnvelope();
+    }
   }else{
     $('#passwordFeedback').textContent='密码不对哦，再想想我们的小秘密 ♡';
     $('#finalPassword').value='';
