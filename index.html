@@ -158,7 +158,11 @@ main{display:none}
 .cake-illustration{display:block;box-sizing:border-box;width:100%;max-width:500px;margin:0 auto 8px;filter:drop-shadow(0 12px 15px #8c6a5118);transition:transform .5s ease}
 .cake-illustration svg{display:block;width:100%;height:auto;overflow:visible}
 .cake-art-flame{transform:none!important;transform-origin:initial;animation:none!important;filter:drop-shadow(0 0 6px #ffc45e);will-change:auto}
-.cake-stage.blown .cake-art-flame{opacity:0;transform:none!important;transition:opacity .45s}
+.cake-art-flame path:first-child{transform-box:fill-box;transform-origin:50% 100%;animation:flameBody 1.8s ease-in-out infinite alternate}
+.cake-art-flame path:last-child{animation:flameCore 1.25s ease-in-out infinite alternate}
+@keyframes flameBody{0%{transform:scaleX(1) scaleY(1)}100%{transform:scaleX(1.025) scaleY(.965)}}
+@keyframes flameCore{0%{opacity:.9}100%{opacity:1;filter:brightness(1.08)}}
+.cake-stage.blown .cake-art-flame{opacity:0;transition:opacity .45s}
 .cake-stage.blown .cake-illustration:after{content:"♡";display:block;color:var(--rose);font-size:25px;animation:floatUp 2s forwards}
 .cake-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:25px}
 .wish-area{max-width:680px;margin:0 auto 95px;padding:0 20px;text-align:center}
