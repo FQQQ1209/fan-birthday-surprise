@@ -450,7 +450,7 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
   <div class="game-panel">
     <div class="game-kicker">A LITTLE BIRTHDAY QUEST</div>
     <h2 class="game-title">答对关于我们的故事，赢取金币</h2>
-    <p class="game-description">每答对一题，就能获得 10 枚金币。五题全部答完即可输入密码；扭蛋机是独立的可选小游戏，不影响通关。</p>
+    <p class="game-description">每答对一题，就能获得 10 枚金币。先完成第一关的五道回忆题，再挑战第二关（同样五题，答对至少两题即可进入密码关）。扭蛋机是独立的可选小游戏，不影响通关。</p>
     <div class="coin-wallet">🪙 我的金币：<strong id="coinBalance">0</strong></div>
     <div class="quiz-card" id="quizCard">
       <div class="quiz-progress" id="quizProgress">QUESTION 01 / 03</div>
@@ -853,6 +853,8 @@ let gameState={coins:0,answered:[],prizes:[]};
 try{const saved=JSON.parse(localStorage.getItem(gameStoreKey)||'null');if(saved&&typeof saved==='object')gameState={...gameState,...saved};}catch(e){}
 birthdayPasswordVerified=!!gameState.passwordVerified;
 let questionIndex=0;
+let quizStage=1;
+gameState.secondAnswered=Array.isArray(gameState.secondAnswered)?gameState.secondAnswered:[];
 function saveGame(){try{localStorage.setItem(gameStoreKey,JSON.stringify(gameState));}catch(e){}}
 function renderWallet(){$('#coinBalance').textContent=gameState.coins;}
 function normalizeAnswer(value){return String(value||'').toLowerCase().replace(/[\s\u3000.,，。!！?？:：;；'‘’"“”_—-]/g,'');}
@@ -875,16 +877,42 @@ function showFifthSurprise(){
 function renderQuiz(){
   const q=quizData[questionIndex];
   if(!q){
-    $('#quizCard').innerHTML='<div class="quiz-progress">QUEST COMPLETED</div><h3 class="quiz-question">五道题都完成啦！</h3><p class="game-description">所有回忆都答对啦。输入密码，打开生日信吧 ♡</p>';$('#finalPasswordBox').classList.add('show');return;
+    $('#quizOptions').innerHTML='';
+    $('#nextQuestion').hidden=false;
+    if(quizStage===1){
+      $('#quizProgress').textContent='STAGE 01 COMPLETED';
+      $('#quizQuestion').textContent='第一关完成啦！';
+      $('#quizFeedback').textContent='接下来还有第二关：还是这五道关于我们的回忆题，答对至少两道，就能提取惊喜 ♡';
+      $('#nextQuestion').textContent='进入第二关';
+      $('#finalPasswordBox').classList.remove('show');
+      return;
+    }
+    const score=Array.isArray(gameState.secondAnswered)?gameState.secondAnswered.length:0;
+    $('#quizProgress').textContent='STAGE 02 · RESULT';
+    $('#finalPasswordBox').classList.remove('show');
+    if(score>=2){
+      gameState.secondGatePassed=true;saveGame();
+      $('#quizQuestion').textContent='第二关通过！';
+      $('#quizFeedback').textContent='你答对了 '+score+' 道题，惊喜提取成功。现在输入密码吧 ♡';
+      $('#nextQuestion').hidden=true;
+      $('#finalPasswordBox').classList.add('show');
+    }else{
+      gameState.secondGatePassed=false;saveGame();
+      $('#quizQuestion').textContent='惊喜提取失败';
+      $('#quizFeedback').textContent='这次答对了 '+score+' 道，还差一点点。再试一次吧 ♡';
+      $('#nextQuestion').textContent='重新挑战第二关';
+    }
+    return;
   }
-  $('#quizProgress').textContent='QUESTION '+String(questionIndex+1).padStart(2,'0')+' / 05';
+  $('#quizProgress').textContent=(quizStage===1?'STAGE 01':'STAGE 02')+' · QUESTION '+String(questionIndex+1).padStart(2,'0')+' / 05';
   $('#quizQuestion').textContent=q.q;
-  $('#quizFeedback').textContent='记得答案的话，就写下来吧 ♡';
+  $('#quizFeedback').textContent=quizStage===1?'记得答案的话，就写下来吧 ♡':'再回忆一次我们的故事，答对两道就能过关 ♡';
   $('#nextQuestion').hidden=true;
   $('#quizOptions').innerHTML='';
   const row=document.createElement('div');row.className='quiz-answer-row';
   const input=document.createElement('input');input.className='quiz-answer-input';input.type='text';input.autocomplete='off';input.placeholder=q.hint;input.setAttribute('aria-label',q.hint);
   const submit=document.createElement('button');submit.className='quiz-answer-submit';submit.type='button';submit.textContent='确认答案';
+  const alreadyCorrect=(quizStage===1?gameState.answered:gameState.secondAnswered).includes(questionIndex);
   const feedback=()=>{
     if(submit.disabled)return;
     const value=normalizeAnswer(input.value);
@@ -892,23 +920,38 @@ function renderQuiz(){
     const correct=q.accept.some(a=>normalizeAnswer(a)===value);
     if(correct){
       submit.disabled=true;input.disabled=true;input.style.borderColor='#a9c39b';
-      if(!gameState.answered.includes(questionIndex)){gameState.coins+=10;gameState.answered.push(questionIndex);saveGame();}
-      $('#quizFeedback').textContent=questionIndex===4?'你答对了。真的记得这个瞬间呀。♡':'答对啦！后面还有更多关于我们的回忆。♡';
-      renderWallet();rewardBurst(10);
-      if(questionIndex===4)showFifthSurprise();
+      if(quizStage===1){
+        if(!gameState.answered.includes(questionIndex)){gameState.coins+=10;gameState.answered.push(questionIndex);saveGame();}
+        renderWallet();rewardBurst(10);
+        if(questionIndex===4)showFifthSurprise();
+        $('#quizFeedback').textContent=questionIndex===4?'你答对了。真的记得这个瞬间呀。♡':'答对啦！后面还有更多关于我们的回忆。♡';
+      }else{
+        if(!gameState.secondAnswered.includes(questionIndex)){gameState.secondAnswered.push(questionIndex);saveGame();}
+        $('#quizFeedback').textContent='答对啦！这一关再答对一道就稳稳通过啦 ♡';
+        rewardBurst(0);
+      }
+      $('#nextQuestion').hidden=false;
+      $('#nextQuestion').textContent=questionIndex===quizData.length-1?(quizStage===1?'进入第二关':'提交本关'):'下一题';
     }else{
       $('#quizFeedback').textContent=q.wrong;
-      input.value='';input.focus();
-    }
-    if(correct){
-      $('#nextQuestion').hidden=false;
-      $('#nextQuestion').textContent=questionIndex===quizData.length-1?'完成答题，输入密码':'下一题';
+      input.value='';
+      if(quizStage===1){
+        input.focus();
+      }else{
+        $('#nextQuestion').hidden=false;
+        $('#nextQuestion').textContent=questionIndex===quizData.length-1?'提交本关':'下一题';
+      }
     }
   };
   submit.addEventListener('click',feedback);
   input.addEventListener('keydown',e=>{if(e.key==='Enter')feedback();});
   row.append(input,submit);$('#quizOptions').appendChild(row);
-  if(gameState.answered.includes(questionIndex)){input.disabled=true;submit.disabled=true;$('#quizFeedback').textContent='这道题你已经答对啦 ♡';$('#nextQuestion').hidden=false;$('#nextQuestion').textContent=questionIndex===quizData.length-1?'完成答题':'下一题';}
+  if(alreadyCorrect){
+    input.disabled=true;submit.disabled=true;
+    $('#quizFeedback').textContent='这道题你已经答对啦 ♡';
+    $('#nextQuestion').hidden=false;
+    $('#nextQuestion').textContent=questionIndex===quizData.length-1?(quizStage===1?'进入第二关':'提交本关'):'下一题';
+  }
 }
 function renderInventory(){
   $('#gachaInventory').innerHTML='';
@@ -933,8 +976,15 @@ $('#enterGames').addEventListener('click',()=>{
   renderWallet();renderQuiz();renderInventory();
 });
 $('#nextQuestion').addEventListener('click',()=>{
-  if(questionIndex<quizData.length-1){questionIndex++;renderQuiz();}
-  else{questionIndex=quizData.length;renderQuiz();}
+  if(questionIndex<quizData.length-1){questionIndex++;renderQuiz();return;}
+  if(quizStage===1){
+    quizStage=2;questionIndex=0;renderQuiz();return;
+  }
+  if(questionIndex===quizData.length-1){questionIndex=quizData.length;renderQuiz();return;}
+  if(!gameState.secondGatePassed){
+    gameState.secondAnswered=[];saveGame();
+    questionIndex=0;renderQuiz();
+  }
 });
 const gachaPrizes=[
   {title:'平安喜乐',message:'愿你岁岁平安，顺风顺水。每一个平凡日子，都有值得开心的小事。'},
@@ -959,8 +1009,8 @@ $('#spinGacha').addEventListener('click',()=>{
 });
 
 $('#unlockEnvelope').addEventListener('click',()=>{
-  if(gameState.answered.length!==quizData.length){
-    $('#passwordFeedback').textContent='先完成全部五道题，再来打开生日信吧 ♡';
+  if(gameState.answered.length!==quizData.length||!gameState.secondGatePassed){
+    $('#passwordFeedback').textContent='先通过两道回忆关卡，再来打开生日信吧 ♡';
     return;
   }
   const pass=normalizeAnswer($('#finalPassword').value);
