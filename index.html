@@ -420,16 +420,24 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
 .gacha-base{width:230px;max-width:80vw;height:92px;margin:-4px auto 0;border-radius:18px 18px 24px 24px;background:linear-gradient(145deg,#f0d7c4,#d6ad94);border:1px solid #d3ad96;box-shadow:0 12px 22px #80654c20;position:relative;padding-top:12px}
 .gacha-brand{font:12px Georgia,serif;letter-spacing:.16em;color:#fff8ed}
 .gacha-knob{width:44px;height:44px;margin:7px auto 0;border-radius:50%;background:linear-gradient(145deg,#fff4df,#c48f77);border:4px solid #fff0df;box-shadow:0 3px 8px #8d625044}
-.gacha-machine.spinning .gacha-globe{animation:gachaShake .55s ease-in-out 2}
-.gacha-machine.spinning .capsule{animation:capsuleBounce .55s ease-in-out 2}
-@keyframes gachaShake{0%,100%{transform:rotate(0)}25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}
-@keyframes capsuleBounce{0%,100%{translate:0 0}50%{translate:0 -9px}}
+.gacha-machine.spinning{animation:gachaBodyWiggle .18s ease-in-out 8;transform-origin:50% 85%}
+.gacha-machine.spinning .gacha-globe{animation:gachaShake 1.4s cubic-bezier(.36,.07,.19,.97) both}
+.gacha-machine.spinning .gacha-knob{animation:gachaKnobTurn 1.4s cubic-bezier(.2,.8,.2,1)}
+.gacha-machine.spinning .capsule{animation:capsuleBounce .42s cubic-bezier(.34,1.56,.64,1) 3;}
+.gacha-machine.spinning .capsule:nth-child(2){animation-delay:.04s}
+.gacha-machine.spinning .capsule:nth-child(3){animation-delay:.08s}
+.gacha-machine.spinning .capsule:nth-child(4){animation-delay:.12s}
+.gacha-machine.spinning .capsule:nth-child(5){animation-delay:.16s}
+@keyframes gachaBodyWiggle{0%,100%{transform:rotate(0) translateX(0)}25%{transform:rotate(-3deg) translateX(-5px)}50%{transform:rotate(2.5deg) translateX(4px)}75%{transform:rotate(-2deg) translateX(-3px)}}
+@keyframes gachaShake{0%,100%{transform:translateX(0) rotate(0)}12%{transform:translateX(-9px) rotate(-9deg)}25%{transform:translateX(8px) rotate(8deg)}38%{transform:translateX(-7px) rotate(-7deg)}52%{transform:translateX(7px) rotate(7deg)}66%{transform:translateX(-5px) rotate(-5deg)}80%{transform:translateX(4px) rotate(4deg)}92%{transform:translateX(-2px) rotate(-2deg)}}
+@keyframes gachaKnobTurn{0%,100%{transform:rotate(0)}18%{transform:rotate(-65deg)}45%{transform:rotate(210deg)}72%{transform:rotate(330deg)}}
+@keyframes capsuleBounce{0%,100%{transform:translateY(0) rotate(0)}35%{transform:translateY(-24px) rotate(18deg)}68%{transform:translateY(-8px) rotate(-13deg)}}
 .gacha-result{min-height:58px;max-width:520px;margin:12px auto;color:#987968;font-size:14px;line-height:1.9}
 .gacha-inventory{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:12px auto 18px}
 .gacha-ticket{padding:7px 11px;border-radius:99px;background:#f7eee4;border:1px solid #ead8c7;color:#967967;font-size:11px}
 .game-footer-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:26px}
 @media(max-width:480px){.countdown-screen,.game-screen{padding:24px 14px}.countdown-panel,.game-panel{padding:25px 17px;border-radius:22px}.countdown-grid{gap:6px}.countdown-unit{padding:13px 3px}.countdown-label{font-size:9px}.quiz-card{padding:17px}.quiz-question{font-size:19px}.gacha-globe{height:190px;width:190px}}
-@media(prefers-reduced-motion:reduce){.gacha-machine.spinning .gacha-globe,.gacha-machine.spinning .capsule{animation:none}}
+@media(prefers-reduced-motion:reduce){.gacha-machine.spinning,.gacha-machine.spinning .gacha-globe,.gacha-machine.spinning .gacha-knob,.gacha-machine.spinning .capsule{animation:none}}
 
 </style>
 </head>
@@ -941,7 +949,7 @@ $('#spinGacha').addEventListener('click',()=>{
     machine.classList.remove('spinning');
     $('#gachaResult').textContent='♡ '+prize.title+'：'+prize.message;
     $('#spinGacha').disabled=false;$('#spinGacha').textContent='🪙 花 10 金币扭一次';
-  },1150);
+  },1500);
 });
 
 $('#unlockEnvelope').addEventListener('click',()=>{
