@@ -343,10 +343,12 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
 
 
 /* Birthday blessing floats down like a soft paper confetti */
-.falling-blessing{position:fixed;top:-110px;left:50%;z-index:79;pointer-events:none;transform:translateX(-50%);width:max-content;max-width:calc(100vw - 34px);padding:13px 22px 14px;border:1px solid #ead1bd;border-radius:4px 4px 15px 15px;background:linear-gradient(145deg,#fffaf1,#f4e3d4);color:#89685b;text-align:center;box-shadow:0 8px 24px #60483224;font-family:"Kaiti SC","STKaiti","KaiTi","Noto Serif SC",serif;font-size:clamp(14px,3.5vw,18px);letter-spacing:.08em;line-height:1.7;animation:blessingDrift 6.8s cubic-bezier(.2,.65,.35,1) forwards}
-.falling-blessing:before{content:"✧  ♡  ✧";display:block;color:#d4a18f;font:13px Georgia,serif;letter-spacing:.45em;margin-bottom:3px}
+.falling-blessing{position:fixed;top:-110px;left:50%;z-index:79;pointer-events:none;transform:translateX(-50%);width:max-content;max-width:calc(100vw - 34px);padding:8px 12px;border:0;border-radius:0;background:transparent;color:#89685b;text-align:center;box-shadow:none;font-family:"Kaiti SC","STKaiti","KaiTi","Noto Serif SC",serif;font-size:clamp(14px,3.5vw,18px);letter-spacing:.08em;line-height:1.7;text-shadow:0 1px 9px #fff8edaa;animation:blessingDrift 6.8s cubic-bezier(.2,.65,.35,1) forwards}
+.falling-blessing:before{content:none}
+.falling-star{position:fixed;top:-35px;z-index:78;pointer-events:none;color:#d9ad75;text-shadow:0 0 10px #fff0c9,0 0 18px #e9c994;font-family:Georgia,serif;animation:starDrift linear forwards}
+@keyframes starDrift{0%{transform:translate3d(0,-10px,0) rotate(0) scale(.65);opacity:0}12%{opacity:.95}55%{transform:translate3d(var(--sway),52vh,0) rotate(150deg) scale(1.15);opacity:.9}100%{transform:translate3d(calc(var(--sway) * -0.5),110vh,0) rotate(320deg) scale(.5);opacity:0}}
 @keyframes blessingDrift{0%{top:-115px;opacity:0;transform:translateX(-50%) rotate(-5deg)}10%{opacity:1}35%{transform:translateX(calc(-50% + 22px)) rotate(3deg)}65%{transform:translateX(calc(-50% - 18px)) rotate(-2deg)}88%{opacity:1}100%{top:calc(100vh + 35px);opacity:0;transform:translateX(calc(-50% + 12px)) rotate(5deg)}}
-@media(prefers-reduced-motion:reduce){.falling-blessing{animation-duration:2s}}
+@media(prefers-reduced-motion:reduce){.falling-blessing,.falling-star{animation-duration:2s}}
 
 </style>
 </head>
@@ -622,13 +624,13 @@ $('#start').addEventListener('click',()=>{
   launchFireworks();
   const greeting=$('#introGreeting');
   setTimeout(()=>greeting.classList.add('show'),1800);
-  setTimeout(()=>greeting.classList.remove('show'),6500);
+  setTimeout(()=>greeting.classList.remove('show'),7800);
   setTimeout(()=>{
     $('#cover').style.display='none';
     $('#main').style.display='block';
     window.scrollTo({top:0,behavior:'smooth'});
     observeScenes();
-  },7600);
+  },8900);
 });
 function observeScenes(){
   const targets=[...document.querySelectorAll('.life-scene,.love-event')];
@@ -772,6 +774,19 @@ function dropBirthdayBlessing(){
     document.body.appendChild(note);
     setTimeout(()=>note.remove(),7800+index*650);
   });
+  const stars=['✦','✧','⋆','✩','☆'];
+  for(let i=0;i<30;i++){
+    const star=document.createElement('span');
+    star.className='falling-star';
+    star.textContent=stars[Math.floor(Math.random()*stars.length)];
+    star.style.left=(Math.random()*100)+'vw';
+    star.style.fontSize=(10+Math.random()*16)+'px';
+    star.style.setProperty('--sway',((Math.random()-.5)*100)+'px');
+    star.style.animationDuration=(5.5+Math.random()*3.5)+'s';
+    star.style.animationDelay=(Math.random()*1.8)+'s';
+    document.body.appendChild(star);
+    setTimeout(()=>star.remove(),11000);
+  }
 }
 function celebrate(){
   const symbols=['♡','✦','🌸','✨','🎉'];
