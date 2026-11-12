@@ -352,6 +352,35 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
 
 
 /* Countdown + birthday mini games */
+
+.quiz-answer-row{display:flex;gap:9px;align-items:stretch;margin-top:14px}
+.quiz-answer-input{flex:1;min-width:0;border:1px solid #e8d6c7;border-radius:13px;padding:13px 14px;background:#fffdf9;color:#765b52;font:15px "Kaiti SC","STKaiti","KaiTi",serif;outline:none}
+.quiz-answer-input:focus{border-color:#c99a86;box-shadow:0 0 0 3px #e8cbbb55}
+.quiz-answer-submit{border:0;border-radius:13px;padding:0 18px;background:#bd8b78;color:#fffaf4;font-size:13px}
+.quiz-answer-submit:disabled{opacity:.55}
+.reward-burst{position:fixed;z-index:999;pointer-events:none;left:var(--x);top:var(--y);font-size:var(--size);animation:rewardFly var(--duration) ease-out forwards}
+@keyframes rewardFly{0%{transform:translate3d(0,0,0) rotate(0) scale(.5);opacity:0}12%{opacity:1}100%{transform:translate3d(var(--dx),var(--dy),0) rotate(var(--rot)) scale(1.1);opacity:0}}
+.fifth-surprise{position:fixed;z-index:1000;inset:0;display:grid;place-items:center;pointer-events:none;text-align:center;padding:25px;background:#fff7ed55;animation:surpriseFlash 2.5s ease forwards}
+.fifth-surprise span{font:clamp(28px,7vw,54px) "Kaiti SC","STKaiti","KaiTi",serif;color:#a66d62;text-shadow:0 3px 18px #fff;animation:surprisePop .55s cubic-bezier(.2,1.5,.4,1) both}
+@keyframes surpriseFlash{0%,100%{opacity:0}12%,78%{opacity:1}}
+@keyframes surprisePop{0%{transform:scale(.4) rotate(-7deg)}65%{transform:scale(1.08) rotate(2deg)}100%{transform:scale(1)}}
+.crossword-screen{display:none;min-height:100svh;padding:30px 16px;place-items:center;text-align:center;background:radial-gradient(ellipse at 50% 25%,#fffaf4,#f1e4d8)}
+.crossword-panel{width:min(760px,100%);padding:clamp(23px,5vw,42px);border:1px solid #ead8c7;border-radius:26px;background:#fffaf4eF;box-shadow:var(--shadow)}
+.crossword-title{font:clamp(28px,5vw,40px) "Kaiti SC","STKaiti","KaiTi",serif;color:#765b52;font-weight:400;margin:12px 0}
+.crossword-copy{font-size:13px;line-height:1.9;color:#a78b7c}
+.crossword-list{display:grid;gap:12px;max-width:570px;margin:25px auto;text-align:left}
+.crossword-entry{display:grid;grid-template-columns:105px 1fr;gap:10px;align-items:center}
+.crossword-clue{font-size:13px;color:#987a69}
+.crossword-cells{display:flex;gap:4px;flex-wrap:nowrap}
+.crossword-cell{width:clamp(25px,5.5vw,38px);height:clamp(30px,6.5vw,42px);padding:0;text-align:center;text-transform:uppercase;border:1px solid #dfc9b7;border-radius:7px;background:#fffdf8;color:#765b52;font:17px Georgia,serif;min-width:0}
+.crossword-cell:focus{outline:2px solid #d6a994;outline-offset:1px}
+.crossword-entry.solved .crossword-cell{background:#eef4e9;border-color:#b5c9a9;color:#58764d}
+.crossword-status{min-height:38px;color:#a27d6c;font-size:13px;line-height:1.8}
+.password-box{display:none;max-width:420px;margin:25px auto 0;padding:22px;border-radius:18px;background:#f8eee5;border:1px solid #ead8c7}
+.password-box.show{display:block;animation:surprisePop .45s ease both}
+.password-input{width:100%;box-sizing:border-box;text-align:center;letter-spacing:.35em;text-transform:uppercase;border:1px solid #dfc9b7;border-radius:12px;background:#fffdf8;padding:14px;font:20px Georgia,serif;color:#765b52;margin:12px 0}
+@media(max-width:480px){.quiz-answer-row{flex-direction:column}.quiz-answer-submit{padding:13px}.crossword-entry{grid-template-columns:88px 1fr;gap:7px}.crossword-cells{gap:3px}.crossword-cell{width:clamp(22px,6vw,31px);height:34px;font-size:15px}}
+
 #cover{display:none}#musicBtn{display:none}
 
 .countdown-screen,.game-screen{min-height:100svh;padding:48px 20px;display:grid;place-items:center;text-align:center;background:radial-gradient(ellipse at 50% 28%,#fffaf4 0,#f7eee4 58%,#eddfd1 100%);position:relative;overflow:hidden}
@@ -459,6 +488,26 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
       <button class="soft-btn" id="backCountdown">返回倒计时</button>
       <button class="primary" id="enterBirthdaySite">进入生日惊喜 ♡</button>
     </div>
+  </div>
+
+</section>
+
+<section class="crossword-screen" id="crosswordScreen">
+  <div class="crossword-panel">
+    <div class="game-kicker">ONE LAST LITTLE SECRET</div>
+    <h2 class="crossword-title">解开我们的专属填字谜</h2>
+    <p class="crossword-copy">把藏在回忆里的六个关键词填进格子里。全部正确，才能解锁最后的密码提示。<br>每个格子填写一个英文字母或汉字。</p>
+    <div class="crossword-list" id="crosswordList"></div>
+    <div class="crossword-status" id="crosswordStatus">慢慢想，这些都是只属于我们的线索 ♡</div>
+    <div class="password-box" id="passwordBox">
+      <div class="game-kicker">THE FINAL PASSWORD</div>
+      <h3 class="crossword-title" style="font-size:25px">输入我们的小秘密</h3>
+      <p class="crossword-copy">六个线索都解开了。输入密码，打开那封生日信吧。</p>
+      <input class="password-input" id="finalPassword" type="text" maxlength="12" autocomplete="off" placeholder="PASSWORD">
+      <button class="primary" id="unlockEnvelope">打开信封 ♡</button>
+      <div class="crossword-status" id="passwordFeedback"></div>
+    </div>
+    <div class="game-footer-actions"><button class="soft-btn" id="backToGames">返回游戏</button></div>
   </div>
 </section>
 
@@ -773,47 +822,74 @@ function updateCountdown(){
 updateCountdown();
 setInterval(updateCountdown,1000);
 
+
 const quizData=[
-  {q:'我们的故事，是从哪一天开始有了新的篇章？',a:['2026 年 1 月 1 日','2026 年 1 月 6 日','2026 年 2 月 5 日'],correct:0,why:'没错，是 2026 年的第一天。那句新年快乐，悄悄开启了后来的故事。'},
-  {q:'我们第一次见面，是在哪个地方？',a:['Canyon Lodge','Alibi','学校图书馆'],correct:1,why:'答对啦，是 Alibi。那一天，故事从屏幕走进了现实。'},
-  {q:'我们第一次牵手，是哪一天？',a:['2026 年 1 月 6 日','2026 年 1 月 15 日','2026 年 2 月 5 日'],correct:1,why:'就是 2026 年 1 月 15 日。还有那句：无名真的很好吃吧。'}
+  {q:'1. 我们的故事，是从哪一天开始有了新的篇章？',hint:'输入日期，例如 2026.1.1',accept:['2026.1.1','2026.01.01'],wrong:'后面会有答案'},
+  {q:'2. 我们第一次见面，是在哪个地方？',hint:'输入那个地方的名字',accept:['Alibi'],wrong:'后面会有答案'},
+  {q:'3. 我们第一次牵手，是哪一天？',hint:'输入日期，例如 2026.1.14',accept:['2026.1.14','2026.01.14'],wrong:'后面会有答案'},
+  {q:'4. 你送我的第一束花是什么？',hint:'输入花的名字',accept:['芍药'],wrong:'后面会有答案'},
+  {q:'5. 你觉得什么时候我彻底爱上了你？',hint:'输入那个特别的日子',accept:['清明节带阿肥回宁波','清明节'],wrong:'生日那天，我会告诉你的'}
 ];
-const gameStoreKey='fan-birthday-quest-v1';
+const gameStoreKey='fan-birthday-quest-v2';
 let gameState={coins:0,answered:[],prizes:[]};
 try{const saved=JSON.parse(localStorage.getItem(gameStoreKey)||'null');if(saved&&typeof saved==='object')gameState={...gameState,...saved};}catch(e){}
 let questionIndex=0;
 function saveGame(){try{localStorage.setItem(gameStoreKey,JSON.stringify(gameState));}catch(e){}}
 function renderWallet(){$('#coinBalance').textContent=gameState.coins;}
+function normalizeAnswer(value){return String(value||'').toLowerCase().replace(/[\\s\\u3000.,，。!！?？:：;；'‘’"“”_—-]/g,'');}
+function rewardBurst(amount=10){
+  const symbols=['🎀','✨','🪙','♡','✦'];
+  for(let i=0;i<34;i++){
+    const el=document.createElement('span');el.className='reward-burst';el.textContent=symbols[i%symbols.length];
+    el.style.setProperty('--x',(20+Math.random()*60)+'vw');el.style.setProperty('--y',(15+Math.random()*45)+'vh');
+    el.style.setProperty('--dx',((Math.random()-.5)*260)+'px');el.style.setProperty('--dy',(120+Math.random()*380)+'px');
+    el.style.setProperty('--rot',((Math.random()-.5)*500)+'deg');el.style.setProperty('--size',(13+Math.random()*17)+'px');el.style.setProperty('--duration',(3.8+Math.random()*1.8)+'s');
+    document.body.appendChild(el);setTimeout(()=>el.remove(),6000);
+  }
+  const coin=document.createElement('div');coin.className='fifth-surprise';coin.style.background='transparent';coin.innerHTML='<span style="font-size:clamp(25px,5vw,38px)">+ '+amount+' 金币　♡</span>';
+  document.body.appendChild(coin);setTimeout(()=>coin.remove(),1800);
+}
+function showFifthSurprise(){
+  const el=document.createElement('div');el.className='fifth-surprise';el.innerHTML='<span>你竟然知道！！！<br>快来找我吧~~</span>';
+  document.body.appendChild(el);setTimeout(()=>el.remove(),2600);
+}
 function renderQuiz(){
   const q=quizData[questionIndex];
-  if(!q){$('#quizCard').innerHTML='<div class="quiz-progress">QUEST COMPLETED</div><h3 class="quiz-question">三道题都完成啦！</h3><p class="game-description">把金币带去扭蛋机，领取属于你的生日小惊喜吧 ♡</p>';return;}
-  $('#quizProgress').textContent='QUESTION '+String(questionIndex+1).padStart(2,'0')+' / 03';
+  if(!q){
+    $('#quizCard').innerHTML='<div class="quiz-progress">QUEST COMPLETED</div><h3 class="quiz-question">五道题都完成啦！</h3><p class="game-description">带着金币去扭蛋，再解开最后的填字谜吧 ♡</p>';return;
+  }
+  $('#quizProgress').textContent='QUESTION '+String(questionIndex+1).padStart(2,'0')+' / 05';
   $('#quizQuestion').textContent=q.q;
-  $('#quizFeedback').textContent='选出你记得的那个答案吧 ♡';
+  $('#quizFeedback').textContent='记得答案的话，就写下来吧 ♡';
   $('#nextQuestion').hidden=true;
   $('#quizOptions').innerHTML='';
-  q.a.forEach((answer,index)=>{
-    const button=document.createElement('button');
-    button.className='quiz-option';button.type='button';button.textContent=String.fromCharCode(65+index)+'　'+answer;
-    button.addEventListener('click',()=>{
-      if(button.disabled)return;
-      [...$('#quizOptions').children].forEach(b=>b.disabled=true);
-      if(index===q.correct){
-        button.classList.add('correct');
-        if(!gameState.answered.includes(questionIndex)){
-          gameState.coins+=10;gameState.answered.push(questionIndex);saveGame();
-        }
-        $('#quizFeedback').textContent='答对啦！'+q.why+'　+10 金币 ✨';
-      }else{
-        button.classList.add('wrong');
-        $('#quizOptions').children[q.correct].classList.add('correct');
-        $('#quizFeedback').textContent='差一点点～正确答案是「'+q.a[q.correct]+'」。记住这个小细节吧 ♡';
-      }
-      renderWallet();$('#nextQuestion').hidden=false;
+  const row=document.createElement('div');row.className='quiz-answer-row';
+  const input=document.createElement('input');input.className='quiz-answer-input';input.type='text';input.autocomplete='off';input.placeholder=q.hint;input.setAttribute('aria-label',q.hint);
+  const submit=document.createElement('button');submit.className='quiz-answer-submit';submit.type='button';submit.textContent='确认答案';
+  const feedback=()=>{
+    if(submit.disabled)return;
+    const value=normalizeAnswer(input.value);
+    if(!value){$('#quizFeedback').textContent='先写下你的答案吧 ♡';return;}
+    const correct=q.accept.some(a=>normalizeAnswer(a)===value);
+    if(correct){
+      submit.disabled=true;input.disabled=true;input.style.borderColor='#a9c39b';
+      if(!gameState.answered.includes(questionIndex)){gameState.coins+=10;gameState.answered.push(questionIndex);saveGame();}
+      $('#quizFeedback').textContent=questionIndex===4?'你答对了。真的记得这个瞬间呀。♡':'答对啦！后面还有更多关于我们的回忆。♡';
+      renderWallet();rewardBurst(10);
+      if(questionIndex===4)showFifthSurprise();
+    }else{
+      $('#quizFeedback').textContent=q.wrong;
+      input.value='';input.focus();
+    }
+    if(correct){
+      $('#nextQuestion').hidden=false;
       $('#nextQuestion').textContent=questionIndex===quizData.length-1?'完成答题':'下一题';
-    });
-    $('#quizOptions').appendChild(button);
-  });
+    }
+  };
+  submit.addEventListener('click',feedback);
+  input.addEventListener('keydown',e=>{if(e.key==='Enter')feedback();});
+  row.append(input,submit);$('#quizOptions').appendChild(row);
+  if(gameState.answered.includes(questionIndex)){input.disabled=true;submit.disabled=true;$('#quizFeedback').textContent='这道题你已经答对啦 ♡';$('#nextQuestion').hidden=false;$('#nextQuestion').textContent=questionIndex===quizData.length-1?'完成答题':'下一题';}
 }
 function renderInventory(){
   $('#gachaInventory').innerHTML='';
@@ -830,7 +906,7 @@ $('#backCountdown').addEventListener('click',()=>{
 });
 $('#nextQuestion').addEventListener('click',()=>{
   if(questionIndex<quizData.length-1){questionIndex++;renderQuiz();}
-  else{$('#quizCard').innerHTML='<div class="quiz-progress">QUEST COMPLETED</div><h3 class="quiz-question">三道题都完成啦！</h3><p class="game-description">把金币带去扭蛋机，领取属于你的生日小惊喜吧 ♡</p>';}
+  else{$('#quizCard').innerHTML='<div class="quiz-progress">QUEST COMPLETED</div><h3 class="quiz-question">五道题都完成啦！</h3><p class="game-description">带着金币去扭蛋，再解开最后的填字谜吧 ♡</p>';}
 });
 const gachaPrizes=[
   {title:'平安喜乐',message:'愿你岁岁平安，顺风顺水。每一个平凡日子，都有值得开心的小事。'},
@@ -853,11 +929,60 @@ $('#spinGacha').addEventListener('click',()=>{
     $('#spinGacha').disabled=false;$('#spinGacha').textContent='🪙 花 10 金币扭一次';
   },1150);
 });
+
+const crosswordWords=[
+  {clue:'01 · 初次见面的地方',answer:'ALIBI'},
+  {clue:'02 · 一起去过的寺庙',answer:'TEMPLE'},
+  {clue:'03 · 一座与回忆有关的城市',answer:'HANGZHOU'},
+  {clue:'04 · 另一座有故事的城市',answer:'HUZHOU'},
+  {clue:'05 · 我们故事里的家乡城市',answer:'NINGBO'},
+  {clue:'06 · 可爱的小刺猬英文',answer:'HEDGEHOG'}
+];
+function buildCrossword(){
+  const list=$('#crosswordList');list.innerHTML='';
+  crosswordWords.forEach((word,index)=>{
+    const row=document.createElement('div');row.className='crossword-entry';row.dataset.index=index;
+    const clue=document.createElement('div');clue.className='crossword-clue';clue.textContent=word.clue;
+    const cells=document.createElement('div');cells.className='crossword-cells';
+    [...word.answer].forEach((letter,pos)=>{
+      const input=document.createElement('input');input.className='crossword-cell';input.maxLength=1;input.autocomplete='off';input.setAttribute('aria-label',word.clue+' 第'+(pos+1)+'格');
+      input.addEventListener('input',()=>{input.value=input.value.toUpperCase().slice(-1);if(input.value&&cells.children[pos+1])cells.children[pos+1].focus();checkCrossword();});
+      input.addEventListener('keydown',e=>{if(e.key==='Backspace'&&!input.value&&cells.children[pos-1])cells.children[pos-1].focus();});
+      cells.appendChild(input);
+    });
+    row.append(clue,cells);list.appendChild(row);
+  });
+}
+function checkCrossword(){
+  let solved=0;
+  document.querySelectorAll('.crossword-entry').forEach((row,index)=>{
+    const value=[...row.querySelectorAll('input')].map(i=>i.value).join('');
+    const ok=value===crosswordWords[index].answer;
+    row.classList.toggle('solved',ok);if(ok){solved++;row.querySelectorAll('input').forEach(i=>i.disabled=true);}
+  });
+  $('#crosswordStatus').textContent=solved+' / 6 个线索已解开。'+(solved===6?'全部正确！密码入口已解锁 ♡':'继续填入剩下的字母吧。');
+  if(solved===6)$('#passwordBox').classList.add('show');
+}
 $('#enterBirthdaySite').addEventListener('click',()=>{
   $('#countdownScreen').style.display='none';$('#gameScreen').style.display='none';
-  $('#cover').style.display='grid';$('#musicBtn').style.display='block';
-  window.scrollTo({top:0,behavior:'smooth'});
+  $('#crosswordScreen').style.display='grid';buildCrossword();window.scrollTo({top:0,behavior:'smooth'});
 });
+$('#backToGames').addEventListener('click',()=>{
+  $('#crosswordScreen').style.display='none';$('#gameScreen').style.display='grid';window.scrollTo({top:0,behavior:'smooth'});
+});
+$('#unlockEnvelope').addEventListener('click',()=>{
+  const pass=normalizeAnswer($('#finalPassword').value);
+  if(pass==='bumble'){
+    $('#passwordFeedback').textContent='密码正确。生日信，终于为你打开了 ♡';
+    $('#crosswordScreen').style.display='none';$('#cover').style.display='grid';$('#musicBtn').style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }else{
+    $('#passwordFeedback').textContent='密码不对哦，再想想我们的小秘密 ♡';
+    $('#finalPassword').value='';$('#finalPassword').focus();
+  }
+});
+$('#finalPassword').addEventListener('keydown',e=>{if(e.key==='Enter')$('#unlockEnvelope').click();});
+
 
 $('#start').addEventListener('click',()=>{
   const envelope=$('#start');
