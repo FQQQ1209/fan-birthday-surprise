@@ -390,8 +390,10 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
 .countdown-return-button:focus-visible{outline:2px solid #c99488;outline-offset:3px}
 .game-screen{display:none}
 .game-panel{max-width:760px}
- .countdown-touch-float{position:fixed;z-index:1200;pointer-events:none;font-size:25px;animation:touchFloat 1.45s ease-out forwards;filter:drop-shadow(0 2px 5px #b98f7433)}
- @keyframes touchFloat{0%{opacity:0;transform:translate(-50%,-20%) scale(.55) rotate(-12deg)}18%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--tx)),calc(-110px + var(--ty))) scale(1.25) rotate(22deg)}}
+ .countdown-touch-float{position:fixed;z-index:1200;pointer-events:none;font-size:clamp(23px,5vw,34px);animation:touchFloat 1.65s cubic-bezier(.2,.7,.25,1) forwards;filter:drop-shadow(0 3px 7px #b98f7440);will-change:transform,opacity}
+.countdown-touch-float.meteor{font-size:clamp(27px,6vw,42px);animation:meteorFloat 1.35s ease-out forwards;filter:drop-shadow(0 0 9px #f4c88c)}
+@keyframes touchFloat{0%{opacity:0;transform:translate(-50%,-20%) scale(.55) rotate(-12deg)}18%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--tx)),calc(-125px + var(--ty))) scale(1.25) rotate(22deg)}}
+@keyframes meteorFloat{0%{opacity:0;transform:translate(-50%,-50%) translate(35px,-25px) rotate(-25deg) scale(.5)}15%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) translate(-95px,85px) rotate(-25deg) scale(1.35)}}
 .game-title{font:clamp(27px,5vw,38px) "Kaiti SC","STKaiti","KaiTi",serif;font-weight:400;margin:12px 0;color:#765b52}
 .game-description{color:#a78b7c;font-size:13px;line-height:1.9}
 .coin-wallet{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;margin:15px auto 22px;border-radius:99px;background:#fff1d5;border:1px solid #ecd3a1;color:#9b7547;font-size:14px}
@@ -1228,11 +1230,16 @@ function initializeBirthdayFlow(){
 }
 initializeBirthdayFlow();
 let lastTouchSpark=0;
-document.addEventListener('pointermove',e=>{
-  if(!birthdayPasswordVerified||$('#countdownScreen').style.display!=='grid'||Date.now()-lastTouchSpark<95)return;
-  lastTouchSpark=Date.now();const symbols=['♡','❤','⭐','✦','🧁','🧁'];const el=document.createElement('span');el.className='countdown-touch-float';el.textContent=symbols[Math.floor(Math.random()*symbols.length)];
-  el.style.left=e.clientX+'px';el.style.top=e.clientY+'px';el.style.setProperty('--tx',((Math.random()-.5)*70)+'px');el.style.setProperty('--ty',((Math.random()-.5)*45)+'px');document.body.appendChild(el);setTimeout(()=>el.remove(),1500);
-},{passive:true});
+function createCountdownSpark(e){
+  if(birthdayPasswordVerified||$('#countdownScreen').style.display!=='grid'||Date.now()-lastTouchSpark<115)return;
+  lastTouchSpark=Date.now();
+  const choices=[['♡',false],['💗',false],['🎂',false],['🧸',false],['🐻',false],['🌷',false],['✨',false],['🌠',true],['☄️',true]];
+  const [symbol,isMeteor]=choices[Math.floor(Math.random()*choices.length)];
+  const el=document.createElement('span');el.className='countdown-touch-float'+(isMeteor?' meteor':'');el.textContent=symbol;
+  el.style.left=e.clientX+'px';el.style.top=e.clientY+'px';el.style.setProperty('--tx',((Math.random()-.5)*90)+'px');el.style.setProperty('--ty',((Math.random()-.5)*55)+'px');document.body.appendChild(el);setTimeout(()=>el.remove(),1800);
+}
+document.addEventListener('pointermove',createCountdownSpark,{passive:true});
+document.addEventListener('pointerdown',createCountdownSpark,{passive:true});
 const audio=$('#bgm'),musicBtn=$('#musicBtn');
 musicBtn.addEventListener('click',async()=>{
   try{
