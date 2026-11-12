@@ -885,7 +885,7 @@ $('#backCountdown').addEventListener('click',()=>{
 });
 $('#nextQuestion').addEventListener('click',()=>{
   if(questionIndex<quizData.length-1){questionIndex++;renderQuiz();}
-  else{renderQuiz();}
+  else{questionIndex=quizData.length;renderQuiz();}
 });
 const gachaPrizes=[
   {title:'平安喜乐',message:'愿你岁岁平安，顺风顺水。每一个平凡日子，都有值得开心的小事。'},
