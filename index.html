@@ -352,6 +352,8 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
 
 
 /* Countdown + birthday mini games */
+#cover{display:none}#musicBtn{display:none}
+
 .countdown-screen,.game-screen{min-height:100svh;padding:48px 20px;display:grid;place-items:center;text-align:center;background:radial-gradient(ellipse at 50% 28%,#fffaf4 0,#f7eee4 58%,#eddfd1 100%);position:relative;overflow:hidden}
 .countdown-panel,.game-panel{width:min(720px,100%);padding:clamp(25px,5vw,48px);border:1px solid #ead8c7;border-radius:28px;background:#fffaf4df;box-shadow:var(--shadow);position:relative;z-index:1}
 .countdown-kicker,.game-kicker{font-size:10px;letter-spacing:.28em;color:#b09286}
@@ -853,7 +855,7 @@ $('#spinGacha').addEventListener('click',()=>{
 });
 $('#enterBirthdaySite').addEventListener('click',()=>{
   $('#countdownScreen').style.display='none';$('#gameScreen').style.display='none';
-  $('#cover').style.display='grid';
+  $('#cover').style.display='grid';$('#musicBtn').style.display='block';
   window.scrollTo({top:0,behavior:'smooth'});
 });
 
