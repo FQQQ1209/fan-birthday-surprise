@@ -793,8 +793,8 @@ function updateCountdown(){
   const days=Math.floor(remaining/86400000),hours=Math.floor(remaining%86400000/3600000),minutes=Math.floor(remaining%3600000/60000),seconds=Math.floor(remaining%60000/1000);
   $('#cdDays').textContent=String(days).padStart(2,'0');$('#cdHours').textContent=String(hours).padStart(2,'0');$('#cdMinutes').textContent=String(minutes).padStart(2,'0');$('#cdSeconds').textContent=String(seconds).padStart(2,'0');
   const b=$('#enterGames');
-  if(secondStage){$('#countdownKicker').textContent='ONE LAST LITTLE WAIT';$('#countdownTitle').textContent='再耐心等一等';$('#countdownSubtitle').textContent='等我们见面再一起打开吧~';$('#countdownNote').textContent='2026 · 12 · 09　19:00　♡　按设备当地时间计算';if(b)b.hidden=remaining>0;if(b&&remaining<=0)b.textContent='打开生日信 ♡';}
-  else{$('#countdownKicker').textContent='A LITTLE WAIT BEFORE THE SURPRISE';$('#countdownTitle').textContent='离你的生日还有一点点时间';$('#countdownSubtitle').textContent='不过，不用等倒计时结束，现在就可以先进去玩游戏 ♡';$('#countdownNote').textContent='2026 · 12 · 09　00:00　♡　按设备当地时间计算';if(b){b.hidden=false;b.textContent='提前进入游戏 ♡';}}
+  if(secondStage){$('#countdownKicker').textContent='ONE LAST LITTLE WAIT';$('#countdownTitle').textContent='再耐心等一等';$('#countdownSubtitle').textContent='等我们见面再一起打开吧~';$('#countdownNote').textContent='2026 · 12 · 09　19:00　♡　';if(b)b.hidden=remaining>0;if(b&&remaining<=0)b.textContent='打开生日信 ♡';}
+  else{$('#countdownKicker').textContent='A LITTLE WAIT BEFORE THE SURPRISE';$('#countdownTitle').textContent='离你的生日还有一点点时间';$('#countdownSubtitle').textContent='不过，不用等倒计时结束，现在就可以先进去玩游戏 ♡';$('#countdownNote').textContent='2026 · 12 · 09　00:00　♡　';if(b){b.hidden=false;b.textContent='提前进入游戏 ♡';}}
 }
 function launchMidnightCelebration(){
   if(midnightCelebrationTriggered||Date.now()<midnightTarget.getTime())return;
