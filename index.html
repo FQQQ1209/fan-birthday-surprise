@@ -386,6 +386,8 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
 .countdown-screen .primary,.game-screen .primary{min-width:190px}
 .game-screen{display:none}
 .game-panel{max-width:760px}
+ .countdown-touch-float{position:fixed;z-index:1200;pointer-events:none;font-size:25px;animation:touchFloat 1.45s ease-out forwards;filter:drop-shadow(0 2px 5px #b98f7433)}
+ @keyframes touchFloat{0%{opacity:0;transform:translate(-50%,-20%) scale(.55) rotate(-12deg)}18%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--tx)),calc(-110px + var(--ty))) scale(1.25) rotate(22deg)}}
 .game-title{font:clamp(27px,5vw,38px) "Kaiti SC","STKaiti","KaiTi",serif;font-weight:400;margin:12px 0;color:#765b52}
 .game-description{color:#a78b7c;font-size:13px;line-height:1.9}
 .coin-wallet{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;margin:15px auto 22px;border-radius:99px;background:#fff1d5;border:1px solid #ecd3a1;color:#9b7547;font-size:14px}
@@ -457,7 +459,7 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
       <h3 class="quiz-question" id="quizQuestion">我们的故事，是从哪一天开始有了新的篇章？</h3>
       <div class="quiz-options" id="quizOptions"></div>
       <div class="quiz-feedback" id="quizFeedback" aria-live="polite">选出你记得的那个答案吧 ♡</div>
-      <div class="quiz-actions"><button class="soft-btn" id="nextQuestion" hidden>下一题</button></div>
+      <div class="quiz-actions"><button class="soft-btn" id="prevQuestion" type="button">上一题</button><button class="soft-btn" id="nextQuestion" hidden>下一题</button></div>
     </div>
 
     <div class="final-password-box" id="finalPasswordBox">
@@ -787,27 +789,12 @@ const birthdayTarget=new Date(2026,11,9,19,0,0,0);
 let birthdayPasswordVerified=false;
 let midnightCelebrationTriggered=false;
 function updateCountdown(){
-  if(!birthdayPasswordVerified)return;
-  const remaining=Math.max(0,birthdayTarget.getTime()-Date.now());
-  const days=Math.floor(remaining/86400000);
-  const hours=Math.floor(remaining%86400000/3600000);
-  const minutes=Math.floor(remaining%3600000/60000);
-  const seconds=Math.floor(remaining%60000/1000);
-  $('#cdDays').textContent=String(days).padStart(2,'0');
-  $('#cdHours').textContent=String(hours).padStart(2,'0');
-  $('#cdMinutes').textContent=String(minutes).padStart(2,'0');
-  $('#cdSeconds').textContent=String(seconds).padStart(2,'0');
-  $('#countdownKicker').textContent='ONE LAST LITTLE WAIT';
-  $('#countdownTitle').textContent='再耐心等一等';
-  $('#countdownSubtitle').textContent='等我们见面再一起打开吧~';
-  $('#countdownNote').textContent='2026 · 12 · 09　19:00　♡　按设备当地时间计算';
-  const enterButton=$('#enterGames');
-  if(remaining>0){
-    if(enterButton)enterButton.hidden=true;
-  }else if(enterButton){
-    enterButton.hidden=false;
-    enterButton.textContent='打开生日信 ♡';
-  }
+  const secondStage=birthdayPasswordVerified,target=secondStage?birthdayTarget:midnightTarget,remaining=Math.max(0,target.getTime()-Date.now());
+  const days=Math.floor(remaining/86400000),hours=Math.floor(remaining%86400000/3600000),minutes=Math.floor(remaining%3600000/60000),seconds=Math.floor(remaining%60000/1000);
+  $('#cdDays').textContent=String(days).padStart(2,'0');$('#cdHours').textContent=String(hours).padStart(2,'0');$('#cdMinutes').textContent=String(minutes).padStart(2,'0');$('#cdSeconds').textContent=String(seconds).padStart(2,'0');
+  const b=$('#enterGames');
+  if(secondStage){$('#countdownKicker').textContent='ONE LAST LITTLE WAIT';$('#countdownTitle').textContent='再耐心等一等';$('#countdownSubtitle').textContent='等我们见面再一起打开吧~';$('#countdownNote').textContent='2026 · 12 · 09　19:00　♡　按设备当地时间计算';if(b)b.hidden=remaining>0;if(b&&remaining<=0)b.textContent='打开生日信 ♡';}
+  else{$('#countdownKicker').textContent='A LITTLE WAIT BEFORE THE SURPRISE';$('#countdownTitle').textContent='离你的生日还有一点点时间';$('#countdownSubtitle').textContent='不过，不用等倒计时结束，现在就可以先进去玩游戏 ♡';$('#countdownNote').textContent='2026 · 12 · 09　00:00　♡　按设备当地时间计算';if(b){b.hidden=false;b.textContent='提前进入游戏 ♡';}}
 }
 function launchMidnightCelebration(){
   if(midnightCelebrationTriggered||Date.now()<midnightTarget.getTime())return;
@@ -836,7 +823,8 @@ function launchMidnightCelebration(){
   }
 }
 setInterval(()=>{
-  updateCountdown();
+  if(!birthdayPasswordVerified&&Date.now()>=midnightTarget.getTime()){launchMidnightCelebration();$('#countdownScreen').style.display='none';$('#gameScreen').style.display='grid';renderWallet();renderQuiz();renderInventory();}
+  else if($('#countdownScreen').style.display==='grid')updateCountdown();
   launchMidnightCelebration();
 },1000);
 
@@ -848,6 +836,7 @@ const quizData=[
   {q:'4. 你送我的第一束花是什么？',hint:'输入花的名字',accept:['芍药'],wrong:'后面会有答案'},
   {q:'5. 你觉得什么时候我彻底爱上了你？',hint:'输入那个特别的日子',accept:['清明节带阿肥回宁波','清明节'],wrong:'生日那天，我会告诉你的'}
 ];
+const questionAttempts={};
 const gameStoreKey='fan-birthday-quest-v3';
 let gameState={coins:0,answered:[],prizes:[]};
 try{const saved=JSON.parse(localStorage.getItem(gameStoreKey)||'null');if(saved&&typeof saved==='object')gameState={...gameState,...saved};}catch(e){}
@@ -878,55 +867,28 @@ function showFifthSurprise(){
 function renderQuiz(){
   const q=quizData[questionIndex];
   if(!q){
-    $('#quizOptions').innerHTML='';
-    $('#finalPasswordBox').classList.remove('show');
-    const score=gameState.gateCorrect.length;
-    $('#quizProgress').textContent='QUEST RESULT';
-    if(score>=2){
-      gameState.gatePassed=true;saveGame();
-      $('#quizQuestion').textContent='惊喜提取成功！';
-      $('#quizFeedback').textContent='五道题中答对了 '+score+' 道，已经达到通关条件。输入密码，继续打开惊喜吧 ♡';
-      $('#nextQuestion').hidden=true;
-      $('#finalPasswordBox').classList.add('show');
-    }else{
-      gameState.gatePassed=false;saveGame();
-      $('#quizQuestion').textContent='惊喜提取失败';
-      $('#quizFeedback').textContent='五道题中答对了 '+score+' 道，需要至少答对两道才能进入密码关。再试一次吧 ♡';
-      $('#nextQuestion').hidden=false;
-      $('#nextQuestion').textContent='重新挑战';
-    }
-    return;
+    $('#quizOptions').innerHTML='';$('#finalPasswordBox').classList.remove('show');
+    const score=gameState.gateCorrect.length;$('#quizProgress').textContent='QUEST RESULT';
+    if(score>=2){gameState.gatePassed=true;saveGame();$('#quizQuestion').textContent='惊喜提取成功！';$('#quizFeedback').textContent='五道题中答对了 '+score+' 道，已经达到通关条件。输入密码，继续打开惊喜吧 ♡';$('#nextQuestion').hidden=true;$('#finalPasswordBox').classList.add('show');}
+    else{gameState.gatePassed=false;saveGame();$('#quizQuestion').textContent='惊喜提取失败';$('#quizFeedback').textContent='五道题中答对了 '+score+' 道，需要至少答对两道才能进入密码关。再试一次吧 ♡';$('#nextQuestion').hidden=false;$('#nextQuestion').textContent='重新挑战';}
+    $('#prevQuestion').hidden=true;return;
   }
-  $('#quizProgress').textContent='QUESTION '+String(questionIndex+1).padStart(2,'0')+' / 05';
-  $('#quizQuestion').textContent=q.q;
-  $('#quizFeedback').textContent='记得答案的话，就写下来吧 ♡';
-  $('#nextQuestion').hidden=true;
+  const solved=gameState.gateCorrect.includes(questionIndex),attempts=questionAttempts[questionIndex]||0;
+  $('#quizProgress').textContent='QUESTION '+String(questionIndex+1).padStart(2,'0')+' / 05 · 剩余 '+(solved?0:3-attempts)+' 次机会';
+  $('#quizQuestion').textContent=q.q;$('#quizFeedback').textContent=solved?'这道题已经答对啦 ♡':'记得答案的话，就写下来吧 ♡（每题有三次机会）';
+  $('#nextQuestion').hidden=!solved;$('#nextQuestion').textContent=questionIndex===quizData.length-1?'查看答题结果':'下一题';$('#prevQuestion').hidden=questionIndex===0;
   $('#quizOptions').innerHTML='';
   const row=document.createElement('div');row.className='quiz-answer-row';
   const input=document.createElement('input');input.className='quiz-answer-input';input.type='text';input.autocomplete='off';input.placeholder=q.hint;input.setAttribute('aria-label',q.hint);
   const submit=document.createElement('button');submit.className='quiz-answer-submit';submit.type='button';submit.textContent='确认答案';
-  const feedback=()=>{
-    if(submit.disabled)return;
-    const value=normalizeAnswer(input.value);
-    if(!value){$('#quizFeedback').textContent='先写下你的答案吧 ♡';return;}
+  if(solved||attempts>=3){input.disabled=true;submit.disabled=true;}
+  const feedback=()=>{if(submit.disabled)return;const value=normalizeAnswer(input.value);if(!value){$('#quizFeedback').textContent='先写下你的答案吧 ♡';return;}
     const correct=q.accept.some(a=>normalizeAnswer(a)===value);
-    submit.disabled=true;input.disabled=true;
-    if(correct){
-      input.style.borderColor='#a9c39b';
-      if(!gameState.gateCorrect.includes(questionIndex)){gameState.gateCorrect.push(questionIndex);saveGame();}
-      if(!gameState.answered.includes(questionIndex)){gameState.coins+=10;gameState.answered.push(questionIndex);saveGame();}
-      $('#quizFeedback').textContent=questionIndex===4?'你答对了。真的记得这个瞬间呀。♡':'答对啦！♡';
-      renderWallet();rewardBurst(10);
-      if(questionIndex===4)showFifthSurprise();
-    }else{
-      $('#quizFeedback').textContent=q.wrong;
-    }
-    $('#nextQuestion').hidden=false;
-    $('#nextQuestion').textContent=questionIndex===quizData.length-1?'查看答题结果':'下一题';
-  };
-  submit.addEventListener('click',feedback);
-  input.addEventListener('keydown',e=>{if(e.key==='Enter')feedback();});
-  row.append(input,submit);$('#quizOptions').appendChild(row);
+    if(correct){input.disabled=true;submit.disabled=true;input.style.borderColor='#a9c39b';if(!gameState.gateCorrect.includes(questionIndex)){gameState.gateCorrect.push(questionIndex);saveGame();}if(!gameState.answered.includes(questionIndex)){gameState.coins+=10;gameState.answered.push(questionIndex);saveGame();}
+      $('#quizFeedback').textContent=questionIndex===4?'你答对了。真的记得这个瞬间呀。♡':'答对啦！♡';renderWallet();rewardBurst(10);if(questionIndex===4)showFifthSurprise();$('#nextQuestion').hidden=false;
+    }else{questionAttempts[questionIndex]=(questionAttempts[questionIndex]||0)+1;const left=3-questionAttempts[questionIndex];$('#quizProgress').textContent='QUESTION '+String(questionIndex+1).padStart(2,'0')+' / 05 · 剩余 '+left+' 次机会';$('#quizFeedback').textContent=left>0?(q.wrong+'　还可以再试 '+left+' 次。'):(q.wrong+'　这题机会用完啦，可以继续下一题。');input.value='';if(left<=0){input.disabled=true;submit.disabled=true;$('#nextQuestion').hidden=false;}}
+    $('#nextQuestion').textContent=questionIndex===quizData.length-1?'查看答题结果':'下一题';};
+  submit.addEventListener('click',feedback);input.addEventListener('keydown',e=>{if(e.key==='Enter')feedback();});row.append(input,submit);$('#quizOptions').appendChild(row);
 }
 function renderInventory(){
   $('#gachaInventory').innerHTML='';
@@ -942,20 +904,15 @@ function showBirthdayEnvelope(){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 $('#enterGames').addEventListener('click',()=>{
-  if(birthdayPasswordVerified){
-    if(Date.now()>=birthdayTarget.getTime())showBirthdayEnvelope();
-    else updateCountdown();
-    return;
-  }
-  $('#countdownScreen').style.display='none';$('#gameScreen').style.display='grid';
-  renderWallet();renderQuiz();renderInventory();
+  if(birthdayPasswordVerified){if(Date.now()>=birthdayTarget.getTime())showBirthdayEnvelope();else updateCountdown();return;}
+  if(Date.now()>=midnightTarget.getTime())launchMidnightCelebration();
+  $('#countdownScreen').style.display='none';$('#gameScreen').style.display='grid';renderWallet();renderQuiz();renderInventory();
 });
+$('#prevQuestion').addEventListener('click',()=>{if(questionIndex>0&&questionIndex<quizData.length){questionIndex--;renderQuiz();}});
 $('#nextQuestion').addEventListener('click',()=>{
   if(questionIndex<quizData.length-1){questionIndex++;renderQuiz();return;}
   if(questionIndex===quizData.length-1){questionIndex=quizData.length;renderQuiz();return;}
-  gameState.gateCorrect=[];gameState.gatePassed=false;gameState.passwordVerified=false;
-  birthdayPasswordVerified=false;saveGame();
-  questionIndex=0;renderQuiz();
+  gameState.gateCorrect=[];gameState.gatePassed=false;gameState.passwordVerified=false;birthdayPasswordVerified=false;Object.keys(questionAttempts).forEach(k=>delete questionAttempts[k]);saveGame();questionIndex=0;renderQuiz();
 });
 const gachaPrizes=[
   {title:'平安喜乐',message:'愿你岁岁平安，顺风顺水。每一个平凡日子，都有值得开心的小事。'},
@@ -1248,21 +1205,18 @@ if(wishForm){
 }
 loadWishes();
 function initializeBirthdayFlow(){
-  if(birthdayPasswordVerified){
-    if(Date.now()>=birthdayTarget.getTime())showBirthdayEnvelope();
-    else{
-      $('#countdownScreen').style.display='grid';
-      $('#gameScreen').style.display='none';
-      updateCountdown();
-    }
-  }else{
-    $('#countdownScreen').style.display='none';
-    $('#gameScreen').style.display='grid';
-    renderWallet();renderQuiz();renderInventory();
-  }
+  if(birthdayPasswordVerified){if(Date.now()>=birthdayTarget.getTime())showBirthdayEnvelope();else{$('#countdownScreen').style.display='grid';$('#gameScreen').style.display='none';updateCountdown();}}
+  else if(Date.now()<midnightTarget.getTime()){$('#countdownScreen').style.display='grid';$('#gameScreen').style.display='none';updateCountdown();}
+  else{launchMidnightCelebration();$('#countdownScreen').style.display='none';$('#gameScreen').style.display='grid';renderWallet();renderQuiz();renderInventory();}
   launchMidnightCelebration();
 }
 initializeBirthdayFlow();
+let lastTouchSpark=0;
+document.addEventListener('pointermove',e=>{
+  if(!birthdayPasswordVerified||$('#countdownScreen').style.display!=='grid'||Date.now()-lastTouchSpark<95)return;
+  lastTouchSpark=Date.now();const symbols=['♡','❤','⭐','✦','🧁','🧁'];const el=document.createElement('span');el.className='countdown-touch-float';el.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+  el.style.left=e.clientX+'px';el.style.top=e.clientY+'px';el.style.setProperty('--tx',((Math.random()-.5)*70)+'px');el.style.setProperty('--ty',((Math.random()-.5)*45)+'px');document.body.appendChild(el);setTimeout(()=>el.remove(),1500);
+},{passive:true});
 const audio=$('#bgm'),musicBtn=$('#musicBtn');
 musicBtn.addEventListener('click',async()=>{
   try{
