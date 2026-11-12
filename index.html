@@ -309,6 +309,19 @@ body{background:#fff4e8;color:#765b52}
 body,button,input,textarea{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif}
 h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gift strong,.flip-front span,.wish-item{font-family:Georgia,"Noto Serif SC","Songti SC","STSong","SimSun",serif}
 
+
+/* A quiet cinematic quote between HIS LIFE and OUR STORY */
+.recognition-quote{position:relative;max-width:690px;margin:34px auto 26px;padding:27px 30px 24px;border-top:1px solid #e8cfc1;border-bottom:1px solid #e8cfc1;background:linear-gradient(115deg,#fffaf4a8,#f9e9df70,#fffaf4a8);overflow:hidden;animation:quoteArrive 1.5s ease both}
+.recognition-quote:before,.recognition-quote:after{content:"✧";position:absolute;color:#d9ad8c;font-size:17px;opacity:.75}
+.recognition-quote:before{left:9px;top:10px}.recognition-quote:after{right:9px;bottom:8px}
+.quote-kicker{margin-bottom:15px;color:#b58c78;font:10px Georgia,serif;letter-spacing:.24em}
+.recognition-quote blockquote{margin:0 auto;color:#70584e;font:italic clamp(17px,2.5vw,23px)/1.75 Georgia,"Times New Roman",serif;letter-spacing:.005em}
+.quote-abyss{color:#9c777d;text-shadow:0 2px 14px #c69ca044}.quote-dawn{color:#c58c58;text-shadow:0 2px 14px #e9c68c66}
+.quote-translation{margin-top:16px;color:#b17e76;font-family:"Kaiti SC","STKaiti","KaiTi","Noto Serif SC",serif;font-size:14px;letter-spacing:.12em}
+@keyframes quoteArrive{from{opacity:0;transform:translateY(18px);filter:blur(3px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+@media(max-width:680px){.recognition-quote{margin:27px 5px 22px;padding:23px 17px 21px}.recognition-quote blockquote{font-size:17px;line-height:1.8}.quote-break{display:none}.quote-translation{font-size:13px;letter-spacing:.06em}}
+@media(prefers-reduced-motion:reduce){.recognition-quote{animation:none}}
+
 </style>
 </head>
 <body class="grain">
@@ -416,6 +429,11 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
     <div class="bridge-heart">♡</div>
     <h3>在我们相遇之前，我们在各自的道路上稳步前行</h3>
     <p>你的时间线，有你的成长、努力和一路走来的风景。<br>我也在努力成为更好的人类。<br>直到机缘巧合，两条原本平行的路，开始有了交集<br>让我相信，上天有指引。</p>
+    <div class="recognition-quote" aria-label="True love comes in moments of mutual recognition">
+      <div class="quote-kicker">A MOMENT OF RECOGNITION</div>
+      <blockquote>“True love comes in moments of mutual recognition—<br class="quote-break">when you see the <span class="quote-abyss">abyss</span> in me and I see the <span class="quote-dawn">dawn</span> in you.”</blockquote>
+      <div class="quote-translation">在彼此眼中，看见深渊，也看见黎明。</div>
+    </div>
     <div class="bridge-date">2026.01.01 · OUR STORY BEGINS</div>
   </section>
 
