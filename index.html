@@ -103,8 +103,16 @@ main{display:none}
 .story-bridge h3{font-family:"Kaiti SC","STKaiti","KaiTi",serif;font-weight:400;font-size:clamp(24px,4vw,34px);margin:13px 0}
 .story-bridge p{color:#8d7564;line-height:2;font-size:14px;max-width:620px;margin:0 auto}
 .story-bridge .bridge-date{font-size:10px;letter-spacing:.22em;color:var(--rose);margin-top:20px}
+.fate-intro{max-width:680px;margin:-8px auto 28px;padding:0 22px;text-align:center;color:#a77a70}
+.fate-intro .fate-symbol{display:inline-grid;place-items:center;width:58px;height:58px;border:1px solid #d9aaa0;border-radius:50%;color:#a94f55;font:32px Georgia,serif;background:radial-gradient(circle,#fffaf4 0 52%,#f4e2d8 100%);box-shadow:0 0 0 7px #f8eee5,0 8px 24px #9e5a5420;animation:fatePulse 3.2s ease-in-out infinite}
+.fate-intro p{margin:13px auto 0;font-size:12px;line-height:2;letter-spacing:.08em;color:#aa8b7e}
+.fate-intro strong{display:block;margin-top:7px;font:italic 13px Georgia,serif;letter-spacing:.16em;color:#a75e5b}
 .love-timeline{max-width:900px;margin:0 auto;padding:10px 22px 85px;position:relative}
-.love-timeline:before{content:"";position:absolute;left:50%;top:0;bottom:45px;width:1px;background:var(--line)}
+.love-timeline:before{content:"";position:absolute;left:50%;top:0;bottom:45px;width:3px;transform:translateX(-50%);border-radius:99px;background:linear-gradient(180deg,transparent 0%,#d9a49a 9%,#b85f63 35%,#d9a49a 68%,#b85f63 90%,transparent 100%);box-shadow:0 0 12px #c77d7838;animation:threadGlow 4.5s ease-in-out infinite}
+.love-event:after{content:"∞";position:absolute;right:-14px;top:27px;width:28px;height:28px;border:1px solid #d9aaa0;border-radius:50%;background:#fff8f0;color:#a94f55;text-align:center;line-height:25px;font:20px/25px Georgia,serif;box-shadow:0 0 0 5px var(--cream),0 3px 10px #9e5a5420;z-index:2}
+.love-event:nth-child(even):after{left:-14px;right:auto}
+@keyframes threadGlow{0%,100%{filter:drop-shadow(0 0 2px #c77d7840);opacity:.78}50%{filter:drop-shadow(0 0 8px #b85f6380);opacity:1}}
+@keyframes fatePulse{0%,100%{transform:scale(1);box-shadow:0 0 0 7px #f8eee5,0 8px 24px #9e5a5420}50%{transform:scale(1.06);box-shadow:0 0 0 10px #f8eee5,0 8px 30px #9e5a5440}}
 .love-event{width:50%;padding:20px 48px 36px 0;position:relative;opacity:0;transform:translateY(35px);transition:.8s}
 .love-event:nth-child(even){margin-left:50%;padding:20px 0 36px 48px}
 .love-event.visible{opacity:1;transform:none}
@@ -412,6 +420,11 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
     <h2>“生日快乐呀”</h2>
     <p>这一年我们分享了欢笑与眼泪，<br>经历了磨合与转变。<br>谢谢你，包容我，<br>让你和我，成为了「我们」。</p>
   </section>
+  <div class="fate-intro" aria-label="两个人的缘分">
+    <span class="fate-symbol" aria-hidden="true">∞</span>
+    <p>两条原本平行的路，在某一天有了交点。<br>从一句新年快乐开始，缘分便悄悄把我们牵在一起。</p>
+    <strong>ONE RED THREAD · TWO HEARTS</strong>
+  </div>
   <section class="love-timeline" id="loveTimeline">
     <article class="love-event">
       <button class="memory-card" aria-expanded="false">
