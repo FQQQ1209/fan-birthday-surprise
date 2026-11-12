@@ -471,14 +471,14 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
     <article class="love-event">
       <button class="memory-card" aria-expanded="false">
         <img class="memory-photo" src="photos/time4.jpg" alt=">谢谢你陪我过生日" data-full="photos/time4.jpg">
-        <span class="memory-date">2026.02.05</span><h3>谢谢你陪我过生日</h3><span class="hint">open find more　＋</span>
+        <span class="memory-date">2026.02.05</span><h3>谢谢你陪我过生日</h3><span class="hint"> Always　＋</span>
       </button>
       <div class="detail"><div><p>好神奇，一个月的时间，我们就一起过生日嘞诶。那时候我们还没有很熟，有一点尴尬，也有一点无所适从，但一切都很新奇。</p></div></div>
     </article>
     <article class="love-event">
       <button class="memory-card" aria-expanded="false">
         <img class="memory-photo" src="photos/time5.jpg" alt="冬天的生日回忆" data-full="photos/time5.jpg">
-        <span class="memory-date">2026 · WINTER</span><h3>又是一年冬天，我们还在一起</h3><span class="hint">open find more　＋</span>
+        <span class="memory-date">2026 · WINTER</span><h3>又是一年冬天，我们还在一起</h3><span class="hint">Love your fate　＋</span>
       </button>
       <div class="detail"><div><p>又是一年冬天，轮到了你的生日，我们还在一起。谢谢你来到我的生活里。希望往后的冬天、春天、夏天和秋天，我们都能继续一起度过。</p></div></div>
     </article>
@@ -600,7 +600,7 @@ document.querySelectorAll('.memory-card').forEach(button=>{
     const detail=button.parentElement.querySelector('.detail');
     const open=detail.classList.toggle('open');
     button.setAttribute('aria-expanded',String(open));
-    button.querySelector('.hint').textContent=open?'点击，收起这一页回忆　−':'点击，打开这一页回忆　＋';
+    button.querySelector('.hint').textContent=open?'Amor vincit omnia　−':'点击，打开这一页回忆　＋';
   });
 });
 document.querySelectorAll('.memory-photo').forEach(img=>{
