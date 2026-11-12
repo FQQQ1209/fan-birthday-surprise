@@ -371,7 +371,7 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
 .password-input{width:100%;box-sizing:border-box;text-align:center;letter-spacing:.35em;text-transform:uppercase;border:1px solid #dfc9b7;border-radius:12px;background:#fffdf8;padding:14px;font:20px Georgia,serif;color:#765b52;margin:12px 0}
 @media(max-width:480px){.quiz-answer-row{flex-direction:column}.quiz-answer-submit{padding:13px}}
 
-#cover{display:none}#musicBtn{display:none}
+#cover{display:none}#musicBtn{display:none}#countdownScreen{display:none}
 
 .countdown-screen,.game-screen{min-height:100svh;padding:48px 20px;display:grid;place-items:center;text-align:center;background:radial-gradient(ellipse at 50% 28%,#fffaf4 0,#f7eee4 58%,#eddfd1 100%);position:relative;overflow:hidden}
 .countdown-panel,.game-panel{width:min(720px,100%);padding:clamp(25px,5vw,48px);border:1px solid #ead8c7;border-radius:28px;background:#fffaf4df;box-shadow:var(--shadow);position:relative;z-index:1}
@@ -431,10 +431,10 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
 
 <section class="countdown-screen" id="countdownScreen">
   <div class="countdown-panel">
-    <div class="countdown-kicker">A LITTLE COUNTDOWN FOR FAN</div>
+    <div class="countdown-kicker" id="countdownKicker">ONE LAST LITTLE WAIT</div>
     <div class="heart">♡</div>
-    <h1 class="countdown-title">把期待，一点点数给你</h1>
-    <p class="countdown-subtitle">距离 Fan 的生日，还有</p>
+    <h1 class="countdown-title" id="countdownTitle">再耐心等一等</h1>
+    <p class="countdown-subtitle" id="countdownSubtitle">等我们见面再一起打开吧~</p>
     <div class="countdown-grid" aria-label="生日倒计时">
       <div class="countdown-unit"><strong class="countdown-number" id="cdDays">--</strong><span class="countdown-label">DAYS</span></div>
       <div class="countdown-unit"><strong class="countdown-number" id="cdHours">--</strong><span class="countdown-label">HOURS</span></div>
@@ -482,9 +482,6 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
       <button class="primary" id="spinGacha">🪙 花 10 金币扭一次</button>
       <div class="gacha-result" id="gachaResult">你的第一颗幸运扭蛋，会是什么颜色呢？</div>
       <div class="gacha-inventory" id="gachaInventory"></div>
-    </div>
-    <div class="game-footer-actions">
-      <button class="soft-btn" id="backCountdown">返回倒计时</button>
     </div>
   </div>
 
@@ -785,9 +782,12 @@ function showToast(message){
   toastTimer = setTimeout(()=>toast.classList.remove('show'),3200);
 }
 
+const midnightTarget=new Date(2026,11,9,0,0,0,0);
 const birthdayTarget=new Date(2026,11,9,19,0,0,0);
 let birthdayPasswordVerified=false;
+let midnightCelebrationTriggered=false;
 function updateCountdown(){
+  if(!birthdayPasswordVerified)return;
   const remaining=Math.max(0,birthdayTarget.getTime()-Date.now());
   const days=Math.floor(remaining/86400000);
   const hours=Math.floor(remaining%86400000/3600000);
@@ -797,21 +797,48 @@ function updateCountdown(){
   $('#cdHours').textContent=String(hours).padStart(2,'0');
   $('#cdMinutes').textContent=String(minutes).padStart(2,'0');
   $('#cdSeconds').textContent=String(seconds).padStart(2,'0');
+  $('#countdownKicker').textContent='ONE LAST LITTLE WAIT';
+  $('#countdownTitle').textContent='再耐心等一等';
+  $('#countdownSubtitle').textContent='等我们见面再一起打开吧~';
+  $('#countdownNote').textContent='2026 · 12 · 09　19:00　♡　按设备当地时间计算';
   const enterButton=$('#enterGames');
-  if(birthdayPasswordVerified){
-    if(remaining>0){
-      $('#countdownNote').textContent='你已经完成所有挑战啦 ♡\n生日信将在 2026 · 12 · 09　19:00 为你开启。';
-      if(enterButton){enterButton.hidden=true;}
-    }else{
-      $('#countdownNote').textContent='时间到啦。你准备好打开那封生日信了吗？♡';
-      if(enterButton){enterButton.hidden=false;enterButton.textContent='打开生日信 ♡';}
-    }
-  }else{
-    if(enterButton){enterButton.hidden=false;enterButton.textContent='开始答题，收集金币';}
-    if(remaining===0){$('#countdownNote').textContent='今天是 Fan 的生日。愿所有美好如约而至 ♡';}
+  if(remaining>0){
+    if(enterButton)enterButton.hidden=true;
+  }else if(enterButton){
+    enterButton.hidden=false;
+    enterButton.textContent='打开生日信 ♡';
   }
 }
-setInterval(updateCountdown,1000);
+function launchMidnightCelebration(){
+  if(midnightCelebrationTriggered||Date.now()<midnightTarget.getTime())return;
+  try{
+    if(sessionStorage.getItem('fan-midnight-celebration-2026')==='shown'){midnightCelebrationTriggered=true;return;}
+    sessionStorage.setItem('fan-midnight-celebration-2026','shown');
+  }catch(e){}
+  midnightCelebrationTriggered=true;
+  launchFireworks();
+  const greeting=$('#introGreeting');
+  greeting.querySelector('span').textContent='Happy Birthday to Fan~';
+  greeting.classList.add('show');
+  setTimeout(()=>greeting.classList.remove('show'),4800);
+  const symbols=['🎀','🎉','✨','♡','✦','🌸'];
+  for(let i=0;i<120;i++){
+    const piece=document.createElement('span');
+    piece.className='confetti';
+    piece.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+    piece.style.left=Math.random()*100+'vw';
+    piece.style.animationDuration=(3.8+Math.random()*3.2)+'s';
+    piece.style.fontSize=(15+Math.random()*21)+'px';
+    piece.style.color=['#d69a91','#c69b65','#b99acb','#e9aeb2','#fffaf0'][i%5];
+    piece.style.transform='rotate('+(Math.random()*360)+'deg)';
+    document.body.appendChild(piece);
+    setTimeout(()=>piece.remove(),7200);
+  }
+}
+setInterval(()=>{
+  updateCountdown();
+  launchMidnightCelebration();
+},1000);
 
 
 const quizData=[
@@ -825,7 +852,6 @@ const gameStoreKey='fan-birthday-quest-v3';
 let gameState={coins:0,answered:[],prizes:[]};
 try{const saved=JSON.parse(localStorage.getItem(gameStoreKey)||'null');if(saved&&typeof saved==='object')gameState={...gameState,...saved};}catch(e){}
 birthdayPasswordVerified=!!gameState.passwordVerified;
-updateCountdown();
 let questionIndex=0;
 function saveGame(){try{localStorage.setItem(gameStoreKey,JSON.stringify(gameState));}catch(e){}}
 function renderWallet(){$('#coinBalance').textContent=gameState.coins;}
@@ -905,9 +931,6 @@ $('#enterGames').addEventListener('click',()=>{
   }
   $('#countdownScreen').style.display='none';$('#gameScreen').style.display='grid';
   renderWallet();renderQuiz();renderInventory();
-});
-$('#backCountdown').addEventListener('click',()=>{
-  $('#gameScreen').style.display='none';$('#countdownScreen').style.display='grid';
 });
 $('#nextQuestion').addEventListener('click',()=>{
   if(questionIndex<quizData.length-1){questionIndex++;renderQuiz();}
@@ -1080,7 +1103,7 @@ function launchFireworks(){
     const x=window.innerWidth*(.18+Math.random()*.64);
     const y=window.innerHeight*(.16+Math.random()*.34);
     const color=colors[Math.floor(Math.random()*colors.length)];
-    const count=54;
+    const count=68;
     for(let i=0;i<count;i++){
       const angle=Math.PI*2*i/count+Math.random()*.08;
       const speed=1.2+Math.random()*3.4;
@@ -1091,7 +1114,7 @@ function launchFireworks(){
   function frame(now){
     const elapsed=now-start;
     ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
-    if(elapsed<2300&&now-lastBurst>480){burst();lastBurst=now;}
+    if(elapsed<3900&&now-lastBurst>430){burst();lastBurst=now;}
     particles=particles.filter(p=>p.life>0);
     particles.forEach(p=>{
       p.x+=p.vx;p.y+=p.vy;p.vy+=.025;p.vx*=.992;p.vy*=.992;p.life--;
@@ -1197,6 +1220,22 @@ $('#wishForm').addEventListener('submit',e=>{
   showToast('这条愿望已经被好好收藏啦 ♡');
 });
 loadWishes();
+function initializeBirthdayFlow(){
+  if(birthdayPasswordVerified){
+    if(Date.now()>=birthdayTarget.getTime())showBirthdayEnvelope();
+    else{
+      $('#countdownScreen').style.display='grid';
+      $('#gameScreen').style.display='none';
+      updateCountdown();
+    }
+  }else{
+    $('#countdownScreen').style.display='none';
+    $('#gameScreen').style.display='grid';
+    renderWallet();renderQuiz();renderInventory();
+  }
+  launchMidnightCelebration();
+}
+initializeBirthdayFlow();
 const audio=$('#bgm'),musicBtn=$('#musicBtn');
 musicBtn.addEventListener('click',async()=>{
   try{
