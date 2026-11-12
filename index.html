@@ -904,7 +904,14 @@ function showBirthdayEnvelope(){
   $('#musicBtn').style.display='block';
   window.scrollTo({top:0,behavior:'smooth'});
 }
-$('#returnToQuiz').addEventListener('click',()=>{\n  questionIndex=0;\n  $('#countdownScreen').style.display='none';\n  $('#gameScreen').style.display='grid';\n  renderWallet();renderQuiz();renderInventory();\n  window.scrollTo({top:0,behavior:'smooth'});\n});\n$('#enterGames').addEventListener('click',()=>{
+$('#returnToQuiz').addEventListener('click',()=>{
+  questionIndex=0;
+  $('#countdownScreen').style.display='none';
+  $('#gameScreen').style.display='grid';
+  renderWallet();renderQuiz();renderInventory();
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+$('#enterGames').addEventListener('click',()=>{
   if(birthdayPasswordVerified){if(Date.now()>=birthdayTarget.getTime())showBirthdayEnvelope();else updateCountdown();return;}
   if(Date.now()>=midnightTarget.getTime())launchMidnightCelebration();
   $('#countdownScreen').style.display='none';$('#gameScreen').style.display='grid';renderWallet();renderQuiz();renderInventory();
