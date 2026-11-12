@@ -154,16 +154,12 @@ main{display:none}
 .gift small{display:block;color:var(--muted);margin-top:7px;font-size:11px}
 .gift-message{min-height:52px;text-align:center;color:#987c68;line-height:1.8;font-size:14px;margin:18px auto 0;max-width:600px}
 .cake-area{text-align:center;padding:45px 20px 80px}
-.cake-stage{max-width:620px;margin:25px auto 0;padding:34px 20px 30px;border-radius:24px;background:linear-gradient(145deg,#fffaf4,#f0dfd1);box-shadow:var(--shadow);border:1px solid #ead8c7}
-.candles{display:flex;justify-content:center;gap:20px;align-items:end;height:85px;margin-bottom:-2px}
-.candle{width:12px;height:57px;border-radius:5px 5px 2px 2px;background:repeating-linear-gradient(135deg,#fff1df 0 7px,#d99d91 7px 11px);position:relative;box-shadow:inset -3px 0 #bb8177}
-.flame{position:absolute;left:50%;top:-24px;width:14px;height:23px;transform:translateX(-50%);background:radial-gradient(ellipse at 50% 70%,#fff7be 0 20%,#ffc45e 45%,#f28b48 75%,transparent 77%);border-radius:50% 50% 45% 45%;filter:drop-shadow(0 0 9px #ffbe64);animation:flicker .18s infinite alternate}
-.cake-body{position:relative;width:min(270px,75vw);height:105px;margin:0 auto;background:linear-gradient(#fff5e8 0 25%,#e8b9a7 25% 37%,#fff8ed 37% 72%,#d7a18e 72%);border-radius:50%/18%;box-shadow:0 14px 0 #c88f7c,0 20px 28px #80604c25}
-.cake-body:before{content:"";position:absolute;left:0;right:0;top:15px;height:18px;border-radius:50%;background:#fffaf1}
-.cake-body:after{content:"♡";position:absolute;left:50%;top:39px;transform:translateX(-50%);font-size:27px;color:#bd8078}
-.cake-plate{width:min(330px,85vw);height:14px;border-radius:50%;background:#d9c3af;margin:22px auto 0;box-shadow:0 7px 12px #8c6a5120}
-.cake-stage.blown .flame{opacity:0;transform:translate(-50%,-18px) scale(.2);transition:.45s}
-.cake-stage.blown .candles:after{content:"♡";position:absolute;font-size:24px;color:var(--rose);animation:floatUp 2s forwards}
+.cake-stage{max-width:620px;margin:25px auto 0;padding:24px 20px 30px;border-radius:24px;background:linear-gradient(145deg,#fffaf4,#f0dfd1);box-shadow:var(--shadow);border:1px solid #ead8c7}
+.cake-illustration{width:min(500px,94vw);margin:0 auto 8px;filter:drop-shadow(0 12px 15px #8c6a5118);transition:transform .5s ease}
+.cake-illustration svg{display:block;width:100%;height:auto;overflow:visible}
+.cake-art-flame{transform-origin:265px 42px;animation:flicker .2s infinite alternate;filter:drop-shadow(0 0 7px #ffc45e)}
+.cake-stage.blown .cake-art-flame{opacity:0;transform:translateY(-12px) scale(.35);transition:.45s}
+.cake-stage.blown .cake-illustration:after{content:"♡";display:block;color:var(--rose);font-size:25px;animation:floatUp 2s forwards}
 .cake-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:25px}
 .wish-area{max-width:680px;margin:0 auto 95px;padding:0 20px;text-align:center}
 .wish-form{background:#fffaf4;border:1px solid #ead8c7;border-radius:22px;padding:24px;box-shadow:var(--shadow);text-align:left;margin-top:25px}
@@ -566,8 +562,38 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
     <h2 style="font-family:"Kaiti SC","STKaiti","KaiTi",serif;font-weight:400;font-size:32px">现在，轮到你许愿啦</h2>
     <p style="color:var(--muted);font-size:13px">点一下按钮，吹灭蜡烛。愿望要悄悄留在心里哦。</p>
     <div class="cake-stage" id="cakeStage">
-      <div class="candles"><div class="candle"><i class="flame"></i></div><div class="candle"><i class="flame"></i></div><div class="candle"><i class="flame"></i></div></div>
-      <div class="cake-body"></div><div class="cake-plate"></div>
+      <div class="cake-illustration" aria-label="手绘三层生日蛋糕">
+        <svg viewBox="0 0 520 390" role="img" aria-hidden="true">
+          <defs>
+            <linearGradient id="cakeGold" x2="0" y2="1"><stop stop-color="#ffe6a0"/><stop offset="1" stop-color="#f4b94f"/></linearGradient>
+            <linearGradient id="cakePink" x2="0" y2="1"><stop stop-color="#fff0e9"/><stop offset="1" stop-color="#f4c4c4"/></linearGradient>
+            <linearGradient id="plateBlue" x2="0" y2="1"><stop stop-color="#a9e4e5"/><stop offset="1" stop-color="#54b9c8"/></linearGradient>
+            <filter id="cakeSoft"><feGaussianBlur stdDeviation="1.2"/></filter>
+          </defs>
+          <ellipse cx="260" cy="354" rx="232" ry="25" fill="url(#plateBlue)" stroke="#4baebc" stroke-width="5"/>
+          <path d="M45 347 Q260 390 475 347" fill="none" stroke="#d5f4ed" stroke-width="7" stroke-linecap="round"/>
+          <path d="M78 285 Q260 266 442 285 L432 329 Q260 365 88 329Z" fill="url(#cakeGold)" stroke="#e9a83e" stroke-width="5"/>
+          <path d="M78 285 Q110 298 140 286 T202 286 T264 286 T326 286 T388 286 T442 285" fill="none" stroke="#e77e69" stroke-width="10" stroke-linecap="round"/>
+          <path d="M83 306 Q110 338 137 306 T191 306 T245 306 T299 306 T353 306 T407 306 T437 306" fill="none" stroke="#e97966" stroke-width="5"/>
+          <path d="M105 218 Q260 202 415 218 L407 278 Q260 310 113 278Z" fill="url(#cakePink)" stroke="#e8aaa6" stroke-width="5"/>
+          <path d="M105 218 Q135 230 165 218 T225 218 T285 218 T345 218 T405 218" fill="none" stroke="#f1b3a9" stroke-width="9"/>
+          <path d="M109 243 Q130 275 151 243 T193 243 T235 243 T277 243 T319 243 T361 243 T403 243" fill="none" stroke="#e77d65" stroke-width="6"/>
+          <path d="M145 153 Q260 139 375 153 L367 210 Q260 234 153 210Z" fill="url(#cakeGold)" stroke="#e8a94d" stroke-width="5"/>
+          <path d="M145 153 Q173 165 201 153 T257 153 T313 153 T369 153" fill="none" stroke="#fff0e8" stroke-width="12"/>
+          <path d="M149 177 Q168 205 187 177 T225 177 T263 177 T301 177 T339 177 T371 177" fill="none" stroke="#e87963" stroke-width="6"/>
+          <ellipse cx="260" cy="151" rx="115" ry="23" fill="#fff0ed" stroke="#e9aaa7" stroke-width="4"/>
+          <path d="M258 134 L258 49 Q260 42 267 49 L267 134Z" fill="#fff6df" stroke="#d98b7c" stroke-width="4"/>
+          <path d="M259 64 L266 64 M259 84 L266 84 M259 104 L266 104" stroke="#e67e6e" stroke-width="7"/>
+          <g class="cake-art-flame"><path d="M262 43 C239 23 264 7 265 0 C286 24 278 38 262 43Z" fill="#f6b844" stroke="#e68d36" stroke-width="3"/><path d="M264 36 C255 25 266 17 267 13 C276 26 272 33 264 36Z" fill="#fff1a8"/></g>
+          <g stroke="#e77d65" stroke-width="3" fill="#f7a08c">
+            <circle cx="177" cy="132" r="15"/><circle cx="211" cy="119" r="13"/><circle cx="304" cy="119" r="14"/><circle cx="342" cy="133" r="15"/>
+            <circle cx="240" cy="130" r="12" fill="#a88bc1"/><circle cx="282" cy="130" r="12" fill="#a88bc1"/>
+          </g>
+          <g fill="#fff8e9" stroke="#efcba0" stroke-width="3"><path d="M192 145 Q185 124 200 119 Q216 125 208 145Z"/><path d="M321 146 Q314 124 329 119 Q345 125 337 146Z"/></g>
+          <g fill="none" stroke="#f3c36e" stroke-width="4" stroke-linecap="round"><path d="M58 180 l-8 -13 m8 13 l13 -7"/><path d="M445 165 l8 -13 m-8 13 l-13 -7"/></g>
+          <g fill="#e9a0a0" font-size="24"><text x="58" y="115">♡</text><text x="423" y="108">♡</text></g>
+        </svg>
+      </div>
       <div class="cake-actions">
         <button class="primary" id="blowBtn">我许好愿望啦，吹蜡烛</button>
         <button class="soft-btn" id="relightBtn" hidden>再点亮一次</button>
