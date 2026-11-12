@@ -888,7 +888,7 @@ function renderQuiz(){
     $('#quizOptions').innerHTML='';$('#finalPasswordBox').classList.remove('show');
     const score=gameState.gateCorrect.length;$('#quizProgress').textContent='QUEST RESULT';
     if(score>=2){gameState.gatePassed=true;saveGame();$('#quizQuestion').textContent='惊喜提取成功！';$('#quizFeedback').textContent='五道题中答对了 '+score+' 道，已经达到通关条件。输入密码，继续打开惊喜吧 ♡';$('#nextQuestion').hidden=true;$('#finalPasswordBox').classList.add('show');}
-    else{gameState.gatePassed=false;saveGame();$('#quizQuestion').textContent='惊喜提取失败';$('#quizFeedback').textContent='五道题中答对了 '+score+' 道，需要至少答对两道才能进入密码关。再试一次吧 ♡';$('#nextQuestion').hidden=false;$('#nextQuestion').textContent='重新挑战';}
+    else{gameState.gatePassed=false;saveGame();$('#quizQuestion').textContent='惊喜提取失败，QQ不满意';$('#quizFeedback').textContent='五道题中答对了 '+score+' 道，需要至少答对两道才能进入密码关。再试一次吧 ♡';$('#nextQuestion').hidden=false;$('#nextQuestion').textContent='重新挑战';}
     $('#prevQuestion').hidden=true;return;
   }
   const solved=gameState.gateCorrect.includes(questionIndex),attempts=questionAttempts[questionIndex]||0;
