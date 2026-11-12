@@ -798,10 +798,6 @@ function updateCountdown(){
 }
 function launchMidnightCelebration(){
   if(midnightCelebrationTriggered||Date.now()<midnightTarget.getTime())return;
-  try{
-    if(sessionStorage.getItem('fan-midnight-celebration-2026')==='shown'){midnightCelebrationTriggered=true;return;}
-    sessionStorage.setItem('fan-midnight-celebration-2026','shown');
-  }catch(e){}
   midnightCelebrationTriggered=true;
   launchFireworks();
   const greeting=$('#introGreeting');
