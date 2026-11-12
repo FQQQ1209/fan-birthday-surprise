@@ -1196,29 +1196,35 @@ $('#relightBtn').addEventListener('click',()=>{
 });
 const wishKey='birthday-wishes-19941209';
 function loadWishes(){
+  const list=$('#wishList');
+  if(!list)return;
   let wishes=[];
   try{wishes=JSON.parse(localStorage.getItem(wishKey)||'[]');}catch(e){}
-  $('#wishList').innerHTML='';
+  list.innerHTML='';
   wishes.forEach(wish=>{
     const item=document.createElement('div');
     item.className='wish-item';
     item.textContent='♡  '+wish;
-    $('#wishList').appendChild(item);
+    list.appendChild(item);
   });
 }
-$('#wishForm').addEventListener('submit',e=>{
-  e.preventDefault();
-  const input=$('#wishInput');
-  const value=input.value.trim();
-  if(!value)return;
-  let wishes=[];
-  try{wishes=JSON.parse(localStorage.getItem(wishKey)||'[]');}catch(e){}
-  wishes.unshift(value);
-  try{localStorage.setItem(wishKey,JSON.stringify(wishes.slice(0,12)));}catch(e){}
-  input.value='';
-  loadWishes();
-  showToast('这条愿望已经被好好收藏啦 ♡');
-});
+const wishForm=$('#wishForm');
+if(wishForm){
+  wishForm.addEventListener('submit',e=>{
+    e.preventDefault();
+    const input=$('#wishInput');
+    if(!input)return;
+    const value=input.value.trim();
+    if(!value)return;
+    let wishes=[];
+    try{wishes=JSON.parse(localStorage.getItem(wishKey)||'[]');}catch(e){}
+    wishes.unshift(value);
+    try{localStorage.setItem(wishKey,JSON.stringify(wishes.slice(0,12)));}catch(e){}
+    input.value='';
+    loadWishes();
+    showToast('这条愿望已经被好好收藏啦 ♡');
+  });
+}
 loadWishes();
 function initializeBirthdayFlow(){
   if(birthdayPasswordVerified){
