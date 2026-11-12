@@ -876,7 +876,7 @@ function renderQuiz(){
   const solved=gameState.gateCorrect.includes(questionIndex),attempts=questionAttempts[questionIndex]||0;
   $('#quizProgress').textContent='QUESTION '+String(questionIndex+1).padStart(2,'0')+' / 05 · 剩余 '+(solved?0:3-attempts)+' 次机会';
   $('#quizQuestion').textContent=q.q;$('#quizFeedback').textContent=solved?'这道题已经答对啦 ♡':'记得答案的话，就写下来吧 ♡（每题有三次机会）';
-  $('#nextQuestion').hidden=!solved;$('#nextQuestion').textContent=questionIndex===quizData.length-1?'查看答题结果':'下一题';$('#prevQuestion').hidden=questionIndex===0;
+  $('#nextQuestion').hidden=false;$('#nextQuestion').textContent=questionIndex===quizData.length-1?'查看答题结果':'下一题';$('#prevQuestion').hidden=questionIndex===0;
   $('#quizOptions').innerHTML='';
   const row=document.createElement('div');row.className='quiz-answer-row';
   const input=document.createElement('input');input.className='quiz-answer-input';input.type='text';input.autocomplete='off';input.placeholder=q.hint;input.setAttribute('aria-label',q.hint);
