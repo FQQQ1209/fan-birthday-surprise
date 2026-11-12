@@ -343,7 +343,7 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
 
 
 /* Birthday blessing floats down like a soft paper confetti */
-.falling-blessing{position:fixed;top:-110px;left:50%;z-index:79;pointer-events:none;transform:translateX(-50%);width:max-content;max-width:calc(100vw - 34px);padding:8px 12px;border:0;border-radius:0;background:transparent;color:#89685b;text-align:center;box-shadow:none;font-family:"Kaiti SC","STKaiti","KaiTi","Noto Serif SC",serif;font-size:clamp(14px,3.5vw,18px);letter-spacing:.08em;line-height:1.7;text-shadow:0 1px 9px #fff8edaa;animation:blessingDrift 6.8s cubic-bezier(.2,.65,.35,1) forwards}
+.falling-blessing{position:fixed;top:-110px;left:50%;z-index:79;pointer-events:none;transform:translateX(-50%);width:max-content;max-width:calc(100vw - 34px);padding:8px 12px;border:0;border-radius:0;background:transparent;color:#89685b;text-align:center;box-shadow:none;font-family:"Kaiti SC","STKaiti","KaiTi","Noto Serif SC",serif;font-size:clamp(14px,3.5vw,18px);letter-spacing:.08em;line-height:1.7;text-shadow:0 1px 9px #fff8edaa;animation:blessingDrift 3.5s cubic-bezier(.2,.65,.35,1) forwards}
 .falling-blessing:before{content:none}
 .falling-star{position:fixed;top:-35px;z-index:78;pointer-events:none;color:#d9ad75;text-shadow:0 0 10px #fff0c9,0 0 18px #e9c994;font-family:Georgia,serif;animation:starDrift linear forwards}
 @keyframes starDrift{0%{transform:translate3d(0,-10px,0) rotate(0) scale(.65);opacity:0}12%{opacity:.95}55%{transform:translate3d(var(--sway),52vh,0) rotate(150deg) scale(1.15);opacity:.9}100%{transform:translate3d(calc(var(--sway) * -0.5),110vh,0) rotate(320deg) scale(.5);opacity:0}}
@@ -773,7 +773,7 @@ function dropBirthdayBlessing(){
     note.style.left=(index===0?42:58)+'%';
     note.style.animationDelay=(index*.65)+'s';
     document.body.appendChild(note);
-    setTimeout(()=>note.remove(),7800+index*650);
+    setTimeout(()=>note.remove(),4200+index*650);
   });
   const stars=['✦','✧','⋆','✩','☆'];
   for(let i=0;i<30;i++){
