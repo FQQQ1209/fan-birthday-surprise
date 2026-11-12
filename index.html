@@ -941,9 +941,12 @@ const gachaPrizes=[
   {title:'岁序常安',message:'澄光徐往，歲序皆安。愿新一岁温柔、自在、明亮。'}
 ];
 $('#spinGacha').addEventListener('click',()=>{
+  const collected=new Set((Array.isArray(gameState.prizes)?gameState.prizes:[]).map(item=>item&&item.title).filter(Boolean));
+  const available=gachaPrizes.filter(item=>!collected.has(item.title));
+  if(!available.length){$('#gachaResult').textContent='六颗专属彩蛋已经全部收集齐啦！每一颗都是独一无二的 ♡';$('#spinGacha').disabled=true;$('#spinGacha').textContent='♡ 已集齐全部彩蛋';return;}
   if(gameState.coins<10){$('#gachaResult').textContent='金币还差一点点哦。答对上面的小问题，就能再赚金币 ♡';return;}
   gameState.coins-=10;
-  const prize=gachaPrizes[Math.floor(Math.random()*gachaPrizes.length)];
+  const prize=available[Math.floor(Math.random()*available.length)];
   gameState.prizes.push(prize);saveGame();renderWallet();renderInventory();
   const machine=$('#gachaMachine');machine.classList.remove('spinning');void machine.offsetWidth;machine.classList.add('spinning');
   $('#spinGacha').disabled=true;$('#spinGacha').textContent='扭蛋正在转动…';
