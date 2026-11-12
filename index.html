@@ -419,7 +419,7 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
 .capsule:nth-child(5){right:48px;top:46px;background:linear-gradient(145deg,#a9d5d0 0 48%,#effaf5 49%);border-color:#8dbeb7}
 .gacha-base{width:230px;max-width:80vw;height:92px;margin:-4px auto 0;border-radius:18px 18px 24px 24px;background:linear-gradient(145deg,#f0d7c4,#d6ad94);border:1px solid #d3ad96;box-shadow:0 12px 22px #80654c20;position:relative;padding-top:12px}
 .gacha-brand{font:12px Georgia,serif;letter-spacing:.16em;color:#fff8ed}
-.gacha-knob{width:44px;height:44px;margin:7px auto 0;border-radius:50%;background:linear-gradient(145deg,#fff4df,#c48f77);border:4px solid #fff0df;box-shadow:0 3px 8px #8d625044}
+.gacha-knob{width:44px;height:44px;margin:7px auto 0;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#fff4df,#c48f77);border:4px solid #fff0df;box-shadow:0 3px 8px #8d625044;color:#8d5e4d;font:bold 20px Georgia,serif;text-shadow:0 1px 0 #fff9ef}
 .gacha-machine.spinning{animation:gachaBodyWiggle .18s ease-in-out 8;transform-origin:50% 85%}
 .gacha-machine.spinning .gacha-globe{animation:gachaShake 1.4s cubic-bezier(.36,.07,.19,.97) both}
 .gacha-machine.spinning .gacha-knob{animation:gachaKnobTurn 1.4s cubic-bezier(.2,.8,.2,1)}
@@ -457,7 +457,7 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
     </div>
     <p class="countdown-note" id="countdownNote">2026 · 12 · 09　00:00　♡　</p>
     <button class="primary" id="enterGames">提前进入游戏 ♡</button>
-    <button class="countdown-return-button" id="returnToQuiz" type="button" hidden>← 回到答题页面 ♡</button>
+    <button class="countdown-return-button" id="returnToQuiz" type="button" hidden>← 回到最初的倒计时页面 ♡</button>
   </div>
 </section>
 
@@ -491,7 +491,7 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
         <div class="gacha-globe">
           <span class="capsule"></span><span class="capsule"></span><span class="capsule"></span><span class="capsule"></span><span class="capsule"></span>
         </div>
-        <div class="gacha-base"><div class="gacha-brand">FAN'S LUCKY GACHA</div><div class="gacha-knob"></div></div>
+        <div class="gacha-base"><div class="gacha-brand">FAN'S LUCKY GACHA</div><div class="gacha-knob" aria-label="Q">Q</div></div>
       </div>
       <p class="game-description">可选小游戏 · 每次消耗 10 枚金币 · 不影响答题通关</p>
       <button class="primary" id="spinGacha">🪙 花 10 金币扭一次</button>
@@ -913,10 +913,10 @@ function showBirthdayEnvelope(){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 $('#returnToQuiz').addEventListener('click',()=>{
-  questionIndex=0;
-  $('#countdownScreen').style.display='none';
-  $('#gameScreen').style.display='grid';
-  renderWallet();renderQuiz();renderInventory();
+  birthdayPasswordVerified=false;
+  $('#gameScreen').style.display='none';
+  $('#countdownScreen').style.display='grid';
+  updateCountdown();
   window.scrollTo({top:0,behavior:'smooth'});
 });
 $('#enterGames').addEventListener('click',()=>{
