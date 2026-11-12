@@ -107,17 +107,19 @@ main{display:none}
 .fate-intro .fate-symbol{display:inline-grid;place-items:center;width:58px;height:58px;border:1px solid #d9aaa0;border-radius:50%;color:#a94f55;font:32px Georgia,serif;background:radial-gradient(circle,#fffaf4 0 52%,#f4e2d8 100%);box-shadow:0 0 0 7px #f8eee5,0 8px 24px #9e5a5420;animation:fatePulse 3.2s ease-in-out infinite}
 .fate-intro p{margin:13px auto 0;font-size:12px;line-height:2;letter-spacing:.08em;color:#aa8b7e}
 .fate-intro strong{display:block;margin-top:7px;font:italic 13px Georgia,serif;letter-spacing:.16em;color:#a75e5b}
-.love-timeline{max-width:900px;margin:0 auto;padding:10px 22px 85px;position:relative}
+.love-timeline{max-width:900px;margin:0 auto;padding:10px 22px 85px;position:relative;isolation:isolate}
 .love-timeline:before{content:"";position:absolute;left:50%;top:0;bottom:45px;width:3px;transform:translateX(-50%);border-radius:99px;background:linear-gradient(180deg,transparent 0%,#d9a49a 9%,#b85f63 35%,#d9a49a 68%,#b85f63 90%,transparent 100%);box-shadow:0 0 12px #c77d7838;animation:threadGlow 4.5s ease-in-out infinite}
-.love-event:after{content:"∞";position:absolute;right:-14px;top:27px;width:28px;height:28px;border:1px solid #d9aaa0;border-radius:50%;background:#fff8f0;color:#a94f55;text-align:center;line-height:25px;font:20px/25px Georgia,serif;box-shadow:0 0 0 5px var(--cream),0 3px 10px #9e5a5420;z-index:2}
-.love-event:nth-child(even):after{left:-14px;right:auto}
-@keyframes threadGlow{0%,100%{filter:drop-shadow(0 0 2px #c77d7840);opacity:.78}50%{filter:drop-shadow(0 0 8px #b85f6380);opacity:1}}
-@keyframes fatePulse{0%,100%{transform:scale(1);box-shadow:0 0 0 7px #f8eee5,0 8px 24px #9e5a5420}50%{transform:scale(1.06);box-shadow:0 0 0 10px #f8eee5,0 8px 30px #9e5a5440}}
-.love-event{width:50%;padding:20px 48px 36px 0;position:relative;opacity:0;transform:translateY(35px);transition:.8s}
+.love-event{width:50%;padding:20px 48px 36px 0;position:relative;opacity:0;transform:translateY(35px);transition:opacity .8s,transform .8s}
 .love-event:nth-child(even){margin-left:50%;padding:20px 0 36px 48px}
 .love-event.visible{opacity:1;transform:none}
-.love-event:after{content:"♡";position:absolute;right:-12px;top:29px;width:24px;height:24px;border-radius:50%;background:var(--cream);color:var(--rose);text-align:center;line-height:24px;font-size:17px}
-.love-event:nth-child(even):after{left:-12px;right:auto}
+.love-event:before{content:"";position:absolute;z-index:0;right:-58px;top:31px;width:116px;height:48px;border:2px solid transparent;border-top-color:#bd7777;border-radius:50%;transform:rotate(13deg);filter:drop-shadow(0 0 4px #c77d7866);animation:threadSway 5s ease-in-out infinite;pointer-events:none}
+.love-event:nth-child(even):before{right:auto;left:-58px;transform:scaleX(-1) rotate(13deg);animation-delay:-2.5s}
+.love-event:after{content:"♡";position:absolute;z-index:2;right:-13px;top:25px;width:26px;height:26px;border:1px solid #d9aaa0;border-radius:50%;background:#fff8f0;color:#a94f55;text-align:center;line-height:24px;font:19px/24px Georgia,serif;box-shadow:0 0 0 5px var(--cream),0 3px 10px #9e5a5420}
+.love-event:nth-child(even):after{left:-13px;right:auto}
+.love-event .memory-card{position:relative;z-index:1}
+@keyframes threadGlow{0%,100%{filter:drop-shadow(0 0 2px #c77d7840);opacity:.78}50%{filter:drop-shadow(0 0 8px #b85f6380);opacity:1}}
+@keyframes threadSway{0%,100%{filter:drop-shadow(0 0 3px #c77d7840);opacity:.72}50%{filter:drop-shadow(0 0 8px #b85f6380);opacity:1}}
+@keyframes fatePulse{0%,100%{transform:scale(1);box-shadow:0 0 0 7px #f8eee5,0 8px 24px #9e5a5420}50%{transform:scale(1.06);box-shadow:0 0 0 10px #f8eee5,0 8px 30px #9e5a5440}}
 .memory-card{width:100%;text-align:left;border:1px solid #eee0d2;background:var(--paper);border-radius:19px;padding:13px;box-shadow:0 10px 28px #80654c0d;transition:.25s;color:inherit}
 .memory-card:hover,.memory-card[aria-expanded="true"]{transform:translateY(-4px);box-shadow:var(--shadow);border-color:#dfc5ae}
 .memory-photo{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;background:linear-gradient(135deg,#eadbca,#f8efe5);display:block}
@@ -201,6 +203,8 @@ main{display:none}
  .scene-visual{height:205px}
  .love-event,.love-event:nth-child(even){width:100%;margin-left:0;padding:12px 0 25px 24px}
  .love-event:after,.love-event:nth-child(even):after{left:-26px;right:auto;top:22px}
+ .love-event:before,.love-event:nth-child(even):before{left:-13px;right:auto;top:24px;width:82px;height:38px;transform:rotate(12deg);animation-duration:5.5s}
+ .love-event:nth-child(even):before{transform:rotate(12deg);animation-delay:-2.5s}
  .section-head{padding-top:65px}
  .scene-caption h3{font-size:22px}
  .gifts{grid-template-columns:1fr;max-width:340px}
