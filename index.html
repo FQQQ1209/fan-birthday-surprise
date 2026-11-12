@@ -341,6 +341,13 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
 .birthday-wish{font-family:Georgia,"Noto Serif SC","Songti SC",serif;font-size:10px;letter-spacing:.18em;color:#b49a80;margin-top:20px}
 @media(max-width:480px){.flip-wrap{height:275px}.birthday-gift-drawing{width:125px;height:112px}.birthday-script:before,.birthday-script:after{width:18px;margin-left:5px;margin-right:5px}.birthday-wish{font-size:9px;letter-spacing:.08em}}
 
+
+/* Birthday blessing floats down like a soft paper confetti */
+.falling-blessing{position:fixed;top:-110px;left:50%;z-index:79;pointer-events:none;transform:translateX(-50%);width:max-content;max-width:calc(100vw - 34px);padding:13px 22px 14px;border:1px solid #ead1bd;border-radius:4px 4px 15px 15px;background:linear-gradient(145deg,#fffaf1,#f4e3d4);color:#89685b;text-align:center;box-shadow:0 8px 24px #60483224;font-family:"Kaiti SC","STKaiti","KaiTi","Noto Serif SC",serif;font-size:clamp(14px,3.5vw,18px);letter-spacing:.08em;line-height:1.7;animation:blessingDrift 6.8s cubic-bezier(.2,.65,.35,1) forwards}
+.falling-blessing:before{content:"✧  ♡  ✧";display:block;color:#d4a18f;font:13px Georgia,serif;letter-spacing:.45em;margin-bottom:3px}
+@keyframes blessingDrift{0%{top:-115px;opacity:0;transform:translateX(-50%) rotate(-5deg)}10%{opacity:1}35%{transform:translateX(calc(-50% + 22px)) rotate(3deg)}65%{transform:translateX(calc(-50% - 18px)) rotate(-2deg)}88%{opacity:1}100%{top:calc(100vh + 35px);opacity:0;transform:translateX(calc(-50% + 12px)) rotate(5deg)}}
+@media(prefers-reduced-motion:reduce){.falling-blessing{animation-duration:2s}}
+
 </style>
 </head>
 <body class="grain">
@@ -753,6 +760,19 @@ function launchFireworks(){
   }
   requestAnimationFrame(frame);
 }
+
+function dropBirthdayBlessing(){
+  const messages=['愿你的愿望都能慢慢实现。','生日快乐，宝宝 ♡'];
+  messages.forEach((message,index)=>{
+    const note=document.createElement('div');
+    note.className='falling-blessing';
+    note.textContent=message;
+    note.style.left=(index===0?42:58)+'%';
+    note.style.animationDelay=(index*.65)+'s';
+    document.body.appendChild(note);
+    setTimeout(()=>note.remove(),7800+index*650);
+  });
+}
 function celebrate(){
   const symbols=['♡','✦','🌸','✨','🎉'];
   for(let i=0;i<46;i++){
@@ -772,7 +792,7 @@ $('#blowBtn').addEventListener('click',()=>{
   stage.classList.add('blown');
   $('#blowBtn').hidden=true;
   $('#relightBtn').hidden=false;
-  showToast('愿你的愿望都能慢慢实现。生日快乐，宝宝 ♡');
+  dropBirthdayBlessing();
   celebrate();
   launchFireworks();
 });
