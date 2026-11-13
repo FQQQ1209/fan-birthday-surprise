@@ -375,6 +375,9 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
 .countdown-envelope-shortcut{display:block;margin:13px auto 0;padding:11px 20px;border:1px solid #dfc9b7;border-radius:999px;background:#fffaf4;color:#98776b;font:13px "Kaiti SC","STKaiti","KaiTi",serif;letter-spacing:.06em;cursor:pointer;transition:background .2s,transform .2s}
 .countdown-envelope-shortcut:hover{background:#fff;transform:translateY(-2px)}
 .countdown-envelope-shortcut:active{transform:scale(.98)}
+.countdown-quiz-shortcut{display:block;margin:10px auto 0;padding:11px 20px;border:1px solid #e7cfc0;border-radius:999px;background:#f8eee8;color:#98776b;font:13px "Kaiti SC","STKaiti","KaiTi",serif;letter-spacing:.06em;cursor:pointer;transition:background .2s,transform .2s}
+.countdown-quiz-shortcut:hover{background:#fff8f2;transform:translateY(-2px)}
+.countdown-quiz-shortcut:active{transform:scale(.98)}
 
 .countdown-screen,.game-screen{min-height:100svh;padding:48px 20px;display:grid;place-items:center;text-align:center;background:radial-gradient(ellipse at 50% 28%,#fffaf4 0,#f7eee4 58%,#eddfd1 100%);position:relative;overflow:hidden}
 .countdown-panel,.game-panel{width:min(720px,100%);padding:clamp(25px,5vw,48px);border:1px solid #ead8c7;border-radius:28px;background:#fffaf4df;box-shadow:var(--shadow);position:relative;z-index:1}
@@ -491,6 +494,7 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
     <p class="countdown-note" id="countdownNote">2026 · 12 · 09　00:00　♡　</p>
     <button class="primary" id="enterGames">提前进入游戏 ♡</button>
     <button class="countdown-envelope-shortcut" id="goToEnvelope" type="button">直接打开生日信封 ♡</button>
+    <button class="countdown-quiz-shortcut" id="goToQuiz" type="button">直接进入答题环节 ♡</button>
     <button class="countdown-return-button" id="returnToQuiz" type="button" hidden>← 回到最初的倒计时页面 ♡</button>
   </div>
 </section>
@@ -1282,6 +1286,15 @@ $('#seasonNext').addEventListener('click',()=>{
 });
 seasonStartLoop();
 $('#goToEnvelope').addEventListener('click',()=>{showBirthdayEnvelope();});
+$('#goToQuiz').addEventListener('click',()=>{
+  $('#countdownScreen').style.display='none';
+  $('#seasonGameScreen').style.display='none';
+  $('#gameScreen').style.display='grid';
+  renderWallet();
+  renderQuiz();
+  renderInventory();
+  window.scrollTo({top:0,behavior:'smooth'});
+});
 
 function showBirthdayEnvelope(){
   $('#countdownScreen').style.display='none';
