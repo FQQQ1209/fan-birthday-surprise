@@ -1053,11 +1053,11 @@ function drawSeasonScene(){
   c.fillStyle='#fff';c.beginPath();c.arc(bx,by,13,0,Math.PI*2);c.fill();c.strokeStyle='#c8dce0';c.lineWidth=2;c.stroke();
   c.fillStyle='#dce8ec';c.fillRect(bx-8,by-2,16,4);
  }
- drawSeasonPerson(seasonPlayer.x,seasonPlayer.y,seasonStageIndex===4,-3);
- if(seasonStageIndex===4)drawSeasonPerson(seasonPlayer.x,seasonPlayer.y,true,15);
+ drawSeasonPerson(seasonPlayer.x,seasonPlayer.y,false,seasonStageIndex===4?-17:2);
+ if(seasonStageIndex===4)drawSeasonPerson(seasonPlayer.x,seasonPlayer.y,true,7);
 }
 function moveSeasonPlayer(dx,dy){
- if($('#seasonGameScreen').style.display!=='grid'||!$('#seasonNext').hidden===false)return;
+ if($('#seasonGameScreen').style.display!=='grid'||!$('#seasonNext').hidden)return;
  const nx=Math.max(0,Math.min(14,seasonPlayer.x+dx)),ny=Math.max(0,Math.min(9,seasonPlayer.y+dy));
  if(nx===seasonPlayer.x&&ny===seasonPlayer.y)return;
  seasonDirection={x:dx,y:dy};seasonPlayer={x:nx,y:ny};
