@@ -974,7 +974,7 @@ const seasonStages=[
  {name:'春日郊游日记',subtitle:'春天来了，小男孩沿着另一个字母 A 去踏青。每走过一处，沉睡的郁金香就会悄悄绽放。',season:'SPRING',route:'A',task:'让郁金香全部盛开',start:{x:2,y:9},items:[[3,8],[5,6],[7,2],[9,5],[12,8]],kind:'tulip',instruction:'沿着 A 字小路散步，让 5 朵郁金香一朵一朵开出来。'},
  {name:'夏日西瓜收集队',subtitle:'阳光正好！沿着字母 I 的路线走进夏日田野，把藏在绿荫里的西瓜带回家。',season:'SUMMER',route:'I',task:'收集夏日大西瓜',start:{x:7,y:9},items:[[7,7],[7,6],[7,4],[7,3],[7,2]],kind:'watermelon',instruction:'小男孩出发去捡西瓜啦！找到田野里的 5 个大西瓜。'},
  {name:'秋日苹果园',subtitle:'沿着字母 F 走进红彤彤的苹果园。枝头和草丛里都藏着甜甜的果实。',season:'AUTUMN',route:'F',task:'摘下苹果园的果实',start:{x:2,y:9},items:[[3,8],[3,5],[6,2],[9,2],[8,5],[3,3]],kind:'apple',instruction:'穿过苹果园，找到 6 颗红苹果，装满小篮子吧。'},
- {name:'又一年冬天',subtitle:'又一年冬天到了。这一次，不再是一个人。女孩和男孩并肩走过雪地，慢慢留下一个完整的爱心。',season:'WINTER',route:'♡',task:'一起走完爱心雪地',start:{x:2,y:8},items:[[4,2],[5,1],[6,2],[7,3],[8,2],[9,1],[10,2],[11,3],[10,4],[9,5],[8,6],[7,7],[6,6],[5,5],[4,4]],kind:'heart',instruction:'牵起手，沿着雪地里的爱心脚印走一圈。把这颗心完整地走出来吧。'}
+ {name:'又一年冬天',subtitle:'从爱心的最底端出发，女孩和男孩沿着两侧慢慢走向彼此，在爱心顶端相遇。然后一起躺进雪地，抬头看一场只属于你们的烟花。',season:'WINTER',route:'♡',task:'一起看完这场冬日烟花',start:{x:7,y:8},items:[[4,2],[5,1],[6,2],[7,3],[8,2],[9,1],[10,2],[11,3],[10,4],[9,5],[8,6],[7,7],[6,6],[5,5],[4,4]],kind:'heart',instruction:'这一段，不用操作啦。看着他们从爱心底部出发，走向彼此吧 ♡'}
 ];
 const seasonRoutes={
  A:[[2,9],[3,8],[4,7],[5,6],[6,5],[7,4],[7,3],[7,2],[8,3],[8,4],[9,5],[10,6],[11,7],[12,8],[13,9],[5,6],[6,6],[7,6],[8,6],[9,6]],
@@ -983,16 +983,82 @@ const seasonRoutes={
  '♡':[[4,2],[5,1],[6,2],[7,3],[8,2],[9,1],[10,2],[11,3],[10,4],[9,5],[8,6],[7,7],[6,6],[5,5],[4,4]]
 };
 let seasonStageIndex=0,seasonPlayer={x:2,y:9},seasonDirection={x:0,y:-1},seasonCollected=new Set();
+let seasonAnimationStartedAt=0,seasonAnimationRaf=0;
 const seasonCanvas=$('#seasonCanvas'),seasonCtx=seasonCanvas.getContext('2d'),SEASON_CELL=40;
 function resetSeasonGame(){seasonStageIndex=0;seasonCollected=new Set();seasonPlayer={...seasonStages[0].start};seasonDirection={x:0,y:-1};renderSeasonStage();}
 function showSeasonGame(){ $('#gameScreen').style.display='none';$('#countdownScreen').style.display='none';$('#seasonGameScreen').style.display='grid';renderSeasonStage();window.scrollTo({top:0,behavior:'smooth'});}
 function renderSeasonStage(){
+ if(seasonAnimationRaf)cancelAnimationFrame(seasonAnimationRaf);seasonAnimationRaf=0;
  const st=seasonStages[seasonStageIndex];seasonCollected=new Set();seasonPlayer={...st.start};seasonDirection={x:0,y:-1};
  $('#seasonTitle').textContent=st.name;$('#seasonSubtitle').textContent=st.subtitle;
  $('#seasonStageLabel').textContent=st.season+' · '+String(seasonStageIndex+1).padStart(2,'0')+' / 05';
  $('#seasonRouteLabel').textContent='路线 '+st.route;$('#seasonProgress').textContent=st.task+' 0 / '+st.items.length;
  $('#seasonInstruction').textContent=st.instruction;$('#seasonNext').hidden=true;
- drawSeasonScene();
+ document.querySelector('.season-controls').style.display=seasonStageIndex===4?'none':'flex';
+ if(seasonStageIndex===4){seasonAnimationStartedAt=0;seasonAnimationRaf=requestAnimationFrame(drawFinalSeasonAnimation);}
+ else drawSeasonScene();
+}
+function drawFinalSeasonAnimation(now){
+ const c=seasonCtx,w=600,h=400;
+ if(!seasonAnimationStartedAt)seasonAnimationStartedAt=now;
+ const elapsed=(now-seasonAnimationStartedAt)/1000;
+ const clamp=v=>Math.max(0,Math.min(1,v));
+ const ease=v=>{v=clamp(v);return v*v*(3-2*v);};
+ c.clearRect(0,0,w,h);c.fillStyle='#dcecf0';c.fillRect(0,0,w,h);
+ for(let y=0;y<10;y++)for(let x=0;x<15;x++){c.fillStyle=(x+y)%2?'#eaf4f3':'#dcecf0';c.fillRect(x*40,y*40,40,40);}
+ for(let i=0;i<55;i++){const x=(i*83+19)%590,y=(i*47+13)%390;c.fillStyle='rgba(255,255,255,.8)';c.fillRect(x,y,3,3);}
+ for(let x=20;x<600;x+=120){c.fillStyle='#8cae9c';c.fillRect(x,30,8,28);c.fillStyle='#729a8a';c.fillRect(x-12,18,32,16);c.fillRect(x-7,9,22,12);}
+ // Heart-shaped snowy trail
+ c.save();c.lineCap='round';c.lineJoin='round';c.strokeStyle='rgba(255,255,255,.96)';c.lineWidth=23;
+ c.beginPath();c.moveTo(300,350);c.bezierCurveTo(245,300,105,205,145,125);c.bezierCurveTo(180,55,260,92,300,145);c.stroke();
+ c.beginPath();c.moveTo(300,350);c.bezierCurveTo(355,300,495,205,455,125);c.bezierCurveTo(420,55,340,92,300,145);c.stroke();c.restore();
+ const walk=ease(elapsed/6.2);
+ const point=(side,t)=>{
+  const left=side==='left',p0={x:300,y:350},p1={x:left?245:355,y:300},p2={x:left?105:495,y:205},p3={x:left?145:455,y:125},p4={x:300,y:145};
+  const q=t<.55?t/.55:(t-.55)/.45,a=t<.55?p0:p2,b=t<.55?p1:p3,d=t<.55?p2:p4,u=1-q;
+  return {x:u*u*a.x+2*u*q*b.x+q*q*d.x,y:u*u*a.y+2*u*q*b.y+q*q*d.y};
+ };
+ const left=point('left',walk),right=point('right',walk);
+ if(elapsed<6.2){
+  drawSeasonPerson(left.x/40-.5,left.y/40-.5,true,-3);
+  drawSeasonPerson(right.x/40-.5,right.y/40-.5,false,3);
+ }else{
+  const together=ease((elapsed-6.2)/2.2),cy=145+125*together;
+  if(elapsed<8.4){
+   drawSeasonPerson(7,cy/40-.5,true,-18);drawSeasonPerson(7,cy/40-.5,false,18);
+  }else{
+   c.save();c.translate(300,270);c.rotate(-.02);
+   const lying=(x,girl)=>{
+    c.fillStyle='rgba(76,82,57,.18)';c.fillRect(x-28,12,56,5);
+    c.fillStyle=girl?'#d98e9a':'#6d91a5';c.fillRect(x-7,-12,14,39);
+    c.fillStyle=girl?'#a45b68':'#506c82';c.fillRect(x-6,24,5,10);c.fillRect(x+2,24,5,10);
+    c.fillStyle='#f4c9a5';c.fillRect(x-9,-25,18,16);
+    c.fillStyle=girl?'#67434a':'#654a35';c.fillRect(x-11,-29,22,8);c.fillRect(x-13,-23,5,15);
+    c.fillStyle='#49352f';c.fillRect(x-5,-19,2,2);c.fillRect(x+4,-19,2,2);
+   };
+   lying(-19,true);lying(19,false);c.restore();
+   if(elapsed>9.5){
+    const t=elapsed-9.5,bursts=[{x:115,y:85,p:0},{x:485,y:75,p:1.1},{x:300,y:48,p:2.2},{x:205,y:135,p:3.1},{x:405,y:145,p:4.2}];
+    bursts.forEach((b,bi)=>{
+     const phase=(t*1.15+b.p)%2.4,radius=8+Math.min(1,phase/.55)*34;
+     if(phase<1.35)for(let k=0;k<12;k++){
+      const a=k*Math.PI/6+bi*.17;c.globalAlpha=1-phase/1.35;c.fillStyle=['#f4d27c','#eaa5a8','#b8c9e7','#f8f1d9'][k%4];
+      c.beginPath();c.arc(b.x+Math.cos(a)*radius,b.y+Math.sin(a)*radius,2.8,0,Math.PI*2);c.fill();
+     }
+    });
+    c.globalAlpha=1;c.textAlign='center';c.font='20px Georgia,serif';c.fillStyle='rgba(255,255,255,.95)';c.fillText('✦  our little forever  ✦',300,35);
+   }
+  }
+ }
+ if(elapsed<14){
+  $('#seasonProgress').textContent=elapsed<6.2?'从爱心底部，走向两侧……':elapsed<8.4?'在爱心的顶端相遇 ♡':elapsed<9.6?'一起躺进柔软的雪地……':'烟花为你们绽放 ✨';
+  seasonAnimationRaf=requestAnimationFrame(drawFinalSeasonAnimation);
+ }else{
+  $('#seasonProgress').textContent='这一年的冬天，也有你在身边 ♡';
+  $('#seasonInstruction').textContent='走过四季，绕了一大圈，最后还是和你一起躺在雪地里看烟花。愿以后的每一个冬天，我们都在彼此身边。♡';
+  $('#seasonNext').hidden=false;$('#seasonNext').textContent='开启回忆答题 ♡';
+  seasonCollected=new Set(seasonStages[4].items.map((_,i)=>i));seasonAnimationRaf=0;
+ }
 }
 function drawSeasonPerson(px,py,girl=false,offset=0){
  const x=px*SEASON_CELL+offset,y=py*SEASON_CELL;
@@ -1057,7 +1123,7 @@ function drawSeasonScene(){
  if(seasonStageIndex===4)drawSeasonPerson(seasonPlayer.x,seasonPlayer.y,true,7);
 }
 function moveSeasonPlayer(dx,dy){
- if($('#seasonGameScreen').style.display!=='grid'||!$('#seasonNext').hidden)return;
+ if(seasonStageIndex===4||$('#seasonGameScreen').style.display!=='grid'||!$('#seasonNext').hidden)return;
  const nx=Math.max(0,Math.min(14,seasonPlayer.x+dx)),ny=Math.max(0,Math.min(9,seasonPlayer.y+dy));
  if(nx===seasonPlayer.x&&ny===seasonPlayer.y)return;
  seasonDirection={x:dx,y:dy};seasonPlayer={x:nx,y:ny};
