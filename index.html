@@ -1149,16 +1149,18 @@ function seasonTree(c,x,y,kind,scale=1){
 function seasonFlower(c,x,y,color){seasonRect(c,'#71945e',x,y,2,9);seasonRect(c,color,x-4,y-3,10,5);seasonRect(c,'#f6df9c',x-1,y-2,3,3);}
 function seasonFence(c,x,y,w,snow=false){seasonRect(c,'#9c805c',x,y,w,4);seasonRect(c,'#d0b48a',x,y-3,w,3);for(let px=x;px<=x+w;px+=22){seasonRect(c,'#8e7453',px,y-12,5,16);seasonRect(c,'#d8c49d',px+1,y-12,2,13);if(snow)seasonRect(c,'#fffdf5',px-1,y-15,7,3);}}
 function seasonScenery(c,index){
- const base=[['#a8c985','#b8d694','#8eb375'],['#99c88a','#add897','#80b577'],['#c2bf7d','#d3ce8c','#aaa56a'],['#e2ebde','#f2f5e9','#c6d7d0']][index];
+ const base=[['#eaf3f4','#f8fcfb','#d7e7eb'],['#99c88a','#add897','#80b577'],['#c2bf7d','#d3ce8c','#aaa56a'],['#e2ebde','#f2f5e9','#c6d7d0']][index];
  seasonRect(c,base[0],0,0,SEASON_WORLD.width,SEASON_WORLD.height);
  let seed=738+index*57;const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
- for(let i=0;i<2600;i++){const x=rand()*900,y=rand()*600;seasonRect(c,i%3?base[1]:base[2],x,y,1+rand()*3,1);}
+ for(let i=0;i<2600;i++){const x=rand()*900,y=rand()*600;seasonRect(c,i%3?base[1]:base[2],x,y,index===0?2+rand()*4:1+rand()*3,index===0?2+rand()*2:1);}
  for(let i=0;i<26;i++)seasonTree(c,i*37-8,35+rand()*12,index,i%4===0?.9:1);
  seasonFence(c,90,150,125,index===0||index===3);seasonFence(c,680,138,125,index===0||index===3);
  seasonFence(c,85,470,130,index===0||index===3);seasonFence(c,680,470,130,index===0||index===3);
+ if(index===0){for(let i=0;i<34;i++){const x=rand()*900,y=rand()*600;seasonOval(c,'rgba(255,255,255,.72)',x,y,8+rand()*18,2+rand()*5);}seasonRect(c,'rgba(255,255,255,.48)',0,0,900,600);}
  // Cottage, windows and warm doorway
  seasonRect(c,'#b8a07b',690,190,105,76);seasonRect(c,'#f0d9aa',698,198,89,63);seasonRect(c,'#b87970',680,192,126,15);
- for(let i=0;i<9;i++)seasonRect(c,i%2?'#a96f68':'#c58c78',690+i*12,184-i*3,14,6);
+ for(let i=0;i<9;i++)seasonRect(c,index===0?'#fdfefe':i%2?'#a96f68':'#c58c78',690+i*12,184-i*3,14,6);
+ if(index===0){seasonRect(c,'#fff',674,179,137,7);seasonRect(c,'#d9e8ed',684,186,119,3);}
  seasonRect(c,'#8c6b53',744,224,22,39);seasonRect(c,'#f3d58f',749,231,12,26);
  seasonRect(c,'#a9c9c0',708,211,17,17);seasonRect(c,'#a9c9c0',773,211,17,17);
  seasonRect(c,'#f7e9c2',716,211,2,17);seasonRect(c,'#f7e9c2',781,211,2,17);
@@ -1173,7 +1175,7 @@ function seasonScenery(c,index){
   seasonRect(c,'#f4d57d',800,55,48,48);seasonOval(c,'#8fb36e',180,340,65,22);
   for(let i=0;i<50;i++){const x=rand()*900,y=rand()*600;seasonRect(c,i%2?'#dca45f':'#c77f59',x,y,3,3);}
  }
- for(let i=0;i<20;i++)seasonFlower(c,40+rand()*820,535+rand()*25,index===0||index===3?'#f5f3df':['#f1d6a4','#d997a0','#e0bdd2'][i%3]);
+ if(index!==0){for(let i=0;i<20;i++)seasonFlower(c,40+rand()*820,535+rand()*25,index===3?'#f5f3df':['#f1d6a4','#d997a0','#e0bdd2'][i%3]);}
 }
 function seasonCreateScenery(index){const canvas=document.createElement('canvas');canvas.width=SEASON_WORLD.width;canvas.height=SEASON_WORLD.height;const c=canvas.getContext('2d');c.imageSmoothingEnabled=false;seasonScenery(c,index);return canvas;}
 function drawSeasonPersonAt(c,x,y,girl,walking,time,facing=1){
@@ -1198,10 +1200,10 @@ function seasonCamera(){return{x:Math.max(0,Math.min(SEASON_WORLD.width-SEASON_V
 function drawSeasonScene(time=0){
  const c=seasonCtx,st=seasonStages[seasonStageIndex];if(!seasonJourney||seasonStageIndex===4)return;
  const cam=seasonCamera();c.clearRect(0,0,600,400);c.imageSmoothingEnabled=false;c.save();c.translate(-cam.x,-cam.y);c.drawImage(seasonBackground,0,0);
- const palette=[['#c8b585','#eddbad'],['#bba77d','#ead8ab'],['#bda07a','#edd8b0'],['#b7b4a2','#dbcfb3']][seasonStageIndex];
+ const palette=[['#b9d7e5','#eaf7fb'],['#bba77d','#ead8ab'],['#bda07a','#edd8b0'],['#b7b4a2','#dbcfb3']][seasonStageIndex];
  const glow=c.createRadialGradient(seasonPlayer.x,seasonPlayer.y,24,seasonPlayer.x,seasonPlayer.y,225);glow.addColorStop(0,palette[0]);glow.addColorStop(.52,palette[1]);glow.addColorStop(1,palette[1]+'00');
  seasonJourney.roads.forEach((road)=>{c.beginPath();c.moveTo(road[0].x,road[0].y);road.slice(1).forEach(p=>c.lineTo(p.x,p.y));c.lineCap='round';c.lineJoin='round';c.strokeStyle=glow;c.lineWidth=SEASON_ROAD_WIDTH+5;c.stroke();});
- const pathGlow=c.createRadialGradient(seasonPlayer.x,seasonPlayer.y,18,seasonPlayer.x,seasonPlayer.y,225);pathGlow.addColorStop(0,'#fff8e6');pathGlow.addColorStop(.58,'#f5e7c7');pathGlow.addColorStop(1,'#f5e7c700');
+ const pathGlow=c.createRadialGradient(seasonPlayer.x,seasonPlayer.y,18,seasonPlayer.x,seasonPlayer.y,225);pathGlow.addColorStop(0,'#fff8e6');pathGlow.addColorStop(.58,seasonStageIndex===0?'#e6f4f8':'#f5e7c7');pathGlow.addColorStop(1,'#f5e7c700');
  seasonJourney.roads.forEach(road=>{c.beginPath();c.moveTo(road[0].x,road[0].y);road.slice(1).forEach(p=>c.lineTo(p.x,p.y));c.lineCap='round';c.lineJoin='round';c.strokeStyle=pathGlow;c.lineWidth=SEASON_ROAD_WIDTH-5;c.stroke();});
  seasonJourney.branches.forEach(b=>{const end=b.points[b.points.length-1];if(Math.hypot(end.x-seasonPlayer.x,end.y-seasonPlayer.y)<220)seasonDrawObstacle(c,b);});
  seasonJourney.items.forEach((p,i)=>{if(seasonCollected.has(i)||Math.hypot(p.x-seasonPlayer.x,p.y-seasonPlayer.y)>225)return;const x=p.x,y=p.y-9-Math.sin(time/260+i)*2;
@@ -1216,6 +1218,19 @@ function drawSeasonScene(time=0){
  // Soft pixel motes near the lit path
  for(let i=0;i<9;i++){const x=(seasonPlayer.x-100+i*27+Math.sin(time/900+i)*8),y=(seasonPlayer.y-85+i*19+Math.cos(time/1100+i)*7);seasonRect(c,seasonStageIndex===3?'#e3ae70':seasonStageIndex===0?'#fffdf5':'#f4e8bb',x,y,2,2);}
  c.restore();
+ // Winter snowfall: layered flakes drift across the camera view continuously.
+ if(seasonStageIndex===0){
+  for(let i=0;i<105;i++){
+   const seed=i*127.1+19.7;
+   const x=((seed*17.3+Math.sin(time/1250+i*1.7)*18+time*(i%3===0?.012:.004))%620+620)%620-10;
+   const y=((seed*31.7+time*(i%4===0?.052:.026))%430+430)%430-12;
+   const size=i%11===0?3.2:i%4===0?2.2:1.35;
+   c.globalAlpha=i%5===0?.9:.62;c.fillStyle='#fff';
+   c.beginPath();c.arc(x,y,size,0,Math.PI*2);c.fill();
+   if(i%11===0){c.globalAlpha=.22;c.beginPath();c.arc(x,y,size*2.5,0,Math.PI*2);c.fill();}
+  }
+  c.globalAlpha=1;
+ }
  // Small HUD overlay follows the camera, keeping the play area legible.
  c.fillStyle='rgba(255,252,237,.82)';c.fillRect(12,12,152,29);c.fillStyle='#6e8060';c.font='12px Georgia,serif';c.textAlign='left';c.fillText('探索 '+seasonJourney.percent+'%  ·  钥匙 '+(seasonJourney.hasKey?'✓':'○'),22,31);
 }
