@@ -560,7 +560,19 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
 
 </section>
 
-
+<section class="cover" id="cover">
+  <div class="cover-inner">
+    <div class="eyebrow">A LITTLE WORLD MADE JUST FOR YOU</div>
+    <div class="heart">♡</div>
+    <button class="cover-envelope" id="start" type="button" aria-label="Open~">
+      <span class="envelope-back"></span>
+      <span class="envelope-paper"><span>Happy Birthday~</span></span>
+      <span class="envelope-front"></span>
+      <span class="envelope-flap"></span>
+      <span class="envelope-seal">♡</span>
+    </button>
+  </div>
+</section>
 
 <button class="music" id="musicBtn" aria-label="播放或暂停背景音乐" title="背景音乐">♫</button>
 <main id="main">
@@ -713,36 +725,7 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
     <p>给宝宝过的第一个生日，怎么可能马虎</p>
   </section>
 
-  <section class="letter">
-    <div class="eyebrow">A LETTER FOR YOU</div>
-    <h2>一张可以翻开的生日贺卡</h2>
-    <p style="color:var(--muted);line-height:1.9;font-size:13px">点一下卡片，看看里面藏着的话。</p>
-    <div class="flip-wrap">
-      <div class="flip-card" id="flipCard" role="button" tabindex="0" aria-label="翻开生日贺卡">
-        <div class="flip-face flip-front">
-          <div class="card-front-mark">♡</div>
-          <span>To my favorite boy</span>
-          <small>轻轻点开这张卡片</small>
-        </div>
-        <div class="flip-face flip-back">
-          <div class="open-card-art" aria-label="礼物盒与 Happy Birthday 手写字样">
-            <svg class="birthday-gift-drawing" viewBox="0 0 180 150" role="img" aria-hidden="true">
-              <g fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M48 54 Q90 51 132 54 L129 112 Q90 119 51 112 Z"/>
-                <path d="M44 49 Q90 45 136 49 L135 66 Q90 71 45 66 Z"/>
-                <path d="M88 50 L88 115 M99 50 L99 115"/>
-                <path d="M91 49 C65 42 58 23 70 22 C82 20 91 38 93 49 C96 35 111 18 119 25 C128 33 108 46 96 50"/>
-                <path d="M90 47 Q93 40 98 34"/>
-                <path d="M132 111 L151 111"/>
-              </g>
-            </svg>
-            <div class="birthday-script">Happy Birthday</div>
-            <div class="birthday-wish">愿你永远拥有奔向快乐的勇气</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  
 
   <section class="letter">
     <div class="eyebrow">OPEN YOUR PRESENT</div>
@@ -1297,17 +1280,9 @@ seasonStartLoop();
 function showBirthdayEnvelope(){
   $('#countdownScreen').style.display='none';
   $('#gameScreen').style.display='none';
-  $('#cover').style.display='none';
-  $('#main').style.display='block';
+  $('#cover').style.display='grid';
   $('#musicBtn').style.display='block';
-  launchFireworks();
-  const greeting=$('#introGreeting');
-  if(greeting){
-    setTimeout(()=>greeting.classList.add('show'),0);
-    setTimeout(()=>greeting.classList.remove('show'),3400);
-  }
   window.scrollTo({top:0,behavior:'smooth'});
-  observeScenes();
 }
 $('#returnToQuiz').addEventListener('click',()=>{
   birthdayPasswordVerified=false;
@@ -1381,7 +1356,22 @@ $('#unlockEnvelope').addEventListener('click',()=>{
 $('#finalPassword').addEventListener('keydown',e=>{if(e.key==='Enter')$('#unlockEnvelope').click();});
 
 
-// 已移除生日贺卡封面，生日时刻直接进入成长与恋爱故事。
+$('#start').addEventListener('click',()=>{
+  const envelope=$('#start');
+  if(envelope.dataset.opened==='true')return;
+  envelope.dataset.opened='true';
+  envelope.classList.add('opened');
+  launchFireworks();
+  const greeting=$('#introGreeting');
+  setTimeout(()=>greeting.classList.add('show'),0);
+  setTimeout(()=>greeting.classList.remove('show'),3400);
+  setTimeout(()=>{
+    $('#cover').style.display='none';
+    $('#main').style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+    observeScenes();
+  },4500);
+});
 function observeScenes(){
   const targets=[...document.querySelectorAll('.life-scene,.love-event')];
   if(!('IntersectionObserver' in window)){targets.forEach(el=>el.classList.add('visible'));return;}
@@ -1424,11 +1414,7 @@ $('#closeModal').addEventListener('click',closeModal);
 $('#modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal();});
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape')closeModal();
-  if((e.key==='Enter'||e.key===' ')&&document.activeElement.id==='flipCard')flipCard();
 });
-function flipCard(){$('#flipCard').classList.toggle('flipped');}
-$('#flipCard').addEventListener('click',flipCard);
-$('#flipCard').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();flipCard();}});
 $('#openLetter').addEventListener('click',()=>{
   const letter=$('#letterContent');
   letter.classList.toggle('open');
