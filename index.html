@@ -1057,7 +1057,7 @@ function drawFinalSeasonAnimation(now){
   $('#seasonProgress').textContent='这一年的冬天，也有你在身边 ♡';
   $('#seasonInstruction').textContent='走过四季，绕了一大圈，最后还是和你一起躺在雪地里看烟花。愿以后的每一个冬天，我们都在彼此身边。♡';
   $('#seasonNext').hidden=false;$('#seasonNext').textContent='开启回忆答题 ♡';
-  seasonCollected=new Set(seasonStages[4].items.map((_,i)=>i));seasonAnimationRaf=0;
+  seasonCollected=new Set(seasonStages[4].items.map((_,i)=>i));seasonAnimationRaf=requestAnimationFrame(drawFinalSeasonAnimation);
  }
 }
 function drawSeasonPerson(px,py,girl=false,offset=0){
