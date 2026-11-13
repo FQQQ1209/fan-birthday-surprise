@@ -372,9 +372,6 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
 @media(max-width:480px){.quiz-answer-row{flex-direction:column}.quiz-answer-submit{padding:13px}}
 
 #cover{display:none}#musicBtn{display:none}
-.countdown-envelope-shortcut{display:block;margin:13px auto 0;padding:11px 20px;border:1px solid #dfc9b7;border-radius:999px;background:#fffaf4;color:#98776b;font:13px "Kaiti SC","STKaiti","KaiTi",serif;letter-spacing:.06em;cursor:pointer;transition:background .2s,transform .2s}
-.countdown-envelope-shortcut:hover{background:#fff;transform:translateY(-2px)}
-.countdown-envelope-shortcut:active{transform:scale(.98)}
 .countdown-quiz-shortcut{display:block;margin:10px auto 0;padding:11px 20px;border:1px solid #e7cfc0;border-radius:999px;background:#f8eee8;color:#98776b;font:13px "Kaiti SC","STKaiti","KaiTi",serif;letter-spacing:.06em;cursor:pointer;transition:background .2s,transform .2s}
 .countdown-quiz-shortcut:hover{background:#fff8f2;transform:translateY(-2px)}
 .countdown-quiz-shortcut:active{transform:scale(.98)}
@@ -493,7 +490,6 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
     </div>
     <p class="countdown-note" id="countdownNote">2026 · 12 · 09　00:00　♡　</p>
     <button class="primary" id="enterGames">提前进入游戏 ♡</button>
-    <button class="countdown-envelope-shortcut" id="goToEnvelope" type="button">直接打开生日信封 ♡</button>
     <button class="countdown-quiz-shortcut" id="goToQuiz" type="button">直接进入答题环节 ♡</button>
     <button class="countdown-return-button" id="returnToQuiz" type="button" hidden>← 回到最初的倒计时页面 ♡</button>
   </div>
@@ -1285,7 +1281,6 @@ $('#seasonNext').addEventListener('click',()=>{
  $('#seasonGameScreen').style.display='none';$('#gameScreen').style.display='grid';renderWallet();renderQuiz();renderInventory();window.scrollTo({top:0,behavior:'smooth'});
 });
 seasonStartLoop();
-$('#goToEnvelope').addEventListener('click',()=>{showBirthdayEnvelope();});
 $('#goToQuiz').addEventListener('click',()=>{
   $('#countdownScreen').style.display='none';
   $('#seasonGameScreen').style.display='none';
