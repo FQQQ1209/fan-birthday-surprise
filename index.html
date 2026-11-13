@@ -441,6 +441,32 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
 @media(max-width:480px){.countdown-screen,.game-screen{padding:24px 14px}.countdown-panel,.game-panel{padding:25px 17px;border-radius:22px}.countdown-grid{gap:6px}.countdown-unit{padding:13px 3px}.countdown-label{font-size:9px}.quiz-card{padding:17px}.quiz-question{font-size:19px}.gacha-globe{height:190px;width:190px}}
 @media(prefers-reduced-motion:reduce){.gacha-machine.spinning,.gacha-machine.spinning .gacha-globe,.gacha-machine.spinning .gacha-knob,.gacha-machine.spinning .capsule{animation:none}}
 
+
+/* Seasonal pixel treasure adventure */
+.season-game-screen{display:none;min-height:100vh;padding:34px 18px 48px;place-items:center;background:linear-gradient(180deg,#f7f1df,#e9efdf)}
+.season-game-panel{width:min(850px,100%);padding:clamp(20px,4vw,38px);border:1px solid #d8d9bd;border-radius:25px;background:#fffdf3;box-shadow:0 18px 50px rgba(88,105,70,.13);text-align:center}
+.season-kicker{font-size:10px;letter-spacing:.22em;color:#9a9872}
+.season-title{margin:10px 0 5px;color:#687c58;font:clamp(25px,5vw,36px)/1.3 Georgia,"Kaiti SC",serif}
+.season-subtitle{margin:0 auto 16px;max-width:620px;color:#8b8b70;font-size:13px;line-height:1.9}
+.season-hud{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 auto 12px;max-width:700px;color:#7d8665;font-size:12px}
+.season-hud strong{color:#657b55}
+.season-canvas-wrap{width:min(700px,100%);margin:0 auto;overflow:hidden;border:5px solid #d6d5b6;border-radius:12px;background:#e7eddb;box-shadow:inset 0 0 0 2px #fff9e9}
+#seasonCanvas{display:block;width:100%;height:auto;aspect-ratio:3/2;image-rendering:pixelated;touch-action:none}
+.season-instruction{min-height:45px;margin:12px auto 4px;color:#7d8268;font-size:13px;line-height:1.8}
+.season-controls{display:flex;justify-content:center;align-items:center;gap:18px;margin:12px auto 8px}
+.season-dpad{display:grid;grid-template-columns:42px 42px 42px;grid-template-rows:38px 38px 38px;gap:5px}
+.season-dpad button{border:1px solid #c9cba9;border-radius:9px;background:#f1f1db;color:#73815e;font-size:18px;box-shadow:0 3px 0 #d1d1b5;touch-action:manipulation}
+.season-dpad button:active{transform:translateY(2px);box-shadow:0 1px 0 #d1d1b5}
+.season-dpad [data-move="0,-1"]{grid-column:2;grid-row:1}
+.season-dpad [data-move="-1,0"]{grid-column:1;grid-row:2}
+.season-dpad [data-move="0,1"]{grid-column:2;grid-row:3}
+.season-dpad [data-move="1,0"]{grid-column:3;grid-row:2}
+.season-control-note{max-width:180px;color:#a09b7c;font-size:11px;line-height:1.8;text-align:left}
+.season-next{margin-top:12px;border:0;border-radius:999px;padding:13px 26px;background:#84966c;color:#fffdf2;font-size:13px;box-shadow:0 5px 0 #6d8058}
+.season-next:active{transform:translateY(2px);box-shadow:0 3px 0 #6d8058}
+.season-next[hidden]{display:none}
+@media(max-width:520px){.season-game-screen{padding:18px 10px 30px}.season-game-panel{padding:18px 12px;border-radius:18px}.season-hud{font-size:10px}.season-controls{gap:10px}.season-dpad{grid-template-columns:38px 38px 38px;grid-template-rows:36px 36px 36px}.season-control-note{max-width:125px;font-size:10px}}
+
 </style>
 </head>
 <body class="grain">
@@ -460,6 +486,28 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
     <p class="countdown-note" id="countdownNote">2026 · 12 · 09　00:00　♡　</p>
     <button class="primary" id="enterGames">提前进入游戏 ♡</button>
     <button class="countdown-return-button" id="returnToQuiz" type="button" hidden>← 回到最初的倒计时页面 ♡</button>
+  </div>
+</section>
+
+
+<section class="season-game-screen" id="seasonGameScreen">
+  <div class="season-game-panel">
+    <div class="season-kicker">A LITTLE JOURNEY THROUGH FOUR SEASONS</div>
+    <h2 class="season-title" id="seasonTitle">冬日雪球寻宝</h2>
+    <p class="season-subtitle" id="seasonSubtitle">从一场冬雪开始，沿着字母 A 的小路，推着雪球收集散落的圣诞球吧。</p>
+    <div class="season-hud"><span id="seasonStageLabel">WINTER · 01 / 05</span><strong id="seasonProgress">找到沿途的圣诞球 0 / 5</strong><span id="seasonRouteLabel">路线 A</span></div>
+    <div class="season-canvas-wrap"><canvas id="seasonCanvas" width="600" height="400" aria-label="四季像素寻宝游戏画面"></canvas></div>
+    <p class="season-instruction" id="seasonInstruction">用方向键移动小男孩，推着雪球去寻找圣诞球 ♡</p>
+    <div class="season-controls">
+      <div class="season-dpad" aria-label="移动方向">
+        <button type="button" data-move="0,-1" aria-label="向上">↑</button>
+        <button type="button" data-move="-1,0" aria-label="向左">←</button>
+        <button type="button" data-move="0,1" aria-label="向下">↓</button>
+        <button type="button" data-move="1,0" aria-label="向右">→</button>
+      </div>
+      <div class="season-control-note">电脑：使用键盘方向键 / WASD<br>手机：点击方向按钮<br>沿着字母路线慢慢探索 ♡</div>
+    </div>
+    <button class="season-next" id="seasonNext" type="button" hidden>继续下一段旅程 ♡</button>
   </div>
 </section>
 
@@ -803,6 +851,7 @@ const midnightTarget=new Date(2026,11,9,0,0,0,0);
 const birthdayTarget=new Date(2026,11,9,19,0,0,0);
 let birthdayPasswordVerified=false;
 let midnightCelebrationTriggered=false;
+let seasonGameAutoStarted=false;
 function updateCountdown(){
   const secondStage=birthdayPasswordVerified,target=secondStage?birthdayTarget:midnightTarget,remaining=Math.max(0,target.getTime()-Date.now());
   const days=Math.floor(remaining/86400000),hours=Math.floor(remaining%86400000/3600000),minutes=Math.floor(remaining%3600000/60000),seconds=Math.floor(remaining%60000/1000);
@@ -834,7 +883,7 @@ function launchMidnightCelebration(){
   }
 }
 setInterval(()=>{
-  if(!birthdayPasswordVerified&&Date.now()>=midnightTarget.getTime()){launchMidnightCelebration();resetQuizProgress();$('#countdownScreen').style.display='none';$('#gameScreen').style.display='grid';renderWallet();renderQuiz();renderInventory();}
+  if(!birthdayPasswordVerified&&Date.now()>=midnightTarget.getTime()&&!seasonGameAutoStarted){seasonGameAutoStarted=true;launchMidnightCelebration();resetQuizProgress();showSeasonGame();}
   else if($('#countdownScreen').style.display==='grid')updateCountdown();
   launchMidnightCelebration();
 },1000);
@@ -867,6 +916,7 @@ function resetQuizProgress(){
   $('#gachaMachine').classList.remove('spinning');
   $('#spinGacha').disabled=false;$('#spinGacha').textContent='🪙 花 10 金币扭一次';
   renderInventory();
+  resetSeasonGame();
 }
 function renderWallet(){$('#coinBalance').textContent=gameState.coins;}
 function normalizeAnswer(value){return String(value||'').toLowerCase().replace(/[\s\u3000.,，。!！?？:：;；'‘’"“”_—-]/g,'');}
@@ -918,6 +968,120 @@ function renderInventory(){
     const tag=document.createElement('span');tag.className='gacha-ticket';tag.textContent='扭蛋 '+(i+1)+' · '+prize.title;$('#gachaInventory').appendChild(tag);
   });
 }
+
+const seasonStages=[
+ {name:'冬日雪球寻宝',subtitle:'雪地铺成了字母 A。推着雪球往前走，把散落在雪地里的圣诞球都找回来吧。',season:'WINTER',route:'A',task:'找到沿途的圣诞球',start:{x:2,y:9},items:[[3,8],[5,6],[7,2],[10,6],[12,8]],kind:'ornament',instruction:'小男孩推着雪球出发啦！找到 5 颗藏在雪地里的圣诞球。'},
+ {name:'春日郊游日记',subtitle:'春天来了，小男孩沿着另一个字母 A 去踏青。每走过一处，沉睡的郁金香就会悄悄绽放。',season:'SPRING',route:'A',task:'让郁金香全部盛开',start:{x:2,y:9},items:[[3,8],[5,6],[7,2],[9,5],[12,8]],kind:'tulip',instruction:'沿着 A 字小路散步，让 5 朵郁金香一朵一朵开出来。'},
+ {name:'夏日西瓜收集队',subtitle:'阳光正好！沿着字母 I 的路线走进夏日田野，把藏在绿荫里的西瓜带回家。',season:'SUMMER',route:'I',task:'收集夏日大西瓜',start:{x:7,y:9},items:[[7,7],[7,6],[7,4],[7,3],[7,2]],kind:'watermelon',instruction:'小男孩出发去捡西瓜啦！找到田野里的 5 个大西瓜。'},
+ {name:'秋日苹果园',subtitle:'沿着字母 F 走进红彤彤的苹果园。枝头和草丛里都藏着甜甜的果实。',season:'AUTUMN',route:'F',task:'摘下苹果园的果实',start:{x:2,y:9},items:[[3,8],[3,5],[6,2],[9,2],[8,5],[3,3]],kind:'apple',instruction:'穿过苹果园，找到 6 颗红苹果，装满小篮子吧。'},
+ {name:'又一年冬天',subtitle:'又一年冬天到了。这一次，不再是一个人。女孩和男孩并肩走过雪地，慢慢留下一个完整的爱心。',season:'WINTER',route:'♡',task:'一起走完爱心雪地',start:{x:2,y:8},items:[[4,2],[5,1],[6,2],[7,3],[8,2],[9,1],[10,2],[11,3],[10,4],[9,5],[8,6],[7,7],[6,6],[5,5],[4,4]],kind:'heart',instruction:'牵起手，沿着雪地里的爱心脚印走一圈。把这颗心完整地走出来吧。'}
+];
+const seasonRoutes={
+ A:[[2,9],[3,8],[4,7],[5,6],[6,5],[7,4],[7,3],[7,2],[8,3],[8,4],[9,5],[10,6],[11,7],[12,8],[13,9],[5,6],[6,6],[7,6],[8,6],[9,6]],
+ I:[[4,2],[5,2],[6,2],[7,2],[8,2],[9,2],[10,2],[7,3],[7,4],[7,5],[7,6],[7,7],[7,8],[4,8],[5,8],[6,8],[8,8],[9,8],[10,8]],
+ F:[[3,2],[3,3],[3,4],[3,5],[3,6],[3,7],[3,8],[4,2],[5,2],[6,2],[7,2],[8,2],[9,2],[10,2],[11,2],[4,5],[5,5],[6,5],[7,5],[8,5],[9,5]],
+ '♡':[[4,2],[5,1],[6,2],[7,3],[8,2],[9,1],[10,2],[11,3],[10,4],[9,5],[8,6],[7,7],[6,6],[5,5],[4,4]]
+};
+let seasonStageIndex=0,seasonPlayer={x:2,y:9},seasonDirection={x:0,y:-1},seasonCollected=new Set();
+const seasonCanvas=$('#seasonCanvas'),seasonCtx=seasonCanvas.getContext('2d'),SEASON_CELL=40;
+function resetSeasonGame(){seasonStageIndex=0;seasonCollected=new Set();seasonPlayer={...seasonStages[0].start};seasonDirection={x:0,y:-1};renderSeasonStage();}
+function showSeasonGame(){ $('#gameScreen').style.display='none';$('#countdownScreen').style.display='none';$('#seasonGameScreen').style.display='grid';renderSeasonStage();window.scrollTo({top:0,behavior:'smooth'});}
+function renderSeasonStage(){
+ const st=seasonStages[seasonStageIndex];seasonCollected=new Set();seasonPlayer={...st.start};seasonDirection={x:0,y:-1};
+ $('#seasonTitle').textContent=st.name;$('#seasonSubtitle').textContent=st.subtitle;
+ $('#seasonStageLabel').textContent=st.season+' · '+String(seasonStageIndex+1).padStart(2,'0')+' / 05';
+ $('#seasonRouteLabel').textContent='路线 '+st.route;$('#seasonProgress').textContent=st.task+' 0 / '+st.items.length;
+ $('#seasonInstruction').textContent=st.instruction;$('#seasonNext').hidden=true;
+ drawSeasonScene();
+}
+function drawSeasonPerson(px,py,girl=false,offset=0){
+ const x=px*SEASON_CELL+offset,y=py*SEASON_CELL;
+ const c=seasonCtx;
+ // pixel-art shadow, hair, face, outfit and tiny feet
+ c.fillStyle='rgba(76,82,57,.18)';c.fillRect(x+9,y+33,23,4);
+ c.fillStyle=girl?'#67434a':'#654a35';c.fillRect(x+12,y+5,17,9);c.fillRect(x+9,y+10,5,10);c.fillRect(x+27,y+10,5,8);
+ c.fillStyle='#f4c9a5';c.fillRect(x+13,y+12,16,14);
+ c.fillStyle='#49352f';c.fillRect(x+17,y+18,2,2);c.fillRect(x+24,y+18,2,2);
+ c.fillStyle='#d98f79';c.fillRect(x+20,y+22,4,2);
+ c.fillStyle=girl?'#d98e9a':'#6d91a5';c.fillRect(x+10,y+26,22,12);
+ c.fillStyle=girl?'#a45b68':'#506c82';c.fillRect(x+12,y+37,7,3);c.fillRect(x+23,y+37,7,3);
+ if(girl){c.fillStyle='#8a5948';c.fillRect(x+8,y+8,5,22);c.fillRect(x+27,y+8,6,22);c.fillStyle='#f2d9a8';c.fillRect(x+9,y+29,4,5);}
+}
+function drawSeasonScene(){
+ const c=seasonCtx,st=seasonStages[seasonStageIndex],w=600,h=400;
+ const palettes=[
+  {bg:'#dcecf0',tile:'#eaf4f3',route:'#ffffff',edge:'#c6dce0'},
+  {bg:'#dcebd2',tile:'#edf1d9',route:'#c8b78c',edge:'#c1d5a9'},
+  {bg:'#d8edc9',tile:'#e9efc9',route:'#d7c58e',edge:'#b9d7a5'},
+  {bg:'#efdcb8',tile:'#f6e8c9',route:'#c9a477',edge:'#dfc18f'},
+  {bg:'#dcecf0',tile:'#eaf4f3',route:'#ffffff',edge:'#c6dce0'}
+ ][seasonStageIndex];
+ c.clearRect(0,0,w,h);c.fillStyle=palettes.bg;c.fillRect(0,0,w,h);
+ for(let y=0;y<10;y++)for(let x=0;x<15;x++){c.fillStyle=(x+y)%2?palettes.tile:palettes.bg;c.fillRect(x*40,y*40,40,40);}
+ // seasonal atmosphere and tiny pixel scenery
+ if(seasonStageIndex===0||seasonStageIndex===4){
+  for(let i=0;i<55;i++){let x=(i*83+19)%590,y=(i*47+13)%390;c.fillStyle='rgba(255,255,255,.72)';c.fillRect(x,y,3,3);}
+  for(let x=20;x<600;x+=120){c.fillStyle='#8cae9c';c.fillRect(x,30,8,28);c.fillStyle='#729a8a';c.fillRect(x-12,18,32,16);c.fillRect(x-7,9,22,12);}
+ }else if(seasonStageIndex===1){
+  for(let x=15;x<600;x+=70){c.fillStyle='#86a96f';c.fillRect(x,22,4,10);c.fillStyle='#e9a8a4';c.fillRect(x-3,16,5,5);c.fillStyle='#f4d78a';c.fillRect(x+3,17,5,5);}
+ }else if(seasonStageIndex===2){
+  c.fillStyle='#f6d77f';c.fillRect(520,25,34,34);c.fillRect(526,19,22,46);
+  for(let x=15;x<600;x+=95){c.fillStyle='#6e9b59';c.fillRect(x,24,8,18);c.fillRect(x-6,31,20,8);}
+ }else{
+  for(let x=20;x<600;x+=95){c.fillStyle='#805a3e';c.fillRect(x+14,18,8,37);c.fillStyle='#c57d50';c.fillRect(x,8,38,26);c.fillStyle='#d99156';c.fillRect(x+8,2,24,18);}
+ }
+ // letter-shaped walking trail
+ const route=seasonRoutes[st.route];c.fillStyle=palettes.route;
+ route.forEach(([x,y])=>{c.fillRect(x*40+7,y*40+7,26,26);c.fillStyle=palettes.edge;c.fillRect(x*40+7,y*40+31,26,3);c.fillStyle=palettes.route;});
+ // collectible objects
+ st.items.forEach(([x,y],i)=>{
+  const got=seasonCollected.has(i),cx=x*40+20,cy=y*40+20;
+  if(st.kind==='ornament'){
+   c.strokeStyle='#9b846a';c.lineWidth=2;c.beginPath();c.moveTo(cx,cy-11);c.lineTo(cx,cy-7);c.stroke();
+   c.fillStyle=['#d77d78','#e9c36e','#7da6b0','#a78ab6','#82a47a'][i];c.beginPath();c.arc(cx,cy,got?7:10,0,Math.PI*2);c.fill();
+   c.fillStyle='#fff4dc';c.fillRect(cx-4,cy-5,4,3);
+  }else{
+   c.font='25px "Apple Color Emoji","Segoe UI Emoji",sans-serif';c.textAlign='center';c.textBaseline='middle';
+   const icon=st.kind==='tulip'?(got?'🌷':'🌱'):st.kind==='watermelon'?'🍉':st.kind==='apple'?'🍎':'♡';
+   c.fillText(icon,cx,cy);
+   if(st.kind==='heart'&&!got){c.fillStyle='#d58c91';c.fillRect(cx-3,cy-2,6,6);}
+  }
+ });
+ // player(s)
+ if(seasonStageIndex===0){
+  const bx=seasonPlayer.x*40+20+seasonDirection.x*22,by=seasonPlayer.y*40+20+seasonDirection.y*22;
+  c.fillStyle='#fff';c.beginPath();c.arc(bx,by,13,0,Math.PI*2);c.fill();c.strokeStyle='#c8dce0';c.lineWidth=2;c.stroke();
+  c.fillStyle='#dce8ec';c.fillRect(bx-8,by-2,16,4);
+ }
+ drawSeasonPerson(seasonPlayer.x,seasonPlayer.y,seasonStageIndex===4,-3);
+ if(seasonStageIndex===4)drawSeasonPerson(seasonPlayer.x,seasonPlayer.y,true,15);
+}
+function moveSeasonPlayer(dx,dy){
+ if($('#seasonGameScreen').style.display!=='grid'||!$('#seasonNext').hidden===false)return;
+ const nx=Math.max(0,Math.min(14,seasonPlayer.x+dx)),ny=Math.max(0,Math.min(9,seasonPlayer.y+dy));
+ if(nx===seasonPlayer.x&&ny===seasonPlayer.y)return;
+ seasonDirection={x:dx,y:dy};seasonPlayer={x:nx,y:ny};
+ const st=seasonStages[seasonStageIndex];
+ st.items.forEach(([x,y],i)=>{if(!seasonCollected.has(i)&&x===nx&&y===ny){seasonCollected.add(i);$('#seasonInstruction').textContent=st.kind==='tulip'?'叮——一朵郁金香开花啦！🌷':st.kind==='heart'?'你们的脚印连在一起了，爱心越来越完整 ♡':'找到啦！继续沿着小路探索吧 ♡';}});
+ $('#seasonProgress').textContent=st.task+' '+seasonCollected.size+' / '+st.items.length;
+ drawSeasonScene();
+ if(seasonCollected.size===st.items.length){
+  $('#seasonInstruction').textContent=seasonStageIndex===4?'爱心已经完整地留在雪地里。原来又一年过去，我们还是并肩在一起。♡':'这一季的宝藏都找齐啦！准备好去下一段季节旅程了吗？';
+  $('#seasonNext').hidden=false;$('#seasonNext').textContent=seasonStageIndex===4?'开启回忆答题 ♡':'继续下一段旅程 ♡';
+ }
+}
+document.querySelectorAll('.season-dpad button').forEach(btn=>btn.addEventListener('click',()=>{const [dx,dy]=btn.dataset.move.split(',').map(Number);moveSeasonPlayer(dx,dy);}));
+document.addEventListener('keydown',e=>{
+ if($('#seasonGameScreen').style.display!=='grid')return;
+ const moves={ArrowUp:[0,-1],w:[0,-1],W:[0,-1],ArrowDown:[0,1],s:[0,1],S:[0,1],ArrowLeft:[-1,0],a:[-1,0],A:[-1,0],ArrowRight:[1,0],d:[1,0],D:[1,0]};
+ if(moves[e.key]){e.preventDefault();moveSeasonPlayer(...moves[e.key]);}
+});
+$('#seasonNext').addEventListener('click',()=>{
+ if($('#seasonNext').hidden)return;
+ if(seasonStageIndex<seasonStages.length-1){seasonStageIndex++;renderSeasonStage();return;}
+ $('#seasonGameScreen').style.display='none';$('#gameScreen').style.display='grid';renderWallet();renderQuiz();renderInventory();window.scrollTo({top:0,behavior:'smooth'});
+});
+
 function showBirthdayEnvelope(){
   $('#countdownScreen').style.display='none';
   $('#gameScreen').style.display='none';
@@ -936,7 +1100,7 @@ $('#enterGames').addEventListener('click',()=>{
   if(birthdayPasswordVerified){if(Date.now()>=birthdayTarget.getTime())showBirthdayEnvelope();else updateCountdown();return;}
   if(Date.now()>=midnightTarget.getTime())launchMidnightCelebration();
   resetQuizProgress();
-  $('#countdownScreen').style.display='none';$('#gameScreen').style.display='grid';renderWallet();renderQuiz();renderInventory();
+  showSeasonGame();
 });
 $('#prevQuestion').addEventListener('click',()=>{if(questionIndex>0&&questionIndex<quizData.length){questionIndex--;renderQuiz();}});
 $('#nextQuestion').addEventListener('click',()=>{
