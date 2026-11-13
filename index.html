@@ -933,8 +933,8 @@ function renderQuiz(){
     $('#prevQuestion').hidden=true;return;
   }
   const solved=gameState.gateCorrect.includes(questionIndex),attempts=questionAttempts[questionIndex]||0;
-  $('#quizProgress').textContent='QUESTION '+String(questionIndex+1).padStart(2,'0')+' / 05 · 剩余 '+(solved?0:3-attempts)+' 次机会';
-  $('#quizQuestion').textContent=q.q;$('#quizFeedback').textContent=solved?'这道题已经答对啦 ♡':'记得答案的话，就写下来吧 ♡（每题有三次机会）';
+  $('#quizProgress').textContent='QUESTION '+String(questionIndex+1).padStart(2,'0')+' / 05 · 剩余 '+(solved?0:1-attempts)+' 次机会';
+  $('#quizQuestion').textContent=q.q;$('#quizFeedback').textContent=solved?'这道题已经答对啦 ♡':'记得答案的话，就写下来吧 ♡（每题只有一次机会）';
   $('#nextQuestion').hidden=false;$('#nextQuestion').textContent=questionIndex===quizData.length-1?'查看答题结果':'下一题';$('#prevQuestion').hidden=questionIndex===0;
   $('#quizOptions').innerHTML='';
   const row=document.createElement('div');row.className='quiz-answer-row';
@@ -945,7 +945,7 @@ function renderQuiz(){
     const correct=q.accept.some(a=>normalizeAnswer(a)===value);
     if(correct){input.disabled=true;submit.disabled=true;input.style.borderColor='#a9c39b';if(!gameState.gateCorrect.includes(questionIndex)){gameState.gateCorrect.push(questionIndex);saveGame();}if(!gameState.answered.includes(questionIndex)){gameState.coins+=10;gameState.answered.push(questionIndex);saveGame();}
       $('#quizFeedback').textContent=questionIndex===4?'你答对了。真的记得这个瞬间呀。♡':'答对啦！♡';renderWallet();rewardBurst(10);if(questionIndex===4)showFifthSurprise();$('#nextQuestion').hidden=false;
-    }else{questionAttempts[questionIndex]=(questionAttempts[questionIndex]||0)+1;const left=3-questionAttempts[questionIndex];$('#quizProgress').textContent='QUESTION '+String(questionIndex+1).padStart(2,'0')+' / 05 · 剩余 '+left+' 次机会';$('#quizFeedback').textContent=left>0?(q.wrong+'　还可以再试 '+left+' 次。'):(q.wrong+'　这题机会用完啦，可以继续下一题。');input.value='';if(left<=0){input.disabled=true;submit.disabled=true;$('#nextQuestion').hidden=false;}}
+    }else{questionAttempts[questionIndex]=(questionAttempts[questionIndex]||0)+1;const left=1-questionAttempts[questionIndex];$('#quizProgress').textContent='QUESTION '+String(questionIndex+1).padStart(2,'0')+' / 05 · 剩余 '+left+' 次机会';$('#quizFeedback').textContent=left>0?(q.wrong+'　还可以再试 '+left+' 次。'):(q.wrong+'　这题机会用完啦，可以继续下一题。');input.value='';if(left<=0){input.disabled=true;submit.disabled=true;$('#nextQuestion').hidden=false;}}
     $('#nextQuestion').textContent=questionIndex===quizData.length-1?'查看答题结果':'下一题';};
   submit.addEventListener('click',feedback);input.addEventListener('keydown',e=>{if(e.key==='Enter')feedback();});row.append(input,submit);$('#quizOptions').appendChild(row);
 }
