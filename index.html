@@ -1075,11 +1075,28 @@ function drawFinalSeasonAnimation(now){
  c.beginPath();c.moveTo(300,350);c.bezierCurveTo(355,300,495,205,455,125);c.bezierCurveTo(420,55,340,92,300,145);c.stroke();c.restore();
  const walk=ease(elapsed/6.2);
  const point=(side,t)=>{
-  const left=side==='left',p0={x:300,y:350},p1={x:left?245:355,y:300},p2={x:left?105:495,y:205},p3={x:left?145:455,y:125},p4={x:300,y:145};
-  const q=t<.55?t/.55:(t-.55)/.45,a=t<.55?p0:p2,b=t<.55?p1:p3,d=t<.55?p2:p4,u=1-q;
-  return {x:u*u*a.x+2*u*q*b.x+q*q*d.x,y:u*u*a.y+2*u*q*b.y+q*q*d.y};
+  // Sample a pair of tangent-matched cubic curves, then move by arc length.
+  // This keeps both characters moving at an even, fluid pace around the heart.
+  const mirror=side==='right'?-1:1;
+  const curves=[
+   [{x:300,y:350},{x:260,y:300},{x:80,y:220},{x:145,y:120}],
+   [{x:145,y:120},{x:190,y:62},{x:255,y:92},{x:300,y:145}]
+  ];
+  const samples=[];
+  curves.forEach((p,segment)=>{
+   for(let i=segment===0?0:1;i<=90;i++){
+    const u=i/90,v=1-u;
+    samples.push({x:v*v*v*p[0].x+3*v*v*u*p[1].x+3*v*u*u*p[2].x+u*u*u*p[3].x,
+                  y:v*v*v*p[0].y+3*v*v*u*p[1].y+3*v*u*u*p[2].y+u*u*u*p[3].y});
+   }
+  });
+  samples.forEach(p=>{p.x=300+(p.x-300)*mirror;});
+  const lengths=[0];for(let i=1;i<samples.length;i++)lengths[i]=lengths[i-1]+Math.hypot(samples[i].x-samples[i-1].x,samples[i].y-samples[i-1].y);
+  const target=clamp(t)*lengths[lengths.length-1];let i=1;while(i<lengths.length-1&&lengths[i]<target)i++;
+  const span=lengths[i]-lengths[i-1],f=span?(target-lengths[i-1])/span:0;
+  return{x:samples[i-1].x+(samples[i].x-samples[i-1].x)*f,y:samples[i-1].y+(samples[i].y-samples[i-1].y)*f};
  };
- const left=point('left',walk),right=point('right',walk);
+ const travel=ease(elapsed/6.2),left=point('left',travel),right=point('right',travel);
  if(elapsed<6.2){
   drawSeasonPerson(left.x/40-.5,left.y/40-.5,true,-3);
   drawSeasonPerson(right.x/40-.5,right.y/40-.5,false,3);
@@ -1149,13 +1166,13 @@ function seasonTree(c,x,y,kind,scale=1){
 function seasonFlower(c,x,y,color){seasonRect(c,'#71945e',x,y,2,9);seasonRect(c,color,x-4,y-3,10,5);seasonRect(c,'#f6df9c',x-1,y-2,3,3);}
 function seasonFence(c,x,y,w,snow=false){seasonRect(c,'#9c805c',x,y,w,4);seasonRect(c,'#d0b48a',x,y-3,w,3);for(let px=x;px<=x+w;px+=22){seasonRect(c,'#8e7453',px,y-12,5,16);seasonRect(c,'#d8c49d',px+1,y-12,2,13);if(snow)seasonRect(c,'#fffdf5',px-1,y-15,7,3);}}
 function seasonScenery(c,index){
- const base=[['#eaf3f4','#f8fcfb','#d7e7eb'],['#99c88a','#add897','#80b577'],['#c2bf7d','#d3ce8c','#aaa56a'],['#e2ebde','#f2f5e9','#c6d7d0']][index];
+ const base=[['#eaf3f4','#f8fcfb','#d7e7eb'],['#99c88a','#add897','#80b577'],['#5f9f5b','#82bd70','#397d4b'],['#e9c58b','#f6dfb1','#d9a96f']][index];
  seasonRect(c,base[0],0,0,SEASON_WORLD.width,SEASON_WORLD.height);
  let seed=738+index*57;const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
  for(let i=0;i<2600;i++){const x=rand()*900,y=rand()*600;seasonRect(c,i%3?base[1]:base[2],x,y,index===0?2+rand()*4:1+rand()*3,index===0?2+rand()*2:1);}
  for(let i=0;i<26;i++)seasonTree(c,i*37-8,35+rand()*12,index,i%4===0?.9:1);
- seasonFence(c,90,150,125,index===0||index===3);seasonFence(c,680,138,125,index===0||index===3);
- seasonFence(c,85,470,130,index===0||index===3);seasonFence(c,680,470,130,index===0||index===3);
+ seasonFence(c,90,150,125,index===0);seasonFence(c,680,138,125,index===0);
+ seasonFence(c,85,470,130,index===0);seasonFence(c,680,470,130,index===0);
  if(index===0){for(let i=0;i<34;i++){const x=rand()*900,y=rand()*600;seasonOval(c,'rgba(255,255,255,.72)',x,y,8+rand()*18,2+rand()*5);}seasonRect(c,'rgba(255,255,255,.48)',0,0,900,600);}
  // Cottage, windows and warm doorway
  seasonRect(c,'#b8a07b',690,190,105,76);seasonRect(c,'#f0d9aa',698,198,89,63);seasonRect(c,'#b87970',680,192,126,15);
@@ -1192,7 +1209,7 @@ function seasonDrawObstacle(c,branch){
  const end=branch.points[branch.points.length-1];c.save();c.translate(end.x,end.y);
  if(branch.obstacle==='log'){seasonOval(c,'#8b704f',0,0,22,8);seasonRect(c,'#b69563',-20,-6,40,8);seasonRect(c,'#755d46',-16,2,32,3);}
  else if(branch.obstacle==='rocks'){seasonOval(c,'#999d89',-8,0,13,9);seasonOval(c,'#b8bca5',7,-4,13,10);seasonOval(c,'#858d7d',16,4,9,7);}
- else if(branch.obstacle==='fence'){seasonFence(c,-23,0,46,seasonStageIndex===0||seasonStageIndex===3);}
+ else if(branch.obstacle==='fence'){seasonFence(c,-23,0,46,seasonStageIndex===0);}
  else{seasonOval(c,'#7aaeb2',0,0,26,12);seasonOval(c,'#b8d8d1',-4,-3,17,6);}
  c.restore();
 }
@@ -1200,10 +1217,10 @@ function seasonCamera(){return{x:Math.max(0,Math.min(SEASON_WORLD.width-SEASON_V
 function drawSeasonScene(time=0){
  const c=seasonCtx,st=seasonStages[seasonStageIndex];if(!seasonJourney||seasonStageIndex===4)return;
  const cam=seasonCamera();c.clearRect(0,0,600,400);c.imageSmoothingEnabled=false;c.save();c.translate(-cam.x,-cam.y);c.drawImage(seasonBackground,0,0);
- const palette=[['#b9d7e5','#eaf7fb'],['#bba77d','#ead8ab'],['#bda07a','#edd8b0'],['#b7b4a2','#dbcfb3']][seasonStageIndex];
+ const palette=[['#b9d7e5','#eaf7fb'],['#bba77d','#ead8ab'],['#83c978','#d8f0c5'],['#e8b76e','#f8dfad']][seasonStageIndex];
  const glow=c.createRadialGradient(seasonPlayer.x,seasonPlayer.y,24,seasonPlayer.x,seasonPlayer.y,225);glow.addColorStop(0,palette[0]);glow.addColorStop(.52,palette[1]);glow.addColorStop(1,palette[1]+'00');
  seasonJourney.roads.forEach((road)=>{c.beginPath();c.moveTo(road[0].x,road[0].y);road.slice(1).forEach(p=>c.lineTo(p.x,p.y));c.lineCap='round';c.lineJoin='round';c.strokeStyle=glow;c.lineWidth=SEASON_ROAD_WIDTH+5;c.stroke();});
- const pathGlow=c.createRadialGradient(seasonPlayer.x,seasonPlayer.y,18,seasonPlayer.x,seasonPlayer.y,225);pathGlow.addColorStop(0,'#fff8e6');pathGlow.addColorStop(.58,seasonStageIndex===0?'#e6f4f8':'#f5e7c7');pathGlow.addColorStop(1,'#f5e7c700');
+ const pathGlow=c.createRadialGradient(seasonPlayer.x,seasonPlayer.y,18,seasonPlayer.x,seasonPlayer.y,225);pathGlow.addColorStop(0,'#fff8e6');pathGlow.addColorStop(.58,seasonStageIndex===0?'#e6f4f8':seasonStageIndex===2?'#e4f5cf':'#f5e7c7');pathGlow.addColorStop(1,'#f5e7c700');
  seasonJourney.roads.forEach(road=>{c.beginPath();c.moveTo(road[0].x,road[0].y);road.slice(1).forEach(p=>c.lineTo(p.x,p.y));c.lineCap='round';c.lineJoin='round';c.strokeStyle=pathGlow;c.lineWidth=SEASON_ROAD_WIDTH-5;c.stroke();});
  seasonJourney.branches.forEach(b=>{const end=b.points[b.points.length-1];if(Math.hypot(end.x-seasonPlayer.x,end.y-seasonPlayer.y)<220)seasonDrawObstacle(c,b);});
  seasonJourney.items.forEach((p,i)=>{if(seasonCollected.has(i)||Math.hypot(p.x-seasonPlayer.x,p.y-seasonPlayer.y)>225)return;const x=p.x,y=p.y-9-Math.sin(time/260+i)*2;
@@ -1216,7 +1233,7 @@ function drawSeasonScene(time=0){
  drawSeasonPersonAt(c,seasonPlayer.x,seasonPlayer.y,false,seasonLastFrame>0,time,seasonDirection.x<0?-1:1);
  if(seasonStageIndex===0){seasonOval(c,'#fffdf5',seasonPlayer.x-23,seasonPlayer.y+8,12,12);seasonOval(c,'#c7dce0',seasonPlayer.x-23,seasonPlayer.y+8,8,8);}
  // Soft pixel motes near the lit path
- for(let i=0;i<9;i++){const x=(seasonPlayer.x-100+i*27+Math.sin(time/900+i)*8),y=(seasonPlayer.y-85+i*19+Math.cos(time/1100+i)*7);seasonRect(c,seasonStageIndex===3?'#e3ae70':seasonStageIndex===0?'#fffdf5':'#f4e8bb',x,y,2,2);}
+ for(let i=0;i<9;i++){const x=(seasonPlayer.x-100+i*27+Math.sin(time/900+i)*8),y=(seasonPlayer.y-85+i*19+Math.cos(time/1100+i)*7);seasonRect(c,seasonStageIndex===3?'#e3ae70':seasonStageIndex===2?'#d8f0b8':seasonStageIndex===0?'#fffdf5':'#f4e8bb',x,y,2,2);}
  c.restore();
  // Winter snowfall: layered flakes drift across the camera view continuously.
  if(seasonStageIndex===0){
