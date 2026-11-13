@@ -980,11 +980,11 @@ function renderInventory(){
 // The five chapters keep the requested F → A → I → R → another winter sequence.
 // Movement, exploration, keys, branches and camera behavior are adapted from the reference game's design.
 const seasonStages=[
- {name:'冬日雪球寻宝',subtitle:'第一场雪落下来啦。走进松树林，沿着 F 形雪径探索，收集圣诞球，找到金色钥匙，再去找花门。',season:'WINTER',route:'F',task:'收集圣诞球',kind:'ornament',instruction:'按住方向键或拖动摇杆自由行走。沿着雪径探索，找到圣诞球和金色钥匙 ♡'},
- {name:'春日郊游日记',subtitle:'雪融化了，春天悄悄来到。沿着 A 形花园小径踏青，走过花丛、池塘和小木屋，收集盛开的郁金香。',season:'SPRING',route:'A',task:'收集春日郁金香',kind:'tulip',instruction:'沿着花园小路自由散步，别忘了探索岔路。找到纪念物、钥匙，再走到花门。'},
- {name:'夏日西瓜收集队',subtitle:'阳光、树荫和冰凉的西瓜！穿过夏日池畔，沿着 I 形小径寻找清凉的夏日宝藏。',season:'SUMMER',route:'I',task:'收集夏日西瓜',kind:'watermelon',instruction:'沿着小路探索池塘和树荫，收集西瓜，找到钥匙，走到出口。'},
- {name:'秋日苹果园',subtitle:'秋风吹过果园，树叶变成金色。沿着 R 形小径穿过果树、木栅栏和落叶，把成熟的红苹果收进篮子。',season:'AUTUMN',route:'R',task:'收集秋日苹果',kind:'apple',instruction:'在苹果园里自由探索，走过主路和岔路，收集苹果和钥匙，再去花门。'},
- {name:'又一年冬天',subtitle:'又一年冬天。女孩和男孩从爱心的底部出发，沿着两边分开走向上方，在爱心顶端相遇。最后一起躺在雪地里，看漫天烟花。',season:'WINTER',route:'♡',task:'一起看完这场冬日烟花',kind:'heart',instruction:'这一段，不用操作啦。看着他们从爱心底部出发，走向彼此吧 ♡'}
+ {name:'冬日雪球寻宝',subtitle:'第一场雪落下来啦。走进松树林，雪径探索，收集圣诞球，找到金色钥匙，再去找花门。',season:'WINTER',route:'F',task:'收集圣诞球',kind:'ornament',instruction:'按住方向键或拖动摇杆自由行走。沿着雪径探索，找到圣诞球和金色钥匙 ♡'},
+ {name:'春日郊游日记',subtitle:'雪融化了，春天悄悄来到。沿着花园小径踏青，走过花丛、池塘和小木屋，收集盛开的郁金香。',season:'SPRING',route:'A',task:'收集春日郁金香',kind:'tulip',instruction:'沿着花园小路自由散步，别忘了探索岔路。找到纪念物、钥匙，再走到花门。'},
+ {name:'夏日西瓜收集队',subtitle:'阳光、树荫和冰凉的西瓜！穿过夏日池畔，沿着小径寻找清凉的夏日宝藏。',season:'SUMMER',route:'I',task:'收集夏日西瓜',kind:'watermelon',instruction:'沿着小路探索池塘和树荫，收集西瓜，找到钥匙，走到出口。'},
+ {name:'秋日苹果园',subtitle:'秋风吹过果园，树叶变成金色。沿着小径穿过果树、木栅栏和落叶，把成熟的红苹果收进篮子。',season:'AUTUMN',route:'R',task:'收集秋日苹果',kind:'apple',instruction:'在苹果园里自由探索，走过主路和岔路，收集苹果和钥匙，再去花门。'},
+ {name:'又一年冬天',subtitle:'又一年冬天。我们当然还在一起。会一起躺在雪地里，看漫天烟花。',season:'WINTER',route:'♡',task:'一起看完这场冬日烟花',kind:'heart',instruction:'这一段，不用操作啦。看着他们从爱心底部出发，走向彼此吧 ♡'}
 ];
 const SEASON_CELL=40;
 const SEASON_WORLD={width:900,height:600};
