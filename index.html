@@ -560,19 +560,7 @@ h1,h2,h3,.section-head h2,.scene-caption h3,.story-bridge h3,.memory-card h3,.gi
 
 </section>
 
-<section class="cover" id="cover">
-  <div class="cover-inner">
-    <div class="eyebrow">A LITTLE WORLD MADE JUST FOR YOU</div>
-    <div class="heart">♡</div>
-    <button class="cover-envelope" id="start" type="button" aria-label="Open~">
-      <span class="envelope-back"></span>
-      <span class="envelope-paper"><span>Happy Birthday~</span></span>
-      <span class="envelope-front"></span>
-      <span class="envelope-flap"></span>
-      <span class="envelope-seal">♡</span>
-    </button>
-  </div>
-</section>
+
 
 <button class="music" id="musicBtn" aria-label="播放或暂停背景音乐" title="背景音乐">♫</button>
 <main id="main">
@@ -1309,9 +1297,17 @@ seasonStartLoop();
 function showBirthdayEnvelope(){
   $('#countdownScreen').style.display='none';
   $('#gameScreen').style.display='none';
-  $('#cover').style.display='grid';
+  $('#cover').style.display='none';
+  $('#main').style.display='block';
   $('#musicBtn').style.display='block';
+  launchFireworks();
+  const greeting=$('#introGreeting');
+  if(greeting){
+    setTimeout(()=>greeting.classList.add('show'),0);
+    setTimeout(()=>greeting.classList.remove('show'),3400);
+  }
   window.scrollTo({top:0,behavior:'smooth'});
+  observeScenes();
 }
 $('#returnToQuiz').addEventListener('click',()=>{
   birthdayPasswordVerified=false;
@@ -1385,22 +1381,7 @@ $('#unlockEnvelope').addEventListener('click',()=>{
 $('#finalPassword').addEventListener('keydown',e=>{if(e.key==='Enter')$('#unlockEnvelope').click();});
 
 
-$('#start').addEventListener('click',()=>{
-  const envelope=$('#start');
-  if(envelope.dataset.opened==='true')return;
-  envelope.dataset.opened='true';
-  envelope.classList.add('opened');
-  launchFireworks();
-  const greeting=$('#introGreeting');
-  setTimeout(()=>greeting.classList.add('show'),0);
-  setTimeout(()=>greeting.classList.remove('show'),3400);
-  setTimeout(()=>{
-    $('#cover').style.display='none';
-    $('#main').style.display='block';
-    window.scrollTo({top:0,behavior:'smooth'});
-    observeScenes();
-  },4500);
-});
+// 已移除生日贺卡封面，生日时刻直接进入成长与恋爱故事。
 function observeScenes(){
   const targets=[...document.querySelectorAll('.life-scene,.love-event')];
   if(!('IntersectionObserver' in window)){targets.forEach(el=>el.classList.add('visible'));return;}
